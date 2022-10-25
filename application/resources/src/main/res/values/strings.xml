@@ -1129,6 +1129,8 @@
     <string name="enable_screenshot_button">Show the screenshot button</string>
     <string name="enable_screenshot_button_and_gesture">Button and gesture</string>
     <string name="discover">Discover</string>
+    <string name="discover_feed">Feed</string>
+    <string name="discover_podcast">Podcast</string>
 
 
 
