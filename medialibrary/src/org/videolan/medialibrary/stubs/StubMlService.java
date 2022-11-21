@@ -1,12 +1,18 @@
 package org.videolan.medialibrary.stubs;
 
+import android.os.Parcel;
+
 import org.videolan.medialibrary.interfaces.media.MediaWrapper;
 import org.videolan.medialibrary.interfaces.media.MlService;
 import org.videolan.medialibrary.interfaces.media.Subscription;
 
 public class StubMlService extends MlService {
-    StubMlService(Type type) {super(type);}
+    public StubMlService(Type type) {super(type);}
     StubMlService(int type) {super(type);}
+
+    public StubMlService(Parcel source) {
+        super(source);
+    }
 
     @Override
     public boolean addSubscription(String mrl) {

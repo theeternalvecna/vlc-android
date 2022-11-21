@@ -35,6 +35,7 @@ import androidx.viewpager.widget.ViewPager
 import com.google.android.material.tabs.TabLayout
 import org.videolan.vlc.R
 import org.videolan.vlc.gui.BaseFragment
+import org.videolan.vlc.gui.dialogs.PodcastAddDialog
 
 class DiscoverBrowserFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListener, TabLayout.OnTabSelectedListener, ViewPager.OnPageChangeListener {
     override fun getTitle() = getString(R.string.discover)
@@ -62,6 +63,8 @@ class DiscoverBrowserFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshList
     override fun onStart() {
         setupTabLayout()
         super.onStart()
+        fabPlay?.setImageResource(R.drawable.ic_fab_add)
+        fabPlay?.contentDescription = getString(R.string.add)
     }
 
     override fun onStop() {
@@ -126,5 +129,9 @@ class DiscoverBrowserFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshList
 
     override fun onPageScrollStateChanged(state: Int) {
         tcl.onPageScrollStateChanged(state)
+    }
+
+    override fun onFabPlayClick(view: View) {
+        PodcastAddDialog.newInstance().show(requireActivity().supportFragmentManager, "PodcastAddDialog")
     }
 }

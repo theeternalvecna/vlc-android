@@ -20,68 +20,68 @@ public class SubscriptionImpl extends Subscription {
     @Override
     public int getNewMediaNotification() {
         final Medialibrary ml = Medialibrary.getInstance();
-        return ml.isInitiated() ? nativeSubscriptionNewMediaNotification(ml, this.id) : -1;
+        return ml.isInitiated() ? nativeSubscriptionNewMediaNotification(ml, this.mId) : -1;
     }
 
     @Override
     public boolean setNewMediaNotification(int value) {
         final Medialibrary ml = Medialibrary.getInstance();
-        return ml.isInitiated() && nativeSetSubscriptionNewMediaNotification(ml, this.id, value);
+        return ml.isInitiated() && nativeSetSubscriptionNewMediaNotification(ml, this.mId, value);
     }
 
     @Override
     public long getCachedSize() {
         final Medialibrary ml = Medialibrary.getInstance();
-        return ml.isInitiated() ? nativeGetSubscriptionCachedSize(ml, this.id) : -2;
+        return ml.isInitiated() ? nativeGetSubscriptionCachedSize(ml, this.mId) : -2;
     }
 
     @Override
     public long getMaxCachedSize() {
         final Medialibrary ml = Medialibrary.getInstance();
-        return ml.isInitiated() ? nativeGetSubscriptionMaxCachedSize(ml, this.id) : -2;
+        return ml.isInitiated() ? nativeGetSubscriptionMaxCachedSize(ml, this.mId) : -2;
     }
 
     @Override
     public boolean setMaxCachedSize(long size) {
         final Medialibrary ml = Medialibrary.getInstance();
-        return ml.isInitiated() && nativeSetSubscriptionMaxCachedSize(ml, this.id, size);
+        return ml.isInitiated() && nativeSetSubscriptionMaxCachedSize(ml, this.mId, size);
     }
 
     @Override
     public int getNbUnplayedMedia() {
         final Medialibrary ml = Medialibrary.getInstance();
-        return ml.isInitiated() ? nativeGetSubscriptionNbUnplayedMedia(ml, this.id) : -1;
+        return ml.isInitiated() ? nativeGetSubscriptionNbUnplayedMedia(ml, this.mId) : -1;
     }
 
     @Override
     public Subscription[] getChildSubscriptions(int sortingCriteria, boolean desc, boolean includeMissing, boolean onlyFavorites) {
         final Medialibrary ml = Medialibrary.getInstance();
-        return ml.isInitiated() ? nativeGetChildSubscriptions(ml, id, sortingCriteria, desc, includeMissing, onlyFavorites) : new Subscription[0];
+        return ml.isInitiated() ? nativeGetChildSubscriptions(ml, mId, sortingCriteria, desc, includeMissing, onlyFavorites) : new Subscription[0];
     }
 
     @Override
     @Nullable
     public Subscription getParent() {
         final Medialibrary ml = Medialibrary.getInstance();
-        return ml.isInitiated() ? nativeGetParent(ml, id) : null;
+        return ml.isInitiated() ? nativeGetParent(ml, mId) : null;
     }
 
     @Override
     public boolean refresh() {
         final Medialibrary ml = Medialibrary.getInstance();
-        return ml.isInitiated() && nativeSubscriptionRefresh(ml, id);
+        return ml.isInitiated() && nativeSubscriptionRefresh(ml, mId);
     }
 
     @Override
     public MediaWrapper[] getMedia(int sortingCriteria, boolean desc, boolean includeMissing, boolean onlyFavorites) {
         final Medialibrary ml = Medialibrary.getInstance();
-        return ml.isInitiated() ? nativeGetSubscriptionMedia(ml, id, sortingCriteria, desc, includeMissing, onlyFavorites) : Medialibrary.EMPTY_COLLECTION;
+        return ml.isInitiated() ? nativeGetSubscriptionMedia(ml, mId, sortingCriteria, desc, includeMissing, onlyFavorites) : Medialibrary.EMPTY_COLLECTION;
     }
 
     @Override
     public int getNbMedia() {
         final Medialibrary ml = Medialibrary.getInstance();
-        return ml.isInitiated() ? nativeGetSubscriptionNbMedia(ml, id) : -1;
+        return ml.isInitiated() ? nativeGetSubscriptionNbMedia(ml, mId) : -1;
     }
 
     private native int nativeSubscriptionNewMediaNotification(Medialibrary ml, long id);

@@ -1188,6 +1188,13 @@
     <string name="ignore_headset_media_button_presses">Ignore headset media button presses</string>
     <string name="ignore_headset_media_button_presses_summary">Useful, for instance, if you are using a headset with broken physical buttons</string>
     <string name="replace_playlist">Replace playlist</string>
+    <string name="add_to">Add to %s</string>
+    <string name="podcasts">Podcasts</string>
+    <string name="podcast_url">Podcast URL</string>
+    <string name="invalid_url">Invalid URL</string>
+    <string name="opml">Import OPML</string>
+    <string name="podcast_added">Podcast added</string>
+    <string name="podcast_added_error">Error adding the podcast</string>
 
     <!-- Remote access -->
     <string name="ra_server_running">Remote access active</string>

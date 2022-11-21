@@ -1,26 +1,46 @@
 package org.videolan.medialibrary.interfaces.media;
 
-public abstract class Subscription {
+import org.videolan.medialibrary.interfaces.Medialibrary;
+import org.videolan.medialibrary.media.MediaLibraryItem;
+
+public abstract class Subscription extends MediaLibraryItem {
 
     public Subscription(long id, MlService.Type type, String name, long parentId) {
-        this.id = id;
-        this.type = type;
-        this.name = name;
-        this.parentId = parentId;
+        this.mId = id;
+        this.mType = type;
+        this.mTitle = name;
+        this.mParentId = parentId;
     }
     
     public Subscription(long id, int type, String name, long parentId) {
-        this.id = id;
-        this.type = MlService.Type.getValue(type);
-        this.name = name;
-        this.parentId = parentId;
+        this.mId = id;
+        this.mType = MlService.Type.getValue(type);
+        this.mTitle = name;
+        this.mParentId = parentId;
     }
 
-    public MlService.Type type;
-    protected long parentId;
-    public String name;
-    public long id;
+    public MlService.Type mType;
+    protected long mParentId;
 
+
+    public MediaWrapper[] getTracks() {
+        return getMedia(Medialibrary.SORT_DEFAULT, false, true, false);
+    }
+
+    @Override
+    public int getTracksCount() {
+        return getNbMedia();
+    }
+
+    @Override
+    public boolean setFavorite(boolean favorite) {
+        return false;
+    }
+
+    @Override
+    public int getItemType() {
+        return TYPE_SUBSCRIPTION;
+    }
 
     public abstract int getNewMediaNotification();
     public abstract boolean setNewMediaNotification(int value);

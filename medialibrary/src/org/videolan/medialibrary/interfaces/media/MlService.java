@@ -1,6 +1,13 @@
 package org.videolan.medialibrary.interfaces.media;
 
-public abstract class MlService {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import org.videolan.medialibrary.MLServiceLocator;
+import org.videolan.medialibrary.interfaces.Medialibrary;
+import org.videolan.medialibrary.media.MediaLibraryItem;
+
+public abstract class MlService extends MediaLibraryItem implements Parcelable {
 
     public enum Type {
         PODCAST(1);
@@ -22,11 +29,34 @@ public abstract class MlService {
     }
 
     protected MlService(Type type) {
-        this.type = type;
+        this.mType = type;
     }
-    protected MlService(int type) {this.type = Type.getValue(type);}
+    protected MlService(int type) {this.mType = Type.getValue(type);}
 
-    public Type type;
+    private void init(int type) {
+        mType = Type.getValue(type);
+    }
+
+    public Type mType;
+
+    public MediaWrapper[] getTracks() {
+        return getMedia(Medialibrary.SORT_DEFAULT, false, true, false);
+    }
+
+    @Override
+    public int getTracksCount() {
+        return getNbMedia();
+    }
+
+    @Override
+    public boolean setFavorite(boolean favorite) {
+        return false;
+    }
+
+    @Override
+    public int getItemType() {
+        return TYPE_SERVICE;
+    }
 
     public abstract boolean addSubscription(String mrl);
     public abstract boolean isAutoDownloadEnabled();
@@ -41,4 +71,38 @@ public abstract class MlService {
     public abstract int getNbMedia();
     public abstract MediaWrapper[] getMedia(int sortingCriteria, boolean desc, boolean includeMissing, boolean onlyFavorites);
     public abstract boolean refresh();
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        super.writeToParcel(dest, flags);
+        dest.writeInt(this.mType == null ? -1 : this.mType.ordinal());
+    }
+
+    public void readFromParcel(Parcel source) {
+        int tmpType = source.readInt();
+        this.mType = tmpType == -1 ? null : Type.values()[tmpType];
+    }
+
+    protected MlService(Parcel in) {
+        super(in);
+        int tmpType = in.readInt();
+        init(tmpType);
+    }
+
+    public static final Creator<MlService> CREATOR = new Creator<MlService>() {
+        @Override
+        public MlService createFromParcel(Parcel source) {
+            return MLServiceLocator.getAbstractService(source);
+        }
+
+        @Override
+        public MlService[] newArray(int size) {
+            return new MlService[size];
+        }
+    };
 }
