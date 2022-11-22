@@ -2552,7 +2552,7 @@ static JNINativeMethod methods[] = {
     {"nativeCreateGroup", "([J)Lorg/videolan/medialibrary/interfaces/media/VideoGroup;", (void*)createMediaGroup },
     {"nativeRegroupAll", "()Z", (void*)regroupAll },
     {"nativeRegroup", "(J)Z", (void*)regroup },
-    {"nativeGetService", "(I)Lorg/videolan/medialibrary/interfaces/media/MlService;", (void*)getService},
+    {"nativeGetService", "(I)Lorg/videolan/medialibrary/interfaces/media/DiscoverService;", (void*)getService},
     {"nativeFitsInSubscriptionCache", "(Lorg/videolan/medialibrary/interfaces/Medialibrary;J)Z", (void*)fitsInSubscriptionCache},
     {"nativeCacheNewSubscriptionMedia", "(Lorg/videolan/medialibrary/interfaces/Medialibrary;)V", (void*)cacheNewSubscriptionMedia},
     {"nativeSetSubscriptionMaxCacheMedia", "(Lorg/videolan/medialibrary/interfaces/Medialibrary;I)Z", (void*)setSubscriptionMaxCachedMedia},
@@ -2793,9 +2793,9 @@ jint JNI_OnLoad(JavaVM *vm, void *reserved)
            ml_fields.Playlist.clazz,
            "<init>", "(JLjava/lang/String;IJIIIIZ)V");
 
-    GET_CLASS(ml_fields.Service.clazz, "org/videolan/medialibrary/media/MlServiceImpl", true);
+    GET_CLASS(ml_fields.Service.clazz, "org/videolan/medialibrary/media/DiscoverServiceImpl", true);
     if (env->RegisterNatives(ml_fields.Service.clazz, service_methods, sizeof(service_methods) / sizeof(service_methods[0])) < 0) {
-        LOGE("RegisterNatives failed for org/videolan/medialibrary/media/MlServiceImpl");
+        LOGE("RegisterNatives failed for org/videolan/medialibrary/media/DiscoverServiceImpl");
         return -1;
     }
     GET_ID(GetMethodID,
@@ -2962,6 +2962,18 @@ jint JNI_OnLoad(JavaVM *vm, void *reserved)
            ml_fields.MediaLibrary.onFoldersDeletedId,
            ml_fields.MediaLibrary.clazz,
            "onFoldersDeleted", "()V");
+    GET_ID(GetMethodID,
+           ml_fields.MediaLibrary.onSubscriptionsAddedId,
+           ml_fields.MediaLibrary.clazz,
+           "onSubscriptionsAdded", "()V");
+    GET_ID(GetMethodID,
+           ml_fields.MediaLibrary.onSubscriptionsModifiedId,
+           ml_fields.MediaLibrary.clazz,
+           "onSubscriptionsModified", "()V");
+    GET_ID(GetMethodID,
+           ml_fields.MediaLibrary.onSubscriptionsDeletedId,
+           ml_fields.MediaLibrary.clazz,
+           "onSubscriptionsDeleted", "()V");
     GET_ID(GetMethodID,
            ml_fields.MediaLibrary.onPlaylistsModifiedId,
            ml_fields.MediaLibrary.clazz,

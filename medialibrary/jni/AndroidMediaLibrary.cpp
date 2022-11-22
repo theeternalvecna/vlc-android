@@ -1093,6 +1093,33 @@ void AndroidMediaLibrary::onFoldersDeleted( std::set<int64_t> foldersIds )
     }
 }
 
+void AndroidMediaLibrary::onSubscriptionsAdded( std::vector<medialibrary::SubscriptionPtr> mediaGroups )
+{
+    JNIEnv *env = getEnv();
+    if (env != nullptr && weak_thiz)
+    {
+        env->CallVoidMethod(weak_thiz, p_fields->MediaLibrary.onSubscriptionsAddedId);
+    }
+}
+
+void AndroidMediaLibrary::onSubscriptionsModified( std::set<int64_t> subscriptionsIds )
+{
+    JNIEnv *env = getEnv();
+    if (env != nullptr && weak_thiz)
+    {
+        env->CallVoidMethod(weak_thiz, p_fields->MediaLibrary.onSubscriptionsModifiedId);
+    }
+}
+
+void AndroidMediaLibrary::onSubscriptionsDeleted( std::set<int64_t> subscriptionsIds )
+{
+    JNIEnv *env = getEnv();
+    if (env != nullptr && weak_thiz)
+    {
+        env->CallVoidMethod(weak_thiz, p_fields->MediaLibrary.onSubscriptionsDeletedId);
+    }
+}
+
 void AndroidMediaLibrary::onBookmarksAdded( std::vector<medialibrary::BookmarkPtr> )
 {
 }
@@ -1248,18 +1275,6 @@ bool
 AndroidMediaLibrary::refreshAllSubscriptions()
 {
     return p_ml->refreshAllSubscriptions();
-}
-
-void AndroidMediaLibrary::onSubscriptionsAdded( std::vector<medialibrary::SubscriptionPtr> )
-{
-}
-
-void AndroidMediaLibrary::onSubscriptionsModified( std::set<int64_t> )
-{
-}
-
-void AndroidMediaLibrary::onSubscriptionsDeleted( std::set<int64_t> )
-{
 }
 
 void AndroidMediaLibrary::onSubscriptionNewMedia( std::set<int64_t> )

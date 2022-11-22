@@ -27,6 +27,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
 import android.text.TextUtils;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -39,10 +40,10 @@ import org.videolan.medialibrary.MLServiceLocator;
 import org.videolan.medialibrary.Tools;
 import org.videolan.medialibrary.interfaces.media.Album;
 import org.videolan.medialibrary.interfaces.media.Artist;
+import org.videolan.medialibrary.interfaces.media.DiscoverService;
 import org.videolan.medialibrary.interfaces.media.Folder;
 import org.videolan.medialibrary.interfaces.media.Genre;
 import org.videolan.medialibrary.interfaces.media.MediaWrapper;
-import org.videolan.medialibrary.interfaces.media.MlService;
 import org.videolan.medialibrary.interfaces.media.Playlist;
 import org.videolan.medialibrary.interfaces.media.VideoGroup;
 import org.videolan.medialibrary.media.SearchAggregate;
@@ -111,6 +112,7 @@ abstract public class Medialibrary {
     protected final List<HistoryCb> mHistoryCbs = new ArrayList<>();
     protected final List<MediaGroupCb> mMediaGroupCbs = new ArrayList<>();
     protected final List<FoldersCb> mFoldersCbs = new ArrayList<>();
+    protected final List<SubscriptionCb> mSubscriptionCbs = new ArrayList<>();
     protected final List<OnMedialibraryReadyListener> onMedialibraryReadyListeners = new ArrayList<>();
     protected final List<OnDeviceChangeListener> onDeviceChangeListeners = new ArrayList<>();
     protected volatile boolean isMedialibraryStarted = false;
@@ -242,6 +244,12 @@ abstract public class Medialibrary {
         void onFoldersAdded();
         void onFoldersModified();
         void onFoldersDeleted();
+    }
+
+    public interface SubscriptionCb {
+        void onSubscriptionsAdded();
+        void onSubscriptionsModified();
+        void onSubscriptionsDeleted();
     }
 
     public interface OnMedialibraryReadyListener {
@@ -445,6 +453,30 @@ abstract public class Medialibrary {
     public void onFoldersDeleted() {
         synchronized (mFoldersCbs) {
             for (FoldersCb cb : mFoldersCbs) cb.onFoldersDeleted();
+        }
+    }
+
+    @SuppressWarnings("unused")
+    public void onSubscriptionsAdded() {
+        synchronized (mSubscriptionCbs) {
+            for (SubscriptionCb cb : mSubscriptionCbs) cb.onSubscriptionsAdded();
+            Log.i("SubCallbacks", "onSubscriptionsAdded");
+        }
+    }
+
+    @SuppressWarnings("unused")
+    public void onSubscriptionsModified() {
+        synchronized (mSubscriptionCbs) {
+            for (SubscriptionCb cb : mSubscriptionCbs) cb.onSubscriptionsModified();
+            Log.i("SubCallbacks", "onSubscriptionsModified");
+        }
+    }
+
+    @SuppressWarnings("unused")
+    public void onSubscriptionsDeleted() {
+        synchronized (mSubscriptionCbs) {
+            for (SubscriptionCb cb : mSubscriptionCbs) cb.onSubscriptionsDeleted();
+            Log.i("SubCallbacks", "onSubscriptionsDeleted");
         }
     }
 
@@ -680,6 +712,18 @@ abstract public class Medialibrary {
         }
     }
 
+    public void addSubscriptionCb(SubscriptionCb SubscriptionCb) {
+        synchronized (mSubscriptionCbs) {
+            this.mSubscriptionCbs.add(SubscriptionCb);
+        }
+    }
+
+    public void removeSubscriptionCb(SubscriptionCb SubscriptionCb) {
+        synchronized (mSubscriptionCbs) {
+            this.mSubscriptionCbs.remove(SubscriptionCb);
+        }
+    }
+
     public void addDeviceDiscoveryCb(DevicesDiscoveryCb cb) {
         synchronized (devicesDiscoveryCbList) {
             if (!devicesDiscoveryCbList.contains(cb))
@@ -836,7 +880,7 @@ abstract public class Medialibrary {
     abstract public int getFoldersCount(String query);
     abstract public VideoGroup[] searchVideoGroups(String query, int sort, boolean desc, boolean includeMissing, boolean onlyFavorites, int nbItems, int offset);
 
-    abstract public MlService getService(MlService.Type type);
+    abstract public DiscoverService getService(DiscoverService.Type type);
     abstract public boolean fitsInSubscriptionCache(MediaWrapper media);
     abstract public void cacheNewSubscriptionMedia();
     abstract public boolean setSubscriptionMaxCachedMedia(int nbMedia);

@@ -7,7 +7,7 @@ import org.videolan.medialibrary.MLServiceLocator;
 import org.videolan.medialibrary.interfaces.Medialibrary;
 import org.videolan.medialibrary.media.MediaLibraryItem;
 
-public abstract class MlService extends MediaLibraryItem implements Parcelable {
+public abstract class DiscoverService extends MediaLibraryItem implements Parcelable {
 
     public enum Type {
         PODCAST(1);
@@ -28,10 +28,10 @@ public abstract class MlService extends MediaLibraryItem implements Parcelable {
         }
     }
 
-    protected MlService(Type type) {
+    protected DiscoverService(Type type) {
         this.mType = type;
     }
-    protected MlService(int type) {this.mType = Type.getValue(type);}
+    protected DiscoverService(int type) {this.mType = Type.getValue(type);}
 
     private void init(int type) {
         mType = Type.getValue(type);
@@ -88,21 +88,21 @@ public abstract class MlService extends MediaLibraryItem implements Parcelable {
         this.mType = tmpType == -1 ? null : Type.values()[tmpType];
     }
 
-    protected MlService(Parcel in) {
+    protected DiscoverService(Parcel in) {
         super(in);
         int tmpType = in.readInt();
         init(tmpType);
     }
 
-    public static final Creator<MlService> CREATOR = new Creator<MlService>() {
+    public static final Creator<DiscoverService> CREATOR = new Creator<DiscoverService>() {
         @Override
-        public MlService createFromParcel(Parcel source) {
+        public DiscoverService createFromParcel(Parcel source) {
             return MLServiceLocator.getAbstractService(source);
         }
 
         @Override
-        public MlService[] newArray(int size) {
-            return new MlService[size];
+        public DiscoverService[] newArray(int size) {
+            return new DiscoverService[size];
         }
     };
 }

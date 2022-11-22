@@ -34,10 +34,10 @@ import org.videolan.libvlc.util.VLCUtil;
 import org.videolan.medialibrary.interfaces.Medialibrary;
 import org.videolan.medialibrary.interfaces.media.Album;
 import org.videolan.medialibrary.interfaces.media.Artist;
+import org.videolan.medialibrary.interfaces.media.DiscoverService;
 import org.videolan.medialibrary.interfaces.media.Folder;
 import org.videolan.medialibrary.interfaces.media.Genre;
 import org.videolan.medialibrary.interfaces.media.MediaWrapper;
-import org.videolan.medialibrary.interfaces.media.MlService;
 import org.videolan.medialibrary.interfaces.media.Playlist;
 import org.videolan.medialibrary.interfaces.media.VideoGroup;
 import org.videolan.medialibrary.media.SearchAggregate;
@@ -602,7 +602,7 @@ public class MedialibraryImpl extends Medialibrary {
         return mIsInitiated && !TextUtils.isEmpty(query) ? nativeSearchPagedGroups(query, sort, desc, includeMissing, onlyFavorites, nbItems, offset) : new VideoGroup[0];
     }
 
-    public MlService getService(MlService.Type type) {
+    public DiscoverService getService(DiscoverService.Type type) {
         return mIsInitiated ? nativeGetService(type.value) : null;
     }
 
@@ -755,7 +755,7 @@ public class MedialibraryImpl extends Medialibrary {
     private native VideoGroup[] nativeSearchPagedGroups(String query, int sort, boolean desc, boolean includeMissing, boolean onlyFavorites, int nbItems, int offset);
     private native void nativeRequestThumbnail(long mediaId);
     private native boolean nativeIsServiceSupported(int type);
-    private native MlService nativeGetService(int type);
+    private native DiscoverService nativeGetService(int type);
     private native boolean nativeFitsInSubscriptionCache(Medialibrary ml, long mediaId);
     private native void nativeCacheNewSubscriptionMedia(Medialibrary ml);
     private native boolean nativeSetSubscriptionMaxCacheMedia(Medialibrary ml, int nbMedia);

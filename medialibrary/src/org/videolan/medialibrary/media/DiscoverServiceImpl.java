@@ -3,15 +3,15 @@ package org.videolan.medialibrary.media;
 import android.os.Parcel;
 
 import org.videolan.medialibrary.interfaces.Medialibrary;
+import org.videolan.medialibrary.interfaces.media.DiscoverService;
 import org.videolan.medialibrary.interfaces.media.MediaWrapper;
-import org.videolan.medialibrary.interfaces.media.MlService;
 import org.videolan.medialibrary.interfaces.media.Subscription;
 
-public class MlServiceImpl extends MlService {
-    public MlServiceImpl(Type type) {super(type);}
-    MlServiceImpl(int type) {super(type);}
+public class DiscoverServiceImpl extends DiscoverService {
+    public DiscoverServiceImpl(Type type) {super(type);}
+    DiscoverServiceImpl(int type) {super(type);}
 
-    public MlServiceImpl(Parcel source) {
+    public DiscoverServiceImpl(Parcel source) {
         super(source);
     }
 

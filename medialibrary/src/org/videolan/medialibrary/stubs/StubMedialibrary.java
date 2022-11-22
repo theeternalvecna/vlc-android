@@ -13,10 +13,10 @@ import org.videolan.medialibrary.Tools;
 import org.videolan.medialibrary.interfaces.Medialibrary;
 import org.videolan.medialibrary.interfaces.media.Album;
 import org.videolan.medialibrary.interfaces.media.Artist;
+import org.videolan.medialibrary.interfaces.media.DiscoverService;
 import org.videolan.medialibrary.interfaces.media.Folder;
 import org.videolan.medialibrary.interfaces.media.Genre;
 import org.videolan.medialibrary.interfaces.media.MediaWrapper;
-import org.videolan.medialibrary.interfaces.media.MlService;
 import org.videolan.medialibrary.interfaces.media.Playlist;
 import org.videolan.medialibrary.interfaces.media.VideoGroup;
 import org.videolan.medialibrary.media.SearchAggregate;
@@ -687,7 +687,7 @@ public class StubMedialibrary extends Medialibrary {
     }
 
     @Override
-    public MlService getService(MlService.Type type) {
+    public DiscoverService getService(DiscoverService.Type type) {
         return null;
     }
 

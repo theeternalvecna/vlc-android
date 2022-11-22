@@ -3,13 +3,13 @@ package org.videolan.medialibrary.media;
 import androidx.annotation.Nullable;
 
 import org.videolan.medialibrary.interfaces.Medialibrary;
+import org.videolan.medialibrary.interfaces.media.DiscoverService;
 import org.videolan.medialibrary.interfaces.media.MediaWrapper;
-import org.videolan.medialibrary.interfaces.media.MlService;
 import org.videolan.medialibrary.interfaces.media.Subscription;
 
 public class SubscriptionImpl extends Subscription {
 
-    SubscriptionImpl(long id, MlService.Type type, String name, long parentId) {
+    SubscriptionImpl(long id, DiscoverService.Type type, String name, long parentId) {
         super(id, type, name, parentId);
     }
 

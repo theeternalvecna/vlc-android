@@ -194,7 +194,7 @@ struct fields {
         jmethodID onUnhandledExceptionId;
         jmethodID onSubscriptionsAddedId;
         jmethodID onSubscriptionsModifiedId;
-        jmethodID onSubscriptionsDeleteId;
+        jmethodID onSubscriptionsDeletedId;
         jmethodID onSubscriptionNewMediaId;
         jmethodID onSubscriptionCacheUpdatedId;
         jmethodID onSubscriptionIdleChangedId;

@@ -1,12 +1,12 @@
 package org.videolan.medialibrary.stubs;
 
+import org.videolan.medialibrary.interfaces.media.DiscoverService;
 import org.videolan.medialibrary.interfaces.media.MediaWrapper;
-import org.videolan.medialibrary.interfaces.media.MlService;
 import org.videolan.medialibrary.interfaces.media.Subscription;
 
 public class StubSubscription extends Subscription {
 
-    StubSubscription(long id, MlService.Type type, String name, long parentId) {
+    StubSubscription(long id, DiscoverService.Type type, String name, long parentId) {
         super(id, type, name, parentId);
     }
 

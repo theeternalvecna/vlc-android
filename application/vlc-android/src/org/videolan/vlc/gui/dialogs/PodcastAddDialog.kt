@@ -35,7 +35,7 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior.STATE_EXPANDE
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import org.videolan.medialibrary.interfaces.media.MlService
+import org.videolan.medialibrary.interfaces.media.DiscoverService
 import org.videolan.resources.util.getFromMl
 import org.videolan.tools.isValidUrl
 import org.videolan.tools.setVisible
@@ -89,7 +89,7 @@ class PodcastAddDialog : VLCBottomSheetDialogFragment() {
                 lifecycleScope.launch {
                     withContext(Dispatchers.IO) {
                         val added = requireActivity().getFromMl {
-                            getService(MlService.Type.PODCAST)!!.addSubscription(it)
+                            getService(DiscoverService.Type.PODCAST)!!.addSubscription(it)
                         }
                         withContext(Dispatchers.Main) {
                             if (!added) {

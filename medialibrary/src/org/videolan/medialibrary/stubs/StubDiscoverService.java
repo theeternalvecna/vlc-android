@@ -2,15 +2,15 @@ package org.videolan.medialibrary.stubs;
 
 import android.os.Parcel;
 
+import org.videolan.medialibrary.interfaces.media.DiscoverService;
 import org.videolan.medialibrary.interfaces.media.MediaWrapper;
-import org.videolan.medialibrary.interfaces.media.MlService;
 import org.videolan.medialibrary.interfaces.media.Subscription;
 
-public class StubMlService extends MlService {
-    public StubMlService(Type type) {super(type);}
-    StubMlService(int type) {super(type);}
+public class StubDiscoverService extends DiscoverService {
+    public StubDiscoverService(Type type) {super(type);}
+    StubDiscoverService(int type) {super(type);}
 
-    public StubMlService(Parcel source) {
+    public StubDiscoverService(Parcel source) {
         super(source);
     }
 

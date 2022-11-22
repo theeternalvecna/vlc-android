@@ -5,7 +5,7 @@ import org.videolan.medialibrary.media.MediaLibraryItem;
 
 public abstract class Subscription extends MediaLibraryItem {
 
-    public Subscription(long id, MlService.Type type, String name, long parentId) {
+    public Subscription(long id, DiscoverService.Type type, String name, long parentId) {
         this.mId = id;
         this.mType = type;
         this.mTitle = name;
@@ -14,12 +14,12 @@ public abstract class Subscription extends MediaLibraryItem {
     
     public Subscription(long id, int type, String name, long parentId) {
         this.mId = id;
-        this.mType = MlService.Type.getValue(type);
+        this.mType = DiscoverService.Type.getValue(type);
         this.mTitle = name;
         this.mParentId = parentId;
     }
 
-    public MlService.Type mType;
+    public DiscoverService.Type mType;
     protected long mParentId;
 
 
