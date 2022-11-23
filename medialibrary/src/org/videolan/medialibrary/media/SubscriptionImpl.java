@@ -84,6 +84,12 @@ public class SubscriptionImpl extends Subscription {
         return ml.isInitiated() ? nativeGetSubscriptionNbMedia(ml, mId) : -1;
     }
 
+    @Override
+    public boolean delete() {
+        final Medialibrary ml = Medialibrary.getInstance();
+        return ml.isInitiated() && nativeSubscriptionDelete(ml, mId);
+    }
+
     private native int nativeSubscriptionNewMediaNotification(Medialibrary ml, long id);
     private native boolean nativeSetSubscriptionNewMediaNotification(Medialibrary ml, long id, int value);
     private native long nativeGetSubscriptionCachedSize(Medialibrary ml, long id);
@@ -95,4 +101,5 @@ public class SubscriptionImpl extends Subscription {
     private native boolean nativeSubscriptionRefresh(Medialibrary ml, long id);
     private native MediaWrapper[] nativeGetSubscriptionMedia(Medialibrary ml, long id, int sortingCriteria, boolean desc, boolean includeMissing, boolean onlyFavorites);
     private native int nativeGetSubscriptionNbMedia(Medialibrary ml, long id);
+    private native boolean nativeSubscriptionDelete(Medialibrary ml, long id);
 }

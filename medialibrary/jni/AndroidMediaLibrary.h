@@ -138,6 +138,8 @@ public:
     bool playlistMove(int64_t playlistId, unsigned int oldPosition, unsigned int newPosition);
     bool playlistRemove(int64_t playlistId, unsigned int position);
     bool PlaylistDelete( int64_t playlistId );
+    //Subscriptions
+    bool subscriptionDelete( int64_t subscriptionId );
 
     void requestThumbnail( int64_t media_id, medialibrary::ThumbnailSizeType sizeType, uint32_t desiredWidth,
                            uint32_t desiredHeight, float position );

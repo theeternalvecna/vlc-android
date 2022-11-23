@@ -2452,6 +2452,13 @@ jint getSubscriptionNbMedia(JNIEnv* env, jobject thiz, jobject ml, jlong id)
     return subscriptionPtr->nbMedia();
 }
 
+jboolean
+subscriptionDelete(JNIEnv* env, jobject thiz, jobject medialibrary, jlong subscriptionId)
+{
+    AndroidMediaLibrary *aml = MediaLibrary_getInstance(env, medialibrary);
+    return aml->subscriptionDelete(subscriptionId);
+}
+
 
  /*
   * JNI stuff
@@ -2694,6 +2701,7 @@ static JNINativeMethod subscription_methods[] = {
     {"nativeSubscriptionRefresh", "(Lorg/videolan/medialibrary/interfaces/Medialibrary;J)Z", (void*)refresh},
     {"nativeGetSubscriptionMedia", "(Lorg/videolan/medialibrary/interfaces/Medialibrary;JIZZZ)[Lorg/videolan/medialibrary/interfaces/media/MediaWrapper;", (void*)getSubscriptionMedia},
     {"nativeGetSubscriptionNbMedia", "(Lorg/videolan/medialibrary/interfaces/Medialibrary;J)I", (void*)getSubscriptionNbMedia},
+    {"nativeSubscriptionDelete", "(Lorg/videolan/medialibrary/interfaces/Medialibrary;J)Z", (void*)subscriptionDelete },
 };
 
 /* This function is called when a thread attached to the Java VM is canceled or

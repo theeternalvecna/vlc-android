@@ -68,4 +68,9 @@ public class StubSubscription extends Subscription {
     public int getNbMedia() {
         return 0;
     }
+
+    @Override
+    public boolean delete() {
+        return false;
+    }
 }

@@ -53,4 +53,5 @@ public abstract class Subscription extends MediaLibraryItem {
     public abstract MediaWrapper[] getMedia(int sortingCriteria, boolean desc, boolean includeMissing, boolean onlyFavorites);
     public abstract boolean refresh();
     public abstract int getNbMedia();
+    abstract public boolean delete();
 }

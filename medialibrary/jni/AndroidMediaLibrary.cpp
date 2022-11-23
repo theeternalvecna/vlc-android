@@ -664,6 +664,13 @@ AndroidMediaLibrary::createMediaGroup( const std::vector<int64_t> mediaIds )
     return p_ml->createMediaGroup(mediaIds);
 }
 
+
+bool
+AndroidMediaLibrary::subscriptionDelete( int64_t subscriptionId )
+{
+    return p_ml->removeSubscription(subscriptionId);
+}
+
 void
 AndroidMediaLibrary::requestThumbnail( int64_t media_id, medialibrary::ThumbnailSizeType sizeType, uint32_t desiredWidth,
                                        uint32_t desiredHeight, float position )
