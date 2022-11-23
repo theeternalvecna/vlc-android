@@ -8,8 +8,8 @@ import org.videolan.medialibrary.interfaces.media.MediaWrapper;
 import org.videolan.medialibrary.interfaces.media.Subscription;
 
 public class DiscoverServiceImpl extends DiscoverService {
-    public DiscoverServiceImpl(Type type) {super(type);}
-    DiscoverServiceImpl(int type) {super(type);}
+    public DiscoverServiceImpl(Type type, int nbUnplayedMedia, int nbMedia, int nbSubscriptions) {super(type, nbUnplayedMedia, nbMedia, nbSubscriptions);}
+    DiscoverServiceImpl(int type, int nbUnplayedMedia, int nbMedia, int nbSubscriptions) {super(type, nbUnplayedMedia, nbMedia, nbSubscriptions);}
 
     public DiscoverServiceImpl(Parcel source) {
         super(source);
@@ -57,28 +57,11 @@ public class DiscoverServiceImpl extends DiscoverService {
     }
 
     @Override
-    public int getNbSubscriptions() {
-        final Medialibrary ml = Medialibrary.getInstance();
-        return ml.isInitiated() ? nativeGetNbSubscriptions(ml, this.mType.value) : -1;
-    }
-
-    @Override
-    public int getNbUnplayedMedia() {
-        final Medialibrary ml = Medialibrary.getInstance();
-        return ml.isInitiated() ? nativeGetNbUnplayedMedia(ml, this.mType.value) : -1;
-    }
-
-    @Override
     public Subscription[] getSubscriptions(int sort, boolean desc, boolean includeMissing, boolean onlyFavorites) {
         final Medialibrary ml = Medialibrary.getInstance();
         return ml.isInitiated() ? nativeGetSubscriptions(ml, this.mType.value, sort, desc, includeMissing, onlyFavorites) : new Subscription[0];
     }
 
-    @Override
-    public int getNbMedia() {
-        final Medialibrary ml = Medialibrary.getInstance();
-        return ml.isInitiated() ? nativeGetNbMedia(ml, this.mType.value) : -1;
-    }
 
     @Override
     public MediaWrapper[] getMedia(int sortingCriteria, boolean desc, boolean includeMissing, boolean onlyFavorites) {
@@ -99,10 +82,7 @@ public class DiscoverServiceImpl extends DiscoverService {
     private native boolean nativeSetNewMediaNotificationEnabled(Medialibrary ml, int type, boolean enabled);
     private native long nativeGetMaxCachedSize(Medialibrary ml, int type);
     private native boolean nativeSetMaxCachedSize(Medialibrary ml, int type, long size);
-    private native int nativeGetNbSubscriptions(Medialibrary ml, int type);
-    private native int nativeGetNbUnplayedMedia(Medialibrary ml, int type);
     private native Subscription[] nativeGetSubscriptions(Medialibrary ml, int type, int sort, boolean desc, boolean includeMissing, boolean onlyFavorites);
-    private native int nativeGetNbMedia(Medialibrary ml, int type);
     private native MediaWrapper[] nativeGetServiceMedia(Medialibrary ml, int type, int sort, boolean desc, boolean includeMissing, boolean onlyFavorites);
     private native boolean nativeServiceRefresh(Medialibrary ml, int type);
 }

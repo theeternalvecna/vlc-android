@@ -2241,26 +2241,6 @@ setMaxCachedSize(JNIEnv *env, jobject thiz, jobject medialibrary, jint _type, jl
     return servicePtr->setMaxCachedSize(size);
 }
 
-jint
-getNbSubscriptions(JNIEnv *env, jobject thiz, jobject medialibrary, jint _type)
-{
-    AndroidMediaLibrary *aml = MediaLibrary_getInstance(env, medialibrary);
-    medialibrary::IService::Type type = (medialibrary::IService::Type)_type;
-    medialibrary::ServicePtr servicePtr = aml->service(type);
-    if (servicePtr == nullptr) return -1;
-    return servicePtr->nbSubscriptions();
-}
-
-jint
-getNbUnplayedMedia(JNIEnv *env, jobject thiz, jobject medialibrary, jint _type)
-{
-    AndroidMediaLibrary *aml = MediaLibrary_getInstance(env, medialibrary);
-    medialibrary::IService::Type type = (medialibrary::IService::Type)_type;
-    medialibrary::ServicePtr servicePtr = aml->service(type);
-    if (servicePtr == nullptr) return -1;
-    return servicePtr->nbUnplayedMedia();
-}
-
 jobjectArray
 getSubscriptions(JNIEnv *env, jobject thiz, jobject medialibrary, jint _type,
 jint sortingCriteria, jboolean desc, jboolean includeMissing, jboolean onlyFavorites)
@@ -2281,16 +2261,6 @@ jint sortingCriteria, jboolean desc, jboolean includeMissing, jboolean onlyFavor
         env->SetObjectArrayElement(subsRefs, ++index, item.get());
     }
     return subsRefs;
-}
-
-jint
-getNbMedia(JNIEnv *env, jobject thiz, jobject ml, jint _type)
-{
-    AndroidMediaLibrary *aml = MediaLibrary_getInstance(env, ml);
-    medialibrary::IService::Type type = (medialibrary::IService::Type)_type;
-    medialibrary::ServicePtr servicePtr = aml->service(type);
-    if (servicePtr == nullptr) return -1;
-    return servicePtr->nbMedia();
 }
 
 jobjectArray
@@ -2374,15 +2344,6 @@ setSubscriptionMaxCachedSize(JNIEnv *env, jobject thiz, jobject medialibrary, jl
     return subscriptionPtr->setMaxCachedSize(size);
 }
 
-jint
-getSubscriptionNbUnplayedMedia(JNIEnv *env, jobject thiz, jobject medialibrary, jlong id)
-{
-    AndroidMediaLibrary *aml = MediaLibrary_getInstance(env, medialibrary);
-    medialibrary::SubscriptionPtr subscriptionPtr = aml->subscription(id);
-    if (subscriptionPtr == nullptr) return -1;
-    return subscriptionPtr->nbUnplayedMedia();
-}
-
 jboolean
 removeSubscription(JNIEnv* env, jobject thiz, jlong id)
 {
@@ -2442,14 +2403,6 @@ getSubscriptionMedia(JNIEnv* env, jobject thiz, jobject ml, jlong id, jint sorti
        env->SetObjectArrayElement(subsRefs, ++index, item.get());
    }
    return subsRefs;   
-}
-
-jint getSubscriptionNbMedia(JNIEnv* env, jobject thiz, jobject ml, jlong id)
-{
-    AndroidMediaLibrary *aml = MediaLibrary_getInstance(env, ml);
-    medialibrary::SubscriptionPtr subscriptionPtr = aml->subscription(id);
-    if (subscriptionPtr == nullptr) return -1;
-    return subscriptionPtr->nbMedia();
 }
 
 jboolean
@@ -2681,10 +2634,7 @@ static JNINativeMethod service_methods[] = {
     {"nativeSetNewMediaNotificationEnabled", "(Lorg/videolan/medialibrary/interfaces/Medialibrary;IZ)Z", (void*)setNewMediaNotificationEnabled},
     {"nativeGetMaxCachedSize", "(Lorg/videolan/medialibrary/interfaces/Medialibrary;I)J", (void*)getMaxCachedSize},
     {"nativeSetMaxCachedSize", "(Lorg/videolan/medialibrary/interfaces/Medialibrary;IJ)Z", (void*)setMaxCachedSize},
-    {"nativeGetNbSubscriptions", "(Lorg/videolan/medialibrary/interfaces/Medialibrary;I)I", (void*)getNbSubscriptions},
-    {"nativeGetNbUnplayedMedia", "(Lorg/videolan/medialibrary/interfaces/Medialibrary;I)I", (void*)getNbUnplayedMedia},
     {"nativeGetSubscriptions", "(Lorg/videolan/medialibrary/interfaces/Medialibrary;IIZZZ)[Lorg/videolan/medialibrary/interfaces/media/Subscription;", (void*)getSubscriptions},
-    {"nativeGetNbMedia", "(Lorg/videolan/medialibrary/interfaces/Medialibrary;I)I", (void*)getNbMedia},
     {"nativeGetServiceMedia", "(Lorg/videolan/medialibrary/interfaces/Medialibrary;IIZZZ)[Lorg/videolan/medialibrary/interfaces/media/MediaWrapper;", (void*)getServiceMedia},
     {"nativeServiceRefresh", "(Lorg/videolan/medialibrary/interfaces/Medialibrary;I)Z", (void*)serviceRefresh},
 };
@@ -2695,12 +2645,10 @@ static JNINativeMethod subscription_methods[] = {
     {"nativeGetSubscriptionCachedSize", "(Lorg/videolan/medialibrary/interfaces/Medialibrary;J)J", (void*)getSubscriptionCachedSize},
     {"nativeGetSubscriptionMaxCachedSize", "(Lorg/videolan/medialibrary/interfaces/Medialibrary;J)J", (void*)getSubscriptionMaxCachedSize},
     {"nativeSetSubscriptionMaxCachedSize", "(Lorg/videolan/medialibrary/interfaces/Medialibrary;JJ)Z", (void*)setSubscriptionMaxCachedSize},
-    {"nativeGetSubscriptionNbUnplayedMedia", "(Lorg/videolan/medialibrary/interfaces/Medialibrary;J)I", (void*)getSubscriptionNbUnplayedMedia},
     {"nativeGetChildSubscriptions", "(Lorg/videolan/medialibrary/interfaces/Medialibrary;JIZZZ)[Lorg/videolan/medialibrary/interfaces/media/Subscription;", (void*)getChildSubscriptions},
     {"nativeGetParent", "(Lorg/videolan/medialibrary/interfaces/Medialibrary;J)Lorg/videolan/medialibrary/interfaces/media/Subscription;", (void*)getParent},
     {"nativeSubscriptionRefresh", "(Lorg/videolan/medialibrary/interfaces/Medialibrary;J)Z", (void*)refresh},
     {"nativeGetSubscriptionMedia", "(Lorg/videolan/medialibrary/interfaces/Medialibrary;JIZZZ)[Lorg/videolan/medialibrary/interfaces/media/MediaWrapper;", (void*)getSubscriptionMedia},
-    {"nativeGetSubscriptionNbMedia", "(Lorg/videolan/medialibrary/interfaces/Medialibrary;J)I", (void*)getSubscriptionNbMedia},
     {"nativeSubscriptionDelete", "(Lorg/videolan/medialibrary/interfaces/Medialibrary;J)Z", (void*)subscriptionDelete },
 };
 
@@ -2809,7 +2757,7 @@ jint JNI_OnLoad(JavaVM *vm, void *reserved)
     GET_ID(GetMethodID,
             ml_fields.Service.initID,
             ml_fields.Service.clazz,
-            "<init>", "(I)V");
+            "<init>", "(IIII)V");
 
     GET_CLASS(ml_fields.Subscription.clazz, "org/videolan/medialibrary/media/SubscriptionImpl", true);
     if (env->RegisterNatives(ml_fields.Subscription.clazz, subscription_methods, sizeof(subscription_methods) / sizeof(subscription_methods[0])) < 0) {
@@ -2819,7 +2767,7 @@ jint JNI_OnLoad(JavaVM *vm, void *reserved)
     GET_ID(GetMethodID,
             ml_fields.Subscription.initID,
             ml_fields.Subscription.clazz,
-            "<init>", "(JILjava/lang/String;J)V");
+            "<init>", "(JILjava/lang/String;JII)V");
 
     GET_CLASS(ml_fields.MediaWrapper.clazz,
               "org/videolan/medialibrary/media/MediaWrapperImpl", true);

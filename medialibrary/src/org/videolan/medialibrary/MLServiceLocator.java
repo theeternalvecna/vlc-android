@@ -23,6 +23,7 @@ import org.videolan.medialibrary.media.FolderImpl;
 import org.videolan.medialibrary.media.GenreImpl;
 import org.videolan.medialibrary.media.MediaWrapperImpl;
 import org.videolan.medialibrary.media.PlaylistImpl;
+import org.videolan.medialibrary.media.SubscriptionImpl;
 import org.videolan.medialibrary.media.VideoGroupImpl;
 import org.videolan.medialibrary.stubs.StubAlbum;
 import org.videolan.medialibrary.stubs.StubArtist;
@@ -112,11 +113,11 @@ public class MLServiceLocator {
         }
     }
 
-    public static DiscoverService getAbstractService(DiscoverService.Type type) {
+    public static SubscriptionImpl getAbstractSubscription(Parcel source) {
         if (sMode == LocatorMode.VLC_ANDROID) {
-            return new DiscoverServiceImpl(type);
+            return new SubscriptionImpl(source);
         } else {
-            return new StubDiscoverService(type);
+            return new SubscriptionImpl(source);
         }
     }
 

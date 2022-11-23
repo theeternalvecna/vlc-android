@@ -238,7 +238,7 @@ convertSubscriptionObject(JNIEnv* env, fields *fields, medialibrary::Subscriptio
 {
     auto name = vlcNewStringUTF(env, subsPtr->name().c_str());
     return utils::jni::object{ env, env->NewObject(fields->Subscription.clazz, fields->Subscription.initID,
-            (jlong) subsPtr->id(), (jint) subsPtr->service(), name.get())
+            (jlong) subsPtr->id(), (jint) subsPtr->service(), name.get(), (jint) subsPtr->nbMedia(), (jint) subsPtr->nbUnplayedMedia())
     };
 }
 
@@ -246,7 +246,7 @@ utils::jni::object
 convertServiceObject(JNIEnv* env, fields *fields, medialibrary::ServicePtr const& servicePtr)
 {
     return utils::jni::object{ env, env->NewObject(fields->Service.clazz,
-            fields->Service.initID, (jint) servicePtr->type())
+            fields->Service.initID, (jint) servicePtr->type(), (jint) servicePtr->nbMedia(), (jint) servicePtr->nbUnplayedMedia(), (jint) servicePtr->nbSubscriptions())
     };
 }
 

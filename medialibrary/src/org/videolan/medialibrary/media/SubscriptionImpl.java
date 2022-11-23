@@ -1,5 +1,7 @@
 package org.videolan.medialibrary.media;
 
+import android.os.Parcel;
+
 import androidx.annotation.Nullable;
 
 import org.videolan.medialibrary.interfaces.Medialibrary;
@@ -9,13 +11,18 @@ import org.videolan.medialibrary.interfaces.media.Subscription;
 
 public class SubscriptionImpl extends Subscription {
 
-    SubscriptionImpl(long id, DiscoverService.Type type, String name, long parentId) {
-        super(id, type, name, parentId);
+    SubscriptionImpl(long id, DiscoverService.Type type, String name, long parentId, int nbMedia, int nbUpplayedMedia) {
+        super(id, type, name, parentId, nbMedia, nbUpplayedMedia);
     }
 
-    SubscriptionImpl(long id, int type, String name, long parentId) {
-        super(id, type, name, parentId);
+    SubscriptionImpl(long id, int type, String name, long parentId, int nbMedia, int nbUpplayedMedia) {
+        super(id, type, name, parentId, nbMedia, nbUpplayedMedia);
     }
+
+    public SubscriptionImpl(Parcel source) {
+        super(source);
+    }
+
 
     @Override
     public int getNewMediaNotification() {
@@ -48,12 +55,6 @@ public class SubscriptionImpl extends Subscription {
     }
 
     @Override
-    public int getNbUnplayedMedia() {
-        final Medialibrary ml = Medialibrary.getInstance();
-        return ml.isInitiated() ? nativeGetSubscriptionNbUnplayedMedia(ml, this.mId) : -1;
-    }
-
-    @Override
     public Subscription[] getChildSubscriptions(int sortingCriteria, boolean desc, boolean includeMissing, boolean onlyFavorites) {
         final Medialibrary ml = Medialibrary.getInstance();
         return ml.isInitiated() ? nativeGetChildSubscriptions(ml, mId, sortingCriteria, desc, includeMissing, onlyFavorites) : new Subscription[0];
@@ -79,12 +80,6 @@ public class SubscriptionImpl extends Subscription {
     }
 
     @Override
-    public int getNbMedia() {
-        final Medialibrary ml = Medialibrary.getInstance();
-        return ml.isInitiated() ? nativeGetSubscriptionNbMedia(ml, mId) : -1;
-    }
-
-    @Override
     public boolean delete() {
         final Medialibrary ml = Medialibrary.getInstance();
         return ml.isInitiated() && nativeSubscriptionDelete(ml, mId);
@@ -95,11 +90,9 @@ public class SubscriptionImpl extends Subscription {
     private native long nativeGetSubscriptionCachedSize(Medialibrary ml, long id);
     private native long nativeGetSubscriptionMaxCachedSize(Medialibrary ml, long id);
     private native boolean nativeSetSubscriptionMaxCachedSize(Medialibrary ml, long id, long size);
-    private native int nativeGetSubscriptionNbUnplayedMedia(Medialibrary ml, long id);
     private native Subscription[] nativeGetChildSubscriptions(Medialibrary ml, long id, int sortingCriteria, boolean desc, boolean includeMissing, boolean onlyFavorites);
     private native Subscription nativeGetParent(Medialibrary ml, long id);
     private native boolean nativeSubscriptionRefresh(Medialibrary ml, long id);
     private native MediaWrapper[] nativeGetSubscriptionMedia(Medialibrary ml, long id, int sortingCriteria, boolean desc, boolean includeMissing, boolean onlyFavorites);
-    private native int nativeGetSubscriptionNbMedia(Medialibrary ml, long id);
     private native boolean nativeSubscriptionDelete(Medialibrary ml, long id);
 }

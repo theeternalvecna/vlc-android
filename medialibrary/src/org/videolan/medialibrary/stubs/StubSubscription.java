@@ -6,12 +6,12 @@ import org.videolan.medialibrary.interfaces.media.Subscription;
 
 public class StubSubscription extends Subscription {
 
-    StubSubscription(long id, DiscoverService.Type type, String name, long parentId) {
-        super(id, type, name, parentId);
+    StubSubscription(long id, DiscoverService.Type type, String name, long parentId, int nbMedia, int nbUpplayedMedia) {
+        super(id, type, name, parentId, nbMedia, nbUpplayedMedia);
     }
 
-    StubSubscription(long id, int type, String name, long parentId) {
-        super(id, type, name, parentId);
+    StubSubscription(long id, int type, String name, long parentId, int nbMedia, int nbUpplayedMedia) {
+        super(id, type, name, parentId, nbMedia, nbUpplayedMedia);
     }
 
     @Override

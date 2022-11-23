@@ -9,6 +9,11 @@ import org.videolan.medialibrary.media.MediaLibraryItem;
 
 public abstract class DiscoverService extends MediaLibraryItem implements Parcelable {
 
+    public Type mType;
+    protected int mNbMedia;
+    protected int mNbUnplayedMedia;
+    protected int mNbSubscriptions;
+
     public enum Type {
         PODCAST(1);
 
@@ -28,16 +33,22 @@ public abstract class DiscoverService extends MediaLibraryItem implements Parcel
         }
     }
 
-    protected DiscoverService(Type type) {
+    protected DiscoverService(Type type, int nbUnplayedMedia, int nbMedia, int nbSubscriptions) {
         this.mType = type;
+        this.mNbMedia = nbMedia;
+        this.mNbUnplayedMedia = nbUnplayedMedia;
+        this.mNbSubscriptions = nbSubscriptions;
     }
-    protected DiscoverService(int type) {this.mType = Type.getValue(type);}
+    protected DiscoverService(int type, int nbUnplayedMedia, int nbMedia, int nbSubscriptions) {
+        this.mType = Type.getValue(type);
+        this.mNbMedia = nbMedia;
+        this.mNbUnplayedMedia = nbUnplayedMedia;
+        this.mNbSubscriptions = nbSubscriptions;
+    }
 
     private void init(int type) {
         mType = Type.getValue(type);
     }
-
-    public Type mType;
 
     public MediaWrapper[] getTracks() {
         return getMedia(Medialibrary.SORT_DEFAULT, false, true, false);
@@ -46,6 +57,18 @@ public abstract class DiscoverService extends MediaLibraryItem implements Parcel
     @Override
     public int getTracksCount() {
         return getNbMedia();
+    }
+
+    public int getNbMedia() {
+        return mNbMedia;
+    }
+
+    public int getNbSubscriptions() {
+        return mNbSubscriptions;
+    }
+
+    public int getNbUnplayedMedia() {
+        return mNbUnplayedMedia;
     }
 
     @Override
@@ -65,10 +88,7 @@ public abstract class DiscoverService extends MediaLibraryItem implements Parcel
     public abstract boolean setNewMediaNotificationEnabled(boolean enabled);
     public abstract long getMaxCachedSize();
     public abstract boolean setMaxCachedSize(long size);
-    public abstract int getNbSubscriptions();
-    public abstract int getNbUnplayedMedia();
     public abstract Subscription[] getSubscriptions(int sort, boolean desc, boolean includeMissing, boolean onlyFavorites);
-    public abstract int getNbMedia();
     public abstract MediaWrapper[] getMedia(int sortingCriteria, boolean desc, boolean includeMissing, boolean onlyFavorites);
     public abstract boolean refresh();
 

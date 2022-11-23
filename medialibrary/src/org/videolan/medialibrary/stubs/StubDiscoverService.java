@@ -7,8 +7,8 @@ import org.videolan.medialibrary.interfaces.media.MediaWrapper;
 import org.videolan.medialibrary.interfaces.media.Subscription;
 
 public class StubDiscoverService extends DiscoverService {
-    public StubDiscoverService(Type type) {super(type);}
-    StubDiscoverService(int type) {super(type);}
+    public StubDiscoverService(Type type, int nbUnplayedMedia, int nbMedia, int nbSubscriptions) {super(type, nbUnplayedMedia, nbMedia, nbSubscriptions);}
+    StubDiscoverService(int type, int nbUnplayedMedia, int nbMedia, int nbSubscriptions) {super(type, nbUnplayedMedia, nbMedia, nbSubscriptions);}
 
     public StubDiscoverService(Parcel source) {
         super(source);
