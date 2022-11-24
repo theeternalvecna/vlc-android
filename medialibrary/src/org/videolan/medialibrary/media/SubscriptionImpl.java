@@ -5,19 +5,10 @@ import android.os.Parcel;
 import androidx.annotation.Nullable;
 
 import org.videolan.medialibrary.interfaces.Medialibrary;
-import org.videolan.medialibrary.interfaces.media.DiscoverService;
 import org.videolan.medialibrary.interfaces.media.MediaWrapper;
 import org.videolan.medialibrary.interfaces.media.Subscription;
 
 public class SubscriptionImpl extends Subscription {
-
-    SubscriptionImpl(long id, DiscoverService.Type type, String name, long parentId, int nbMedia, int nbUpplayedMedia) {
-        super(id, type, name, parentId, nbMedia, nbUpplayedMedia);
-    }
-
-    SubscriptionImpl(long id, int type, String name, long parentId, int nbMedia, int nbUpplayedMedia) {
-        super(id, type, name, parentId, nbMedia, nbUpplayedMedia);
-    }
 
     public SubscriptionImpl(Parcel source) {
         super(source);
@@ -61,6 +52,12 @@ public class SubscriptionImpl extends Subscription {
     }
 
     @Override
+    public MediaWrapper[] searchMedias(String query, int sortingCriteria, boolean desc, boolean includeMissing, boolean onlyFavorites, int nbItems, int offset) {
+        final Medialibrary ml = Medialibrary.getInstance();
+        return ml.isInitiated() ? nativeSearchMediaFromSubscription(ml, mId, query, sortingCriteria, desc, includeMissing, onlyFavorites, nbItems, offset) : new MediaWrapper[0];
+    }
+
+    @Override
     @Nullable
     public Subscription getParent() {
         final Medialibrary ml = Medialibrary.getInstance();
@@ -95,4 +92,5 @@ public class SubscriptionImpl extends Subscription {
     private native boolean nativeSubscriptionRefresh(Medialibrary ml, long id);
     private native MediaWrapper[] nativeGetSubscriptionMedia(Medialibrary ml, long id, int sortingCriteria, boolean desc, boolean includeMissing, boolean onlyFavorites);
     private native boolean nativeSubscriptionDelete(Medialibrary ml, long id);
+    private native MediaWrapper[] nativeSearchMediaFromSubscription(Medialibrary ml, long id, String query, int sortingCriteria, boolean desc, boolean includeMissing, boolean onlyFavorites, int nbItems, int offset);
 }

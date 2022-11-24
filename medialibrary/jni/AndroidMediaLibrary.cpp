@@ -505,6 +505,13 @@ AndroidMediaLibrary::mediaFromPlaylist( int64_t playlistId , const medialibrary:
     return playlist == nullptr ? nullptr : playlist->media(params);
 }
 
+
+medialibrary::Query<medialibrary::IMedia>
+AndroidMediaLibrary::subscriptionMedia(medialibrary::QueryParameters* params)
+{
+    return p_ml->subscriptionMedia(params);
+}
+
 bool
 AndroidMediaLibrary::playlistAppend(int64_t playlistId, int64_t mediaId) {
     medialibrary::PlaylistPtr playlist = p_ml->playlist(playlistId);
@@ -588,6 +595,13 @@ AndroidMediaLibrary::searchFromMediaGroup( const int64_t groupId, const std::str
 {
     auto group = p_ml->mediaGroup(groupId);
     return group == nullptr ? nullptr : group->searchMedia(query, medialibrary::IMedia::Type::Video, params);
+}
+
+medialibrary::Query<medialibrary::IMedia>
+AndroidMediaLibrary::searchMediaFromSubscription( const int64_t subId, const std::string& query, const medialibrary::QueryParameters* params )
+{
+    auto subscription = p_ml->subscription(subId);
+    return subscription == nullptr ? nullptr : subscription->search(query, params);
 }
 
 bool

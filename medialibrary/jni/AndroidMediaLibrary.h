@@ -106,7 +106,8 @@ public:
     medialibrary::Query<medialibrary::IAlbum> albumsFromGenre( int64_t genreId, const medialibrary::QueryParameters* params = nullptr );
     medialibrary::Query<medialibrary::IArtist> artistsFromGenre( int64_t genreId, const medialibrary::QueryParameters* params = nullptr );
     medialibrary::Query<medialibrary::IMedia> mediaFromPlaylist( int64_t playlistId, const medialibrary::QueryParameters* params = nullptr );
-    // Folders
+     medialibrary::Query<medialibrary::IMedia> subscriptionMedia(medialibrary::QueryParameters* params);
+   // Folders
     medialibrary::Query<medialibrary::IMedia> mediaFromFolder(const medialibrary::IFolder* folder, medialibrary::IMedia::Type type, const medialibrary::QueryParameters* params = nullptr );
     medialibrary::Query<medialibrary::IFolder> folders(const medialibrary::QueryParameters* params = nullptr, medialibrary::IMedia::Type type = medialibrary::IMedia::Type::Unknown );
     medialibrary::Query<medialibrary::IFolder> subFolders(int64_t folderId, const medialibrary::QueryParameters* params = nullptr );
@@ -114,6 +115,7 @@ public:
     // VideoGroups
     medialibrary::Query<medialibrary::IMedia> mediaFromMediaGroup(const int64_t groupId, const medialibrary::QueryParameters* params );
     medialibrary::Query<medialibrary::IMedia> searchFromMediaGroup(const int64_t groupId, const std::string& query, const medialibrary::QueryParameters* params );
+    medialibrary::Query<medialibrary::IMedia> searchMediaFromSubscription(const int64_t subId, const std::string& query, const medialibrary::QueryParameters* params );
     void onMediaGroupsAdded(std::vector<medialibrary::MediaGroupPtr> mediaGroups );
     medialibrary::MediaGroupPtr videoGroup( const int64_t groupId );
     bool groupAddId( const int64_t groupId, const int64_t mediaId );

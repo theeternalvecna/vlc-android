@@ -60,6 +60,11 @@ public class StubSubscription extends Subscription {
     }
 
     @Override
+    public MediaWrapper[] searchMedias(String query, int sortingCriteria, boolean desc, boolean includeMissing, boolean onlyFavorites, int nbItems, int offset) {
+        return new MediaWrapper[0];
+    }
+
+    @Override
     public boolean refresh() {
         return false;
     }

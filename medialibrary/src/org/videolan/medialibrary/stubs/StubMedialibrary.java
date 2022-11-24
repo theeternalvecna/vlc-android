@@ -177,6 +177,11 @@ public class StubMedialibrary extends Medialibrary {
     public void setVideoGroupsPrefixLength(int lenght) {}
 
     @Override
+    public MediaWrapper[] getSubscriptionMedia(int sort, boolean desc, boolean includeMissing, boolean onlyFavorites, int nbItems, int offset) {
+        return new MediaWrapper[0];
+    }
+
+    @Override
     public VideoGroup createVideoGroup(String name) {
         return null;
     }

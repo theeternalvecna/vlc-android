@@ -66,6 +66,7 @@ public abstract class Subscription extends MediaLibraryItem {
     public abstract long getMaxCachedSize();
     public abstract boolean setMaxCachedSize(long size);
     public abstract Subscription[] getChildSubscriptions(int sortingCriteria, boolean desc, boolean includeMissing, boolean onlyFavorites);
+    public abstract MediaWrapper[] searchMedias(String query, int sortingCriteria, boolean desc, boolean includeMissing, boolean onlyFavorites, int nbItems, int offset);
     public abstract Subscription getParent();
     public abstract MediaWrapper[] getMedia(int sortingCriteria, boolean desc, boolean includeMissing, boolean onlyFavorites);
     public abstract boolean refresh();

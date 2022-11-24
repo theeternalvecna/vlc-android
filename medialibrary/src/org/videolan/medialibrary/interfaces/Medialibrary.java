@@ -885,6 +885,7 @@ abstract public class Medialibrary {
     abstract public void cacheNewSubscriptionMedia();
     abstract public boolean setSubscriptionMaxCachedMedia(int nbMedia);
     abstract public boolean setSubscriptionMaxCacheSize(long size);
+    abstract public MediaWrapper[] getSubscriptionMedia(int sort, boolean desc, boolean includeMissing, boolean onlyFavorites, int nbItems, int offset);
     abstract public boolean setGlobalSubscriptionMaxCacheSize(long size);
     abstract public int getSubscriptionMaxCachedMedia();
     abstract public long getSubscriptionMaxCacheSize();
