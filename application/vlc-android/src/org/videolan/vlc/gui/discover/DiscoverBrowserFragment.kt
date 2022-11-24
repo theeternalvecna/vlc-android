@@ -30,20 +30,22 @@ import androidx.appcompat.view.ActionMode
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import androidx.viewpager.widget.ViewPager
 import com.google.android.material.tabs.TabLayout
+import org.videolan.medialibrary.interfaces.media.DiscoverService
+import org.videolan.medialibrary.media.DiscoverServiceImpl
 import org.videolan.vlc.R
 import org.videolan.vlc.gui.BaseFragment
 import org.videolan.vlc.gui.dialogs.PodcastAddDialog
 
-class DiscoverBrowserFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListener, TabLayout.OnTabSelectedListener, ViewPager.OnPageChangeListener {
+class DiscoverBrowserFragment : BaseFragment(), TabLayout.OnTabSelectedListener, ViewPager.OnPageChangeListener {
     override fun getTitle() = getString(R.string.discover)
     private lateinit var pagerAdapter: DiscoverAdapter
     private lateinit var layoutOnPageChangeListener: TabLayout.TabLayoutOnPageChangeListener
     override val hasTabs = true
     private var tabLayout: TabLayout? = null
     private lateinit var viewPager: ViewPager
+    override fun hasFAB() = true
 
     private val tcl = TabLayout.TabLayoutOnPageChangeListener(tabLayout)
 
@@ -55,9 +57,9 @@ class DiscoverBrowserFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshList
         super.onViewCreated(view, savedInstanceState)
         tabLayout = requireActivity().findViewById(R.id.sliding_tabs)
         viewPager = view.findViewById(R.id.pager)
-        pagerAdapter = DiscoverAdapter(childFragmentManager)
+        //placeholder service
+        pagerAdapter = DiscoverAdapter(childFragmentManager, DiscoverServiceImpl(DiscoverService.Type.PODCAST, 0,0,0))
         viewPager.adapter = pagerAdapter
-        viewPager.setOnTouchListener(swipeFilter)
     }
 
     override fun onStart() {
@@ -76,7 +78,7 @@ class DiscoverBrowserFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshList
 
     override fun onActionItemClicked(mode: ActionMode?, item: MenuItem?) = false
 
-    override fun onDestroyActionMode(mode: ActionMode?) { }
+    override fun onDestroyActionMode(mode: ActionMode?) {}
 
     private fun setupTabLayout() {
         if (tabLayout == null || !::viewPager.isInitialized) return
@@ -94,26 +96,24 @@ class DiscoverBrowserFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshList
         viewPager.removeOnPageChangeListener(this)
     }
 
-    inner class DiscoverAdapter(val fragmentManager: FragmentManager) : FragmentPagerAdapter(fragmentManager, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
+    inner class DiscoverAdapter(val fragmentManager: FragmentManager, val service: DiscoverService) : FragmentPagerAdapter(fragmentManager, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
         override fun getCount() = 2
 
         override fun getItem(position: Int): Fragment {
             return when (position) {
                 0 -> DiscoverFeedFragment.newInstance()
-                1 -> DiscoverServiceFragment.newInstance()
+                1 -> DiscoverServiceFragment.newInstance(service)
                 else -> throw IllegalStateException("Invalid discover fragment index")
             }
         }
 
         override fun getPageTitle(position: Int): CharSequence {
-            return when(position) {
+            return when (position) {
                 0 -> requireActivity().getString(R.string.discover_feed)
                 else -> requireActivity().getString(R.string.discover_podcast)
             }
         }
     }
-
-    override fun onRefresh() {}
 
     override fun onTabSelected(tab: TabLayout.Tab?) {}
 

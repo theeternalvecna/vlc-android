@@ -78,6 +78,7 @@ object MediaUtils {
                 }
             }
             is Playlist -> Runnable { deletePlaylist(item) }
+            is Subscription -> Runnable { deleteSubscription(item) }
             else -> Runnable { onDeleteFailed.invoke(item) }
         }
 
@@ -447,7 +448,9 @@ object MediaUtils {
     } catch (ignored: IllegalStateException) {
     } catch (ignored: SecurityException) {}
 
-    fun deletePlaylist(playlist: Playlist) = AppScope.launch(Dispatchers.IO) { playlist.delete() }
+    private fun deletePlaylist(playlist: Playlist) = AppScope.launch(Dispatchers.IO) { playlist.delete() }
+
+    private fun deleteSubscription(subscription: Subscription) = AppScope.launch(Dispatchers.IO) { subscription.delete() }
 
     fun openMediaNoUiFromTvContent(context: Context, data: Uri?) = AppScope.launch {
         val id = data?.lastPathSegment ?: return@launch
