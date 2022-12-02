@@ -49,7 +49,7 @@ import org.videolan.vlc.gui.video.*
 import org.videolan.vlc.gui.view.FastScroller
 
 class DiscoverServiceAdapter : PagedListAdapter<MediaLibraryItem, DiscoverServiceAdapter.ViewHolder>(DiscoverServiceCallback), FastScroller.SeparatedAdapter,
-        MultiSelectAdapter<MediaLibraryItem>, IEventsSource<DiscoverServiceAction> by EventsSource() {
+        MultiSelectAdapter<MediaLibraryItem>, IEventsSource<DiscoverFragment.DiscoverAction> by EventsSource() {
 
     var isListMode = true
     val multiSelectHelper = MultiSelectHelper(this, UPDATE_SELECTION)
@@ -126,22 +126,22 @@ class DiscoverServiceAdapter : PagedListAdapter<MediaLibraryItem, DiscoverServic
 
         fun onImageClick(@Suppress("UNUSED_PARAMETER") v: View) {
             val position = layoutPosition
-            if (isPositionValid(position)) getItem(position)?.let { eventsChannel.trySend(DiscoverServiceImageClick(layoutPosition, it)) }
+            if (isPositionValid(position)) getItem(position)?.let { eventsChannel.trySend(DiscoverFragment.DiscoverImageClick(layoutPosition, it)) }
         }
 
         fun onClick(@Suppress("UNUSED_PARAMETER") v: View) {
             val position = layoutPosition
-            if (isPositionValid(position)) getItem(position)?.let { eventsChannel.trySend(DiscoverServiceClick(layoutPosition, it)) }
+            if (isPositionValid(position)) getItem(position)?.let { eventsChannel.trySend(DiscoverFragment.DiscoverClick(layoutPosition, it)) }
         }
 
         fun onMoreClick(@Suppress("UNUSED_PARAMETER") v: View) {
             val position = layoutPosition
-            if (isPositionValid(position)) getItem(position)?.let { eventsChannel.trySend(DiscoverServiceCtxClick(layoutPosition, it)) }
+            if (isPositionValid(position)) getItem(position)?.let { eventsChannel.trySend(DiscoverFragment.DiscoverCtxClick(layoutPosition, it)) }
         }
 
         fun onLongClick(@Suppress("UNUSED_PARAMETER") v: View): Boolean {
             val position = layoutPosition
-            return isPositionValid(position) && getItem(position)?.let { eventsChannel.trySend(DiscoverServiceLongClick(layoutPosition, it)).isSuccess } == true
+            return isPositionValid(position) && getItem(position)?.let { eventsChannel.trySend(DiscoverFragment.DiscoverLongClick(layoutPosition, it)).isSuccess } == true
         }
 
         override fun selectView(selected: Boolean) {

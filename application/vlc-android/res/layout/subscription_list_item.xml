@@ -46,6 +46,10 @@
                 type="boolean" />
 
         <variable
+                name="seen"
+                type="long" />
+
+        <variable
                 name="time"
                 type="String" />
 
@@ -123,6 +127,21 @@
                         vlc:layout_constraintEnd_toEndOf="@+id/ml_item_thumbnail"
                         vlc:layout_constraintStart_toStartOf="@+id/ml_item_thumbnail"
                         vlc:layout_constraintTop_toTopOf="@+id/ml_item_thumbnail" />
+
+                <ImageView
+                        android:id="@+id/ml_item_seen3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:layout_marginEnd="4dp"
+                        android:background="@drawable/rounded_corners_black_more_transparent"
+                        android:padding="3dp"
+                        android:visibility="@{seen == 0L ? View.GONE : View.VISIBLE, default=gone}"
+                        tools:visibility="visible"
+                        vlc:layout_constraintEnd_toEndOf="parent"
+                        vlc:layout_constraintTop_toTopOf="parent"
+                        vlc:layout_goneMarginStart="4dp"
+                        vlc:srcCompat="@drawable/ic_check" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
         </com.google.android.material.card.MaterialCardView>
