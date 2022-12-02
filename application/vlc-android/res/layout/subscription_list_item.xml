@@ -64,7 +64,7 @@
 
         <variable
                 name="holder"
-                type="org.videolan.vlc.gui.discover.DiscoverServiceAdapter.ViewHolder" />
+                type="org.videolan.vlc.gui.discover.DiscoverAdapter.ViewHolder" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

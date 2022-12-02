@@ -32,6 +32,8 @@ import org.videolan.medialibrary.interfaces.media.VideoGroup
 import org.videolan.medialibrary.media.MediaLibraryItem
 import org.videolan.resources.CTX_DELETE
 import org.videolan.resources.CTX_FEED_FLAGS
+import org.videolan.resources.CTX_MARK_AS_PLAYED
+import org.videolan.resources.CTX_MARK_AS_UNPLAYED
 import org.videolan.tools.MultiSelectHelper
 import org.videolan.vlc.gui.browser.MediaBrowserFragment
 import org.videolan.vlc.gui.dialogs.CtxActionReceiver
@@ -67,6 +69,7 @@ abstract class DiscoverFragment<T : MedialibraryViewModel>: MediaBrowserFragment
                     }
                     is MediaWrapper -> {
                         var flags = CTX_FEED_FLAGS
+                        flags = if (item.seen > 0) flags or CTX_MARK_AS_UNPLAYED else  flags or CTX_MARK_AS_PLAYED
                         showContext(requireActivity(), this@DiscoverFragment, position, item, flags)
                     }
                 }

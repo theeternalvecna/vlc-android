@@ -1,0 +1,47 @@
+/*
+ * ************************************************************************
+ *  DiscoverFeedProvider.kt
+ * *************************************************************************
+ * Copyright © 2022 VLC authors and VideoLAN
+ * Author: Nicolas POMEPUY
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston MA 02110-1301, USA.
+ * **************************************************************************
+ *
+ *
+ */
+
+package org.videolan.vlc.providers.medialibrary
+
+import android.content.Context
+import org.videolan.medialibrary.interfaces.media.MediaWrapper
+import org.videolan.vlc.viewmodels.SortableModel
+
+class DiscoverFeedProvider(context: Context, model: SortableModel) : MedialibraryProvider<MediaWrapper>(context, model){
+
+    override fun canSortByFileNameName() = true
+
+//    override fun getTotalCount() = medialibrary.getMediaCount(model.filterQuery ?: "")
+
+    override fun getTotalCount(): Int {
+        return 1000
+    }
+
+    override fun getPage(loadSize: Int, startposition: Int): Array<MediaWrapper> {
+        val list = medialibrary.getSubscriptionMedia(model.sort, model.desc, true, false, loadSize, startposition)
+        return list
+    }
+
+    override fun getAll(): Array<MediaWrapper> = medialibrary.getSubscriptionMedia(model.sort, model.desc, true, false, 0, 0)
+}

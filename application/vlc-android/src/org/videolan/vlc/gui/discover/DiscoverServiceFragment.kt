@@ -33,7 +33,7 @@ import org.videolan.vlc.viewmodels.subscription.getViewModel
 private const val TAG = "VLC/DiscoverServiceFragment"
 
 class DiscoverServiceFragment : DiscoverFragment<ServiceContentViewModel>() {
-    private lateinit var subscriptionListAdapter: DiscoverServiceAdapter
+    private lateinit var subscriptionListAdapter: DiscoverAdapter
     private lateinit var binding: SubscriptionGridBinding
     private lateinit var settings: SharedPreferences
     private var gridItemDecoration: RecyclerView.ItemDecoration? = null
@@ -53,7 +53,7 @@ class DiscoverServiceFragment : DiscoverFragment<ServiceContentViewModel>() {
         if (!::settings.isInitialized) settings = Settings.getInstance(requireContext())
         val discoverService = arguments?.parcelable(KEY_SERVICE) as? DiscoverService ?: throw IllegalStateException("No service provided")
         viewModel = getViewModel(discoverService)
-        subscriptionListAdapter = DiscoverServiceAdapter().apply { stateRestorationPolicy = RecyclerView.Adapter.StateRestorationPolicy.PREVENT_WHEN_EMPTY }
+        subscriptionListAdapter = DiscoverAdapter().apply { stateRestorationPolicy = RecyclerView.Adapter.StateRestorationPolicy.PREVENT_WHEN_EMPTY }
         multiSelectHelper = subscriptionListAdapter.multiSelectHelper
     }
 

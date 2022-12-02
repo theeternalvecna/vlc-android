@@ -37,6 +37,7 @@ import androidx.databinding.ViewDataBinding
 import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.DiffUtil
 import org.videolan.libvlc.util.AndroidUtil
+import org.videolan.medialibrary.interfaces.media.MediaWrapper
 import org.videolan.medialibrary.interfaces.media.Subscription
 import org.videolan.medialibrary.media.MediaLibraryItem
 import org.videolan.resources.*
@@ -48,7 +49,7 @@ import org.videolan.vlc.gui.helpers.*
 import org.videolan.vlc.gui.video.*
 import org.videolan.vlc.gui.view.FastScroller
 
-class DiscoverServiceAdapter : PagedListAdapter<MediaLibraryItem, DiscoverServiceAdapter.ViewHolder>(DiscoverServiceCallback), FastScroller.SeparatedAdapter,
+class DiscoverAdapter : PagedListAdapter<MediaLibraryItem, DiscoverAdapter.ViewHolder>(DiscoverServiceCallback), FastScroller.SeparatedAdapter,
         MultiSelectAdapter<MediaLibraryItem>, IEventsSource<DiscoverFragment.DiscoverAction> by EventsSource() {
 
     var isListMode = true
@@ -66,11 +67,15 @@ class DiscoverServiceAdapter : PagedListAdapter<MediaLibraryItem, DiscoverServic
         if (payloads.isEmpty())
             onBindViewHolder(holder, position)
         else {
-            val item = getItem(position) as Subscription
+            val item = getItem(position)
             for (data in payloads) {
                 when (data as Int) {
-                    UPDATE_NB_MEDIA -> holder.binding.setVariable(BR.time, holder.itemView.context.resources.getQuantityString(R.plurals.media_quantity, item.nbMedia, item.nbMedia))
+                    UPDATE_NB_MEDIA -> when(item) {
+                        is Subscription -> holder.binding.setVariable(BR.time, holder.itemView.context.resources.getQuantityString(R.plurals.media_quantity, item.nbMedia, item.nbMedia))
+                        is MediaWrapper -> holder.binding.setVariable(BR.time, item.date)
+                    }
                     UPDATE_SELECTION -> holder.selectView(multiSelectHelper.isSelected(position))
+                    UPDATE_SEEN -> if (item is MediaWrapper) holder.binding.setVariable(BR.seen, item.seen)
                 }
             }
         }
@@ -101,8 +106,13 @@ class DiscoverServiceAdapter : PagedListAdapter<MediaLibraryItem, DiscoverServic
                 holder.binding.setVariable(BR.seen, 0L)
                 holder.binding.setVariable(BR.max, 0)
                 holder.binding.setVariable(BR.time, holder.itemView.context.resources.getQuantityString(R.plurals.media_quantity, item.nbMedia, item.nbMedia))
-                holder.binding.setVariable(BR.isNetwork, false)
-                holder.binding.setVariable(BR.isPresent, true)
+            }
+            is MediaWrapper -> {
+                holder.title.text = item.title
+                if (!isListMode) holder.binding.setVariable(BR.resolution, null)
+                holder.binding.setVariable(BR.seen, item.seen)
+                holder.binding.setVariable(BR.max, 0)
+                holder.binding.setVariable(BR.time, item.date)
             }
         }
     }
@@ -161,12 +171,16 @@ private object DiscoverServiceCallback : DiffUtil.ItemCallback<MediaLibraryItem>
         return if (oldItem is Subscription && newItem is Subscription) {
             oldItem === newItem || (oldItem.title == newItem.title
                     && oldItem.nbMedia == newItem.nbMedia)
-        }
-        else false
+        } else if (oldItem is MediaWrapper && newItem is MediaWrapper) {
+            oldItem === newItem || (oldItem.title == newItem.title
+                    && oldItem.date == newItem.date
+                    && oldItem.seen == newItem.seen)
+        } else  false
     }
 
     override fun getChangePayload(oldItem: MediaLibraryItem, newItem: MediaLibraryItem) = when {
         (oldItem is Subscription && newItem is Subscription) && oldItem.nbMedia != newItem.nbMedia -> UPDATE_NB_MEDIA
+        (oldItem is MediaWrapper && newItem is MediaWrapper) && oldItem.date != newItem.date -> UPDATE_NB_MEDIA
         oldItem.artworkMrl != newItem.artworkMrl -> UPDATE_THUMB
         else -> UPDATE_SEEN
     }
