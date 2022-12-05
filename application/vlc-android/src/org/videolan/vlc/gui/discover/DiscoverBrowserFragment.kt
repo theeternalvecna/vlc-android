@@ -35,6 +35,7 @@ import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import org.videolan.medialibrary.interfaces.media.DiscoverService
 import org.videolan.medialibrary.media.DiscoverServiceImpl
+import org.videolan.tools.isStarted
 import org.videolan.vlc.R
 import org.videolan.vlc.gui.BaseFragment
 import org.videolan.vlc.gui.dialogs.PodcastAddDialog
@@ -116,7 +117,7 @@ class DiscoverBrowserFragment : BaseFragment(), TabLayout.OnTabSelectedListener 
     override fun onTabSelected(tab: TabLayout.Tab?) {}
 
     override fun onTabUnselected(tab: TabLayout.Tab?) {
-        tab?.position?.let {
+        if (isStarted()) tab?.position?.let {
             (viewPager.findFragmentAt(parentFragmentManager, it) as? BaseFragment)?.stopActionMode()
         }
     }
