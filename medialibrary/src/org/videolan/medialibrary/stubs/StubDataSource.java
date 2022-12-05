@@ -96,7 +96,7 @@ public class StubDataSource {
             media = MLServiceLocator.getAbstractMediaWrapper(getUUID(), mrl, -1L, -1F, 18820L, MediaWrapper.TYPE_VIDEO,
                     fileName, fileName, "", "",
                     "", "", 416, 304, "", 0, -2,
-                    0, 0, 1509466228L, 0L, true, false, 1970, true, 1683711438317L);
+                    0, 0, 1509466228L, 0L, true, false, 1970, true, 1683711438317L,0);
             addVideo(media);
         }
     }
@@ -114,7 +114,7 @@ public class StubDataSource {
                     "Shine On CD2", "Peter Frampton",
                     0, 0, baseMrl + folder + ".jpg",
                     0, -2, 1, 0,
-                    1547452796L, 0L, true, false, 1965, true, 1683711438317L);
+                    1547452796L, 0L, true, false, 1965, true, 1683711438317L,0);
             addAudio(media, "", 1965, 400, mrl);
         }
     }
@@ -412,7 +412,8 @@ public class StubDataSource {
                     false,
                     jsonObject.getInt("release_date"),
                     true,
-                    1683711438317L
+                    1683711438317L,
+                    0
             );
             if (type == MediaWrapper.TYPE_VIDEO) {
                 addVideo(media);
@@ -574,7 +575,8 @@ public class StubDataSource {
                 false,
                 releaseYear,
                 true,
-                1683711438317L
+                1683711438317L,
+                0
         );
         mAudioMediaWrappers.add(newMedia);
     }
@@ -587,7 +589,7 @@ public class StubDataSource {
     public MediaWrapper addMediaWrapper(String mrl, String title, int type) {
         MediaWrapper media = MLServiceLocator.getAbstractMediaWrapper(getUUID(), mrl, -1L, -1F, 280224L, type,
                 title, title, "Artisto", "Jazz", "XYZ CD1", "", 0, 0, baseMrl + title, -2,
-                1, 1, 0, 1547452796L, 0L, true, false, 0, true, 1683711438317L);
+                1, 1, 0, 1547452796L, 0L, true, false, 0, true, 1683711438317L,0);
         if (type == MediaWrapper.TYPE_ALL) type = media.getType();
         if (type == MediaWrapper.TYPE_VIDEO) addVideo(media);
         else if (type == MediaWrapper.TYPE_AUDIO) addAudio(media, "", 2018, 12313, mrl);

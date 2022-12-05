@@ -261,6 +261,11 @@ public class MedialibraryImpl extends Medialibrary {
     }
 
     @Override
+    public int getSubscriptionMediaCount(boolean includeMissing) {
+        return mIsInitiated ? nativeGetSubscriptionMediaCount(includeMissing) : 0;
+    }
+
+    @Override
     @WorkerThread
     public VideoGroup createVideoGroup(String name) {
         return mIsInitiated && !TextUtils.isEmpty(name) ? nativeCreateGroupByName(name) : null;
@@ -699,6 +704,7 @@ public class MedialibraryImpl extends Medialibrary {
     private native int nativeGetVideoGroupsCount(String query);
     private native void nativeSetVideoGroupsPrefixLength(int length);
     private native MediaWrapper[] nativeGetSubscriptionMedia(int sort, boolean desc, boolean includeMissing, boolean onlyFavorites, int nbItems, int offset);
+    private native int nativeGetSubscriptionMediaCount( boolean includeMissing);
 
     private native VideoGroup nativeCreateGroupByName(String name);
 

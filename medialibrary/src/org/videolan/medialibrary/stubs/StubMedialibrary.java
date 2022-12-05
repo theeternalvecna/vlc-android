@@ -182,6 +182,11 @@ public class StubMedialibrary extends Medialibrary {
     }
 
     @Override
+    public int getSubscriptionMediaCount(boolean includeMissing) {
+        return 0;
+    }
+
+    @Override
     public VideoGroup createVideoGroup(String name) {
         return null;
     }

@@ -17,11 +17,11 @@ public class StubMediaWrapper extends MediaWrapper {
                         String filename, String artist, String genre, String album, String albumArtist,
                         int width, int height, String artworkURL, int audio, int spu, int trackNumber,
                         int discNumber, long lastModified, long seen, boolean isThumbnailGenerated,
-                        boolean isFavorite, int releaseDate, boolean isPresent, long insertionDate) {
+                        boolean isFavorite, int releaseDate, boolean isPresent, long insertionDate, int nbSubscriptions) {
         super(id, mrl, time, position, length, type, title, filename, artist,
                 genre, album, albumArtist, width, height, artworkURL,
                 audio, spu, trackNumber, discNumber, lastModified,
-                seen, isThumbnailGenerated, isFavorite, releaseDate, isPresent, insertionDate);
+                seen, isThumbnailGenerated, isFavorite, releaseDate, isPresent, insertionDate, nbSubscriptions);
         final StringBuilder sb = new StringBuilder();
         if (type == TYPE_AUDIO) {
             boolean hasArtistMeta = !artist.equals(Artist.SpecialRes.VARIOUS_ARTISTS) &&
@@ -48,10 +48,10 @@ public class StubMediaWrapper extends MediaWrapper {
     public StubMediaWrapper(Uri uri, long time, float position, long length, int type,
                         Bitmap picture, String title, String artist, String genre, String album, String albumArtist,
                         int width, int height, String artworkURL, int audio, int spu, int trackNumber,
-                        int discNumber, long lastModified, long seen, boolean isFavorite, long insertionDate) {
+                        int discNumber, long lastModified, long seen, boolean isFavorite, long insertionDate, int nbSubscriptions) {
         super(uri, time, position, length, type, picture, title, artist,
                 genre, album, albumArtist, width, height, artworkURL,
-                audio, spu, trackNumber, discNumber, lastModified, seen, isFavorite, insertionDate);
+                audio, spu, trackNumber, discNumber, lastModified, seen, isFavorite, insertionDate, nbSubscriptions);
     }
 
     public StubMediaWrapper(Uri uri) { super(uri); }
