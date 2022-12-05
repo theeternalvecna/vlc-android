@@ -28,26 +28,27 @@ import android.os.Bundle
 import android.view.*
 import androidx.appcompat.view.ActionMode
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
-import androidx.fragment.app.FragmentPagerAdapter
-import androidx.viewpager.widget.ViewPager
+import androidx.fragment.app.FragmentActivity
+import androidx.viewpager2.adapter.FragmentStateAdapter
+import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayout
+import com.google.android.material.tabs.TabLayoutMediator
 import org.videolan.medialibrary.interfaces.media.DiscoverService
 import org.videolan.medialibrary.media.DiscoverServiceImpl
 import org.videolan.vlc.R
 import org.videolan.vlc.gui.BaseFragment
 import org.videolan.vlc.gui.dialogs.PodcastAddDialog
+import org.videolan.vlc.util.findCurrentFragment
+import org.videolan.vlc.util.findFragmentAt
 
-class DiscoverBrowserFragment : BaseFragment(), TabLayout.OnTabSelectedListener, ViewPager.OnPageChangeListener {
+class DiscoverBrowserFragment : BaseFragment(), TabLayout.OnTabSelectedListener {
     override fun getTitle() = getString(R.string.discover)
     private lateinit var pagerAdapter: DiscoverAdapter
-    private lateinit var layoutOnPageChangeListener: TabLayout.TabLayoutOnPageChangeListener
     override val hasTabs = true
     private var tabLayout: TabLayout? = null
-    private lateinit var viewPager: ViewPager
+    private lateinit var viewPager: ViewPager2
     override fun hasFAB() = true
 
-    private val tcl = TabLayout.TabLayoutOnPageChangeListener(tabLayout)
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.discover_browser, container, false)
@@ -58,7 +59,7 @@ class DiscoverBrowserFragment : BaseFragment(), TabLayout.OnTabSelectedListener,
         tabLayout = requireActivity().findViewById(R.id.sliding_tabs)
         viewPager = view.findViewById(R.id.pager)
         //placeholder service
-        pagerAdapter = DiscoverAdapter(childFragmentManager, DiscoverServiceImpl(DiscoverService.Type.PODCAST, 0,0,0))
+        pagerAdapter = DiscoverAdapter(requireActivity(), DiscoverServiceImpl(DiscoverService.Type.PODCAST, 0, 0, 0))
         viewPager.adapter = pagerAdapter
     }
 
@@ -71,6 +72,7 @@ class DiscoverBrowserFragment : BaseFragment(), TabLayout.OnTabSelectedListener,
 
     override fun onStop() {
         unSetTabLayout()
+        (viewPager.findCurrentFragment(parentFragmentManager) as? BaseFragment)?.stopActionMode()
         super.onStop()
     }
 
@@ -82,54 +84,44 @@ class DiscoverBrowserFragment : BaseFragment(), TabLayout.OnTabSelectedListener,
 
     private fun setupTabLayout() {
         if (tabLayout == null || !::viewPager.isInitialized) return
-        tabLayout?.setupWithViewPager(viewPager)
-        if (!::layoutOnPageChangeListener.isInitialized) layoutOnPageChangeListener = TabLayout.TabLayoutOnPageChangeListener(tabLayout)
-        viewPager.addOnPageChangeListener(layoutOnPageChangeListener)
+        tabLayout?.let {
+            TabLayoutMediator(it, viewPager) { tab, position ->
+                tab.text = when (position) {
+                    0 -> getString(R.string.discover_feed)
+                    else -> getString(R.string.discover_podcast)
+                }
+            }.attach()
+        }
         tabLayout?.addOnTabSelectedListener(this)
-        viewPager.addOnPageChangeListener(this)
     }
 
     private fun unSetTabLayout() {
         if (tabLayout != null || !::viewPager.isInitialized) return
-        viewPager.removeOnPageChangeListener(layoutOnPageChangeListener)
         tabLayout?.removeOnTabSelectedListener(this)
-        viewPager.removeOnPageChangeListener(this)
     }
 
-    inner class DiscoverAdapter(val fragmentManager: FragmentManager, val service: DiscoverService) : FragmentPagerAdapter(fragmentManager, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
-        override fun getCount() = 2
+    inner class DiscoverAdapter(fa: FragmentActivity, val service: DiscoverService) : FragmentStateAdapter(fa) {
 
-        override fun getItem(position: Int): Fragment {
+        override fun getItemCount() = 2
+
+        override fun createFragment(position: Int): Fragment {
             return when (position) {
                 0 -> DiscoverFeedFragment.newInstance()
                 1 -> DiscoverServiceFragment.newInstance(service)
                 else -> throw IllegalStateException("Invalid discover fragment index")
             }
         }
-
-        override fun getPageTitle(position: Int): CharSequence {
-            return when (position) {
-                0 -> requireActivity().getString(R.string.discover_feed)
-                else -> requireActivity().getString(R.string.discover_podcast)
-            }
-        }
     }
 
     override fun onTabSelected(tab: TabLayout.Tab?) {}
 
-    override fun onTabUnselected(tab: TabLayout.Tab?) {}
+    override fun onTabUnselected(tab: TabLayout.Tab?) {
+        tab?.position?.let {
+            (viewPager.findFragmentAt(parentFragmentManager, it) as? BaseFragment)?.stopActionMode()
+        }
+    }
 
     override fun onTabReselected(tab: TabLayout.Tab?) {}
-
-    override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
-        tcl.onPageScrolled(position, positionOffset, positionOffsetPixels)
-    }
-
-    override fun onPageSelected(position: Int) {}
-
-    override fun onPageScrollStateChanged(state: Int) {
-        tcl.onPageScrollStateChanged(state)
-    }
 
     override fun onFabPlayClick(view: View) {
         PodcastAddDialog.newInstance().show(requireActivity().supportFragmentManager, "PodcastAddDialog")
