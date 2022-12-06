@@ -1628,6 +1628,23 @@ getMediaPlayCount(JNIEnv* env, jobject thiz, jobject medialibrary, jlong id)
     return media->playCount();
 }
 
+jobjectArray
+getMediaSubscriptions(JNIEnv* env, jobject thiz, jobject medialibrary, jlong id)
+{
+    AndroidMediaLibrary *aml = MediaLibrary_getInstance(env, medialibrary);
+    medialibrary::MediaPtr media = aml->media(id);
+    if (media == nullptr) return (jobjectArray) env->NewObjectArray(0, ml_fields.Subscription.clazz, NULL);
+    medialibrary::QueryParameters params = generateParams(medialibrary::SortingCriteria::Default, false, true, false);
+    const auto subsList = media->linkedSubscriptions(&params)->all();
+    jobjectArray subsRefs = (jobjectArray) env->NewObjectArray(subsList.size(), ml_fields.Subscription.clazz, NULL);
+    int index = -1;
+    for(medialibrary::SubscriptionPtr const& sub : subsList) {
+        auto item = convertSubscriptionObject(env, &ml_fields, sub);
+        env->SetObjectArrayElement(subsRefs, ++index, item.get());
+    }
+    return subsRefs;
+}
+
 jboolean
 removeMediaThumbnail(JNIEnv* env, jobject thiz, jobject medialibrary, jlong id)
 {
@@ -2589,6 +2606,7 @@ static JNINativeMethod media_methods[] = {
     {"nativeRemoveAllBookmarks", "(Lorg/videolan/medialibrary/interfaces/Medialibrary;J)Z", (void*)removeAllBookmarks },
     {"nativeMarkAsPlayed", "(Lorg/videolan/medialibrary/interfaces/Medialibrary;J)Z", (void*)markAsPlayed },
     {"nativeSetFavorite", "(Lorg/videolan/medialibrary/interfaces/Medialibrary;JZ)Z", (void*)setMediaFavorite },
+    {"nativeGetSubscriptions", "(Lorg/videolan/medialibrary/interfaces/Medialibrary;J)[Lorg/videolan/medialibrary/interfaces/media/Subscription;", (void*)getMediaSubscriptions },
 };
 
 static JNINativeMethod bookmark_methods[] = {
