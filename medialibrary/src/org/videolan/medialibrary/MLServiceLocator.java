@@ -93,15 +93,15 @@ public class MLServiceLocator {
                                                        int width, int height, String artworkURL,
                                                        int audio, int spu, int trackNumber,
                                                        int discNumber, long lastModified, long seen,
-                                                       long insertionDate, int nbSubscriptions) {
+                                                       long insertionDate, int nbSubscriptions, int releaseYear) {
         if (sMode == LocatorMode.VLC_ANDROID) {
             return new MediaWrapperImpl(uri, time, position, length, type, picture, title, artist, genre,
                     album, albumArtist, width, height, artworkURL, audio, spu, trackNumber,
-                    discNumber, lastModified, seen, false, insertionDate, nbSubscriptions);
+                    discNumber, lastModified, seen, false, insertionDate, nbSubscriptions, releaseYear);
         } else {
             return new StubMediaWrapper(uri, time, position, length, type, picture, title, artist, genre,
                     album, albumArtist, width, height, artworkURL, audio, spu, trackNumber,
-                    discNumber, lastModified, seen, false, insertionDate, nbSubscriptions);
+                    discNumber, lastModified, seen, false, insertionDate, nbSubscriptions, releaseYear);
         }
     }
 

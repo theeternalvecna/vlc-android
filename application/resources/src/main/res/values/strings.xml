@@ -1195,6 +1195,15 @@
     <string name="opml">Import OPML</string>
     <string name="podcast_added">Podcast added</string>
     <string name="podcast_added_error">Error adding the podcast</string>
+    <string name="today">Today</string>
+    <string name="yesterday">Yesterday</string>
+    <string name="in_year">In %s</string>
+    <string name="in_month">In %s</string>
+    <plurals name="nb_weeks_ago">
+        <item quantity="one">Last week</item>
+        <item quantity="two">2 weeks ago</item>
+        <item quantity="other">%d weeks ago</item>
+    </plurals>
 
     <!-- Remote access -->
     <string name="ra_server_running">Remote access active</string>

@@ -53,10 +53,10 @@ public class MediaWrapperImpl extends MediaWrapper {
     public MediaWrapperImpl(Uri uri, long time, float position, long length, int type,
                             Bitmap picture, String title, String artist, String genre, String album, String albumArtist,
                             int width, int height, String artworkURL, int audio, int spu, int trackNumber,
-                            int discNumber, long lastModified, long seen, boolean isFavorite, long insertionDate, int nbSubscriptions) {
+                            int discNumber, long lastModified, long seen, boolean isFavorite, long insertionDate, int nbSubscriptions, int releaseYear) {
         super(uri, time, position, length, type, picture, title, artist,
                 genre, album, albumArtist, width, height, artworkURL,
-                audio, spu, trackNumber, discNumber, lastModified, seen, isFavorite, insertionDate, nbSubscriptions);
+                audio, spu, trackNumber, discNumber, lastModified, seen, isFavorite, insertionDate, nbSubscriptions, releaseYear);
     }
 
     public MediaWrapperImpl(Uri uri) { super(uri); }
