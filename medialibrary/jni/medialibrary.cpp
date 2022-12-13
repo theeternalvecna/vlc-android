@@ -2833,7 +2833,7 @@ jint JNI_OnLoad(JavaVM *vm, void *reserved)
     GET_ID(GetMethodID,
             ml_fields.Subscription.initID,
             ml_fields.Subscription.clazz,
-            "<init>", "(JILjava/lang/String;JII)V");
+            "<init>", "(JILjava/lang/String;JIILjava/lang/String;)V");
 
     GET_CLASS(ml_fields.MediaWrapper.clazz,
               "org/videolan/medialibrary/media/MediaWrapperImpl", true);

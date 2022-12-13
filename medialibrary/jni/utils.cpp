@@ -237,13 +237,14 @@ utils::jni::object
 convertSubscriptionObject(JNIEnv* env, fields *fields, medialibrary::SubscriptionPtr const& subsPtr)
 {
     auto name = vlcNewStringUTF(env, subsPtr->name().c_str());
+    auto artworkMRL = vlcNewStringUTF(env, subsPtr->artworkMRL().c_str());
     long parentId = -1;
     if (subsPtr->parent() != nullptr)
     {
         parentId = subsPtr->parent()->id();
     }
     return utils::jni::object{ env, env->NewObject(fields->Subscription.clazz, fields->Subscription.initID,
-            (jlong) subsPtr->id(), (jint) subsPtr->service(), name.get(), (jlong) parentId, (jint) subsPtr->nbMedia(), (jint) subsPtr->nbUnplayedMedia())
+            (jlong) subsPtr->id(), (jint) subsPtr->service(), name.get(), (jlong) parentId, (jint) subsPtr->nbMedia(), (jint) subsPtr->nbUnplayedMedia(), artworkMRL.get())
     };
 }
 
