@@ -31,6 +31,7 @@ import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
 import android.graphics.Bitmap
+import android.graphics.Color
 import android.graphics.RenderEffect
 import android.graphics.Shader
 import android.graphics.drawable.BitmapDrawable
@@ -984,3 +985,11 @@ suspend fun fillActionMode(context: Context, mode: ActionMode, multiSelectHelper
         mode.subtitle = Tools.millisToString(length)
     }
 }
+
+/**
+ * Change the alpha component of a color Int
+ *
+ * @param alpha the wanted alpha in percent
+ * @return a color Int with the new alpha
+ */
+fun Int.setAlpha(alpha:Float) = Color.argb((255 * alpha).toInt(), Color.red(this), Color.green(this), Color.blue(this))

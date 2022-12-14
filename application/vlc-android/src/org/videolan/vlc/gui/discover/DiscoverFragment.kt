@@ -24,6 +24,7 @@
 
 package org.videolan.vlc.gui.discover
 
+import android.content.Intent
 import android.view.View
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import org.videolan.medialibrary.interfaces.media.MediaWrapper
@@ -35,6 +36,7 @@ import org.videolan.resources.CTX_FEED_FLAGS
 import org.videolan.resources.CTX_MARK_AS_PLAYED
 import org.videolan.resources.CTX_MARK_AS_UNPLAYED
 import org.videolan.tools.MultiSelectHelper
+import org.videolan.vlc.gui.browser.KEY_MEDIA
 import org.videolan.vlc.gui.browser.MediaBrowserFragment
 import org.videolan.vlc.gui.dialogs.CtxActionReceiver
 import org.videolan.vlc.gui.dialogs.showContext
@@ -101,9 +103,9 @@ abstract class DiscoverFragment<T : MedialibraryViewModel>: MediaBrowserFragment
                 //todo open the subscription screen
             }
             is MediaWrapper -> {
-//                val i = Intent(requireActivity(), SubscriptionInfoActivity::class.java)
-//                i.putExtra(KEY_MEDIA, item)
-//                startActivity(i)
+                val i = Intent(requireActivity(), SubscriptionInfoActivity::class.java)
+                i.putExtra(KEY_MEDIA, item)
+                startActivity(i)
             }
         }
     }

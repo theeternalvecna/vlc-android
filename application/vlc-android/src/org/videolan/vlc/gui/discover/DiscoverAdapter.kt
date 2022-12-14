@@ -69,7 +69,7 @@ class DiscoverAdapter : PagedListAdapter<MediaLibraryItem, DiscoverAdapter.ViewH
         else {
             val item = getItem(position)
             for (data in payloads) {
-                when (data as Int) {
+                when (data as? Int) {
                     UPDATE_NB_MEDIA -> when(item) {
                         is Subscription -> holder.binding.setVariable(BR.time, holder.itemView.context.resources.getQuantityString(R.plurals.media_quantity, item.nbMedia, item.nbMedia))
                         is MediaWrapper -> holder.binding.setVariable(BR.time, item.date)

@@ -1145,6 +1145,7 @@
     <string name="talkback_track_number">Track number %s</string>
     <string name="talkback_duration">Duration: %s</string>
     <string name="talkback_album">Album: %s</string>
+    <string name="talkback_subscription">Media: %s</string>
     <string name="talkback_artist">Artist: %s</string>
     <string name="talkback_release_date">Released in %s</string>
     <string name="talkback_video">Video: %s</string>
