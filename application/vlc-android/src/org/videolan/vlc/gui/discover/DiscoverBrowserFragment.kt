@@ -122,7 +122,9 @@ class DiscoverBrowserFragment : BaseFragment(), TabLayout.OnTabSelectedListener 
         }
     }
 
-    override fun onTabReselected(tab: TabLayout.Tab?) {}
+    override fun onTabReselected(tab: TabLayout.Tab?) {
+        (viewPager.findCurrentFragment(parentFragmentManager) as? DiscoverFragment<*>)?.scrollToTop()
+    }
 
     override fun onFabPlayClick(view: View) {
         PodcastAddDialog.newInstance().show(requireActivity().supportFragmentManager, "PodcastAddDialog")

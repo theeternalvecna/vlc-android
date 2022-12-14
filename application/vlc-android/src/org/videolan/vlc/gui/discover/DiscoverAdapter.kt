@@ -112,7 +112,6 @@ class DiscoverAdapter : PagedListAdapter<MediaLibraryItem, DiscoverAdapter.ViewH
                 if (!isListMode) holder.binding.setVariable(BR.resolution, null)
                 holder.binding.setVariable(BR.seen, item.seen)
                 holder.binding.setVariable(BR.max, 0)
-                holder.binding.setVariable(BR.time, item.date)
             }
         }
     }
@@ -137,6 +136,16 @@ class DiscoverAdapter : PagedListAdapter<MediaLibraryItem, DiscoverAdapter.ViewH
         fun onImageClick(@Suppress("UNUSED_PARAMETER") v: View) {
             val position = layoutPosition
             if (isPositionValid(position)) getItem(position)?.let { eventsChannel.trySend(DiscoverFragment.DiscoverImageClick(layoutPosition, it)) }
+        }
+
+        fun onPlayClick(@Suppress("UNUSED_PARAMETER") v: View) {
+            val position = layoutPosition
+            if (isPositionValid(position)) getItem(position)?.let { eventsChannel.trySend(DiscoverFragment.DiscoverPlayClick(layoutPosition, it)) }
+        }
+
+        fun onAddPlayQueueClick(@Suppress("UNUSED_PARAMETER") v: View) {
+            val position = layoutPosition
+            if (isPositionValid(position)) getItem(position)?.let { eventsChannel.trySend(DiscoverFragment.DiscoverAddPlayQueueClick(layoutPosition, it)) }
         }
 
         fun onClick(@Suppress("UNUSED_PARAMETER") v: View) {

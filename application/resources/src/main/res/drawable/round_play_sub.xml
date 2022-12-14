@@ -1,8 +1,10 @@
-<?xml version="1.0" encoding="UTF-8"?><!--
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
   ~ *************************************************************************
-  ~  standard_selection.xml
+  ~  round_play_sub.xml
   ~ **************************************************************************
-  ~ Copyright © 2020 VLC authors and VideoLAN
+  ~ Copyright © 2022 VLC authors and VideoLAN
   ~ Author: Nicolas POMEPUY
   ~ This program is free software; you can redistribute it and/or modify
   ~ it under the terms of the GNU General Public License as published by
@@ -22,9 +24,17 @@
   ~
   -->
 
-<selector xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:state_enabled="false" android:color="?attr/default_divider" />
-    <item android:state_pressed="true" android:color="@color/orange200transparent" />
-    <item android:state_focused="true" android:color="@color/orange200transparent" />
-    <item android:color="@color/transparent" />
-</selector>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:top="3dp" android:bottom="3dp" android:left="3dp" android:right="3dp">
+        <shape android:shape="oval">
+            <stroke
+                    android:width="2dp"
+                    android:color="@color/standard_selection_control_normal_primary">
+
+            </stroke>
+            <solid android:color="@color/standard_selection_transparent"/>
+
+
+        </shape>
+    </item>
+</layer-list>

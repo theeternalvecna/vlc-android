@@ -29,20 +29,37 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import org.videolan.medialibrary.interfaces.Medialibrary
 import org.videolan.medialibrary.interfaces.media.MediaWrapper
 import org.videolan.medialibrary.media.MediaLibraryItem
 import org.videolan.vlc.gui.discover.DiscoverFeedFragment
+import org.videolan.vlc.media.MediaUtils
 import org.videolan.vlc.providers.medialibrary.DiscoverFeedProvider
 import org.videolan.vlc.providers.medialibrary.MedialibraryProvider
 import org.videolan.vlc.viewmodels.MedialibraryViewModel
 
 class DiscoverFeedViewModel(context: Context) : MedialibraryViewModel(context)  {
+
+    init {
+        sort = Medialibrary.SORT_RELEASEDATE
+        desc = true
+    }
     suspend fun markAsPlayed(media: MediaWrapper) = withContext(Dispatchers.IO){
         if (media.seen == 0L) media.setPlayCount(1L)
     }
 
     suspend fun markAsUnplayed(media: MediaWrapper) = withContext(Dispatchers.IO) {
        media.setPlayCount(0L)
+    }
+
+    fun appendMedia(item: MediaWrapper, position: Int) {
+        MediaUtils.appendMedia(context, item)
+        provider.appendMedia(position)
+    }
+
+    fun play(item: MediaWrapper, position: Int) {
+        MediaUtils.playTracks(context, item, 0, false)
+        provider.appendMedia(position)
     }
 
     val provider = DiscoverFeedProvider(context, this)

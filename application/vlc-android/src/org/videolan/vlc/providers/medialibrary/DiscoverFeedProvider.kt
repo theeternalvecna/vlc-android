@@ -25,20 +25,30 @@
 package org.videolan.vlc.providers.medialibrary
 
 import android.content.Context
-import org.videolan.medialibrary.interfaces.media.MediaWrapper
+import org.videolan.vlc.media.PlaylistManager
+import org.videolan.vlc.media.SubscriptionEpisode
 import org.videolan.vlc.viewmodels.SortableModel
 
-class DiscoverFeedProvider(context: Context, model: SortableModel) : MedialibraryProvider<MediaWrapper>(context, model){
+class DiscoverFeedProvider(context: Context, model: SortableModel) : MedialibraryProvider<SubscriptionEpisode>(context, model){
 
     override fun canSortByFileNameName() = true
+
 
     override fun getTotalCount() = if (model.filterQuery == null) medialibrary.getSubscriptionMediaCount(true)
     else 0
 
-    override fun getPage(loadSize: Int, startposition: Int): Array<MediaWrapper> {
+    override fun getPage(loadSize: Int, startposition: Int): Array<SubscriptionEpisode> {
         val list = medialibrary.getSubscriptionMedia(model.sort, model.desc, true, false, loadSize, startposition)
-        return list
+        return list.map {
+            SubscriptionEpisode(it,  it.subscriptions.toList(), PlaylistManager.hasMedia(it.uri))
+        }.toTypedArray()
     }
 
-    override fun getAll(): Array<MediaWrapper> = medialibrary.getSubscriptionMedia(model.sort, model.desc, true, false, 0, 0)
+    override fun getAll(): Array<SubscriptionEpisode> = medialibrary.getSubscriptionMedia(model.sort, model.desc, true, false, 0, 0).map {
+        SubscriptionEpisode(it,  it.subscriptions.toList(), PlaylistManager.hasMedia(it.uri))
+    }.toTypedArray()
+
+    fun appendMedia(position: Int) {
+        pagedList.value?.get(position)?.inPlayQueue = true
+    }
 }
