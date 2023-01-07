@@ -1,0 +1,63 @@
+--[[
+ $Id$
+
+ Copyright © 2007-2012 the VideoLAN team
+
+ This program is free software; you can redistribute it and/or modify
+ it under the terms of the GNU General Public License as published by
+ the Free Software Foundation; either version 2 of the License, or
+ (at your option) any later version.
+
+ This program is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU General Public License for more details.
+
+ You should have received a copy of the GNU General Public License
+ along with this program; if not, write to the Free Software
+ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston MA 02110-1301, USA.
+--]]
+
+-- Helper function to get a parameter's value in a URL
+function get_url_param( url, name )
+    local _, _, res = string.find( url, "[&?]"..name.."=([^&]*)" )
+    return res
+end
+
+-- Probe function.
+function probe()
+    return vlc.access == "http"
+        and string.find( vlc.path, "www.pornhub.com/view_video.php" )
+end
+
+-- Parse function.
+function parse()
+    while true do
+        line = vlc.readline()
+        if not line then break end
+
+        -- "video_url":"http%3A%2F%2Ffoo.pornhub.com%2Flongurl%2Fvideos%2F012%2F345%2F678%2F123456.flv",
+        if string.match( line, "video_url" ) then
+            _,_,path = string.find( line, "['\"]video_url['\"]%s*:%s*['\"](.-)['\"]" )
+            if path then
+                path = vlc.strings.decode_uri( path )
+                _,_,digits = string.find( path, "/(%d%d%d/%d%d%d/%d%d%d)/" )
+                if digits then
+                    arturl = "http://ph-pics.phncdn.com/thumbs/" .. digits .. "/large.jpg"
+                end
+            end
+        end
+
+        -- "video_title":"Foobar%27s+Hot+Video",
+        if string.match( line, "video_title" ) then
+            _,_,name = string.find( line, "['\"]video_title['\"]%s*:%s*['\"](.-)['\"]" )
+            if name then
+                name = string.gsub( name, "+", " " )
+                name = vlc.strings.decode_uri( name )
+            end
+        end
+    end
+
+    if not path then return {} end
+    return { { path = path; name = name; arturl = arturl } }
+end
