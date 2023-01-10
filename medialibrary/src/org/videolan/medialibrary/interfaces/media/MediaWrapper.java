@@ -516,7 +516,8 @@ public abstract class MediaWrapper extends MediaLibraryItem implements Parcelabl
                 || "audiobooks".equalsIgnoreCase(mGenre)
                 || "audiobook".equalsIgnoreCase(mGenre)
                 || "speech".equalsIgnoreCase(mGenre)
-                || "vocal".equalsIgnoreCase(mGenre));
+                || "vocal".equalsIgnoreCase(mGenre))
+                || mNbSubscriptions > 0;
     }
 
     public void setType(int type) {
