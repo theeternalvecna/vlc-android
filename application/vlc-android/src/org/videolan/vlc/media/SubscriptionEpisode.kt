@@ -40,7 +40,7 @@ class SubscriptionEpisode(mw: MediaWrapper, private val subscriptions: List<Subs
         mw.isFavorite, mw.releaseYear, mw.isPresent, mw.insertionDate, mw.nbSubscriptions) {
 
     fun subsText() = TextUtils.separatedString(subscriptions.map { it.title }.toTypedArray())
-    fun dateDuration() = if (length == -1L) "???" else TextUtils.separatedString(Tools.millisToString(length * 1000))
+    fun dateDuration() = (if (length == -1L) "???" else Tools.millisToString(length)) ?: "???"
     fun releaseDate(view: View) = TimeUtils.formatDateToNatural(view.context, releaseYear * 1000L)
     override fun getArtworkMrl(): String {
         if (subscriptions.isEmpty()) return super.getArtworkMrl()
