@@ -28,6 +28,7 @@ import org.videolan.vlc.gui.view.EmptyLoadingState
 import org.videolan.vlc.media.MediaUtils
 import org.videolan.vlc.util.Permissions
 import org.videolan.vlc.util.launchWhenStarted
+import org.videolan.vlc.viewmodels.PlaylistModel
 import org.videolan.vlc.viewmodels.subscription.DiscoverFeedViewModel
 import org.videolan.vlc.viewmodels.subscription.getViewModel
 
@@ -55,6 +56,15 @@ class DiscoverFeedFragment : DiscoverFragment<DiscoverFeedViewModel>() {
 
         feedAdapter = DiscoverAdapter().apply { stateRestorationPolicy = RecyclerView.Adapter.StateRestorationPolicy.PREVENT_WHEN_EMPTY }
         multiSelectHelper = feedAdapter.multiSelectHelper
+        val playlistModel = PlaylistModel.get(this)
+        playlistModel.progress.observe(this) { progress ->
+            playlistModel.currentMediaWrapper?.uri?.let { uri ->
+                feedAdapter.setProgress(uri, progress.time)
+                val item = feedAdapter.currentList?.toTypedArray()?.first { it is MediaWrapper && it.uri == uri }
+                feedAdapter.notifyItemChanged(feedAdapter.currentList?.toTypedArray()?.indexOf(item)
+                        ?: 0, UPDATE_PROGRESS)
+            }
+        }
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -95,6 +105,7 @@ class DiscoverFeedFragment : DiscoverFragment<DiscoverFeedViewModel>() {
         binding.videoGrid.adapter = feedAdapter
         swipeRefreshLayout.setOnRefreshListener(this)
         viewModel.provider.pagedList.observe(requireActivity()) {
+            feedAdapter.clearRefreshes()
             @Suppress("UNCHECKED_CAST")
             (it as? PagedList<MediaLibraryItem>)?.let { pagedList -> feedAdapter.submitList(pagedList) }
             updateEmptyView()

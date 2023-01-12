@@ -46,6 +46,10 @@
                 type="boolean" />
 
         <variable
+                name="progress"
+                type="float" />
+
+        <variable
                 name="seen"
                 type="long" />
 
@@ -226,63 +230,50 @@
                 vlc:layout_constraintTop_toTopOf="parent"
                 vlc:srcCompat="@drawable/ic_video_grid_check" />
 
-        <TextView
-                android:id="@+id/textView39"
+        <org.videolan.vlc.gui.view.DiscoverRoundButton
+                android:id="@+id/play_button"
                 android:layout_width="wrap_content"
                 android:layout_height="42dp"
                 android:layout_marginTop="16dp"
                 android:layout_marginBottom="16dp"
-                android:background="@drawable/rounded_play_sub"
-                android:drawableStart="@drawable/ic_play_sub"
-                android:gravity="center_vertical"
+                vlc:drb_button_icon="@drawable/ic_play_sub"
+                vlc:drb_icon="false"
                 android:onClick="@{holder::onPlayClick}"
-                android:paddingTop="4dp"
-                android:paddingEnd="12dp"
-                android:paddingBottom="4dp"
-                android:text="@{media.dateDuration()}"
+                vlc:roundButtonText="@{media.dateDuration()}"
+                android:background="@drawable/rounded_play_sub"
+                vlc:roundButtonProgress="@{progress}"
                 vlc:layout_constraintBottom_toTopOf="@+id/view3"
                 vlc:layout_constraintStart_toStartOf="@+id/container"
                 vlc:layout_constraintTop_toBottomOf="@+id/container" />
 
-        <ImageView
-                android:id="@+id/textView40"
+        <org.videolan.vlc.gui.view.DiscoverRoundButton
+                android:id="@+id/download_button"
                 android:layout_width="42dp"
                 android:layout_height="42dp"
                 android:layout_marginStart="16dp"
-                android:layout_marginTop="8dp"
+                vlc:drb_button_icon="@drawable/ic_sub_download"
                 android:background="@drawable/round_play_sub"
-                android:onClick="@{holder::onPlayClick}"
-                android:scaleType="center"
-                android:src="@drawable/ic_sub_download"
-                vlc:layout_constraintBottom_toBottomOf="@+id/textView39"
-                vlc:layout_constraintStart_toEndOf="@+id/textView39"
-                vlc:layout_constraintTop_toBottomOf="@+id/container"
-                vlc:layout_constraintVertical_bias="1.0" />
+                android:onClick="@{holder::onPlayButtonClick}"
+                vlc:drb_icon="true"
+                vlc:layout_constraintBottom_toBottomOf="@+id/play_button"
+                vlc:layout_constraintStart_toEndOf="@+id/play_button"
+                vlc:layout_constraintTop_toTopOf="@+id/play_button" />
 
-        <ImageView
-                android:id="@+id/textView41"
+
+        <org.videolan.vlc.gui.view.DiscoverRoundButton
+                android:id="@+id/playqueue_button"
                 android:layout_width="42dp"
                 android:layout_height="42dp"
                 android:layout_marginStart="16dp"
-                android:layout_marginTop="8dp"
-                android:background="@drawable/round_play_sub"
+                vlc:drb_button_icon="@drawable/ic_sub_addtoplaylist"
                 android:enabled="@{!media.inPlayQueue}"
                 android:onClick="@{holder::onAddPlayQueueClick}"
                 android:scaleType="center"
-                android:src="@drawable/ic_sub_addtoplaylist"
-                vlc:layout_constraintBottom_toBottomOf="@+id/textView39"
-                vlc:layout_constraintStart_toEndOf="@+id/textView40"
-                vlc:layout_constraintTop_toBottomOf="@+id/container"
+                android:background="@drawable/round_play_sub"
+                vlc:layout_constraintBottom_toBottomOf="@+id/play_button"
+                vlc:layout_constraintStart_toEndOf="@+id/download_button"
+                vlc:layout_constraintTop_toTopOf="@+id/play_button"
                 vlc:layout_constraintVertical_bias="1.0" />
-
-        <ImageView
-                android:id="@+id/selected_check2"
-                android:layout_width="18dp"
-                android:layout_height="18dp"
-                android:visibility="@{media.inPlayQueue ? View.VISIBLE : View.GONE}"
-                vlc:layout_constraintBottom_toBottomOf="@+id/textView41"
-                vlc:layout_constraintEnd_toEndOf="@+id/textView41"
-                vlc:srcCompat="@drawable/ic_video_grid_check" />
 
         <View
                 android:id="@+id/view3"

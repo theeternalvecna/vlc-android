@@ -27,11 +27,6 @@
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:top="3dp" android:bottom="3dp" android:left="3dp" android:right="3dp">
         <shape android:shape="oval">
-            <stroke
-                    android:width="2dp"
-                    android:color="@color/standard_selection_control_normal_primary">
-
-            </stroke>
             <solid android:color="@color/standard_selection_transparent"/>
 
 

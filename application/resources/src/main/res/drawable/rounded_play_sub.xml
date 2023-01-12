@@ -25,14 +25,9 @@
   -->
 
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:top="3dp" android:bottom="3dp">
+    <item android:top="4dp" android:bottom="4dp" android:left="4dp" android:right="4dp">
         <shape android:shape="rectangle">
             <corners android:radius="21dp" />
-            <stroke
-                    android:width="2dp"
-                    android:color="@color/standard_selection_control_normal_primary">
-
-            </stroke>
             <solid android:color="@color/standard_selection_transparent"/>
 
 

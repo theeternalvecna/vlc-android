@@ -110,6 +110,10 @@
         <attr name="show_button" format="boolean" />
         <attr name="button_icon" format="reference" />
     </declare-styleable>
+    <declare-styleable name="DiscoverRoundButton">
+        <attr name="drb_button_icon" format="integer" />
+        <attr name="drb_icon" format="boolean" />
+    </declare-styleable>
 
     <declare-styleable name="HalfCircleView">
         <attr name="is_left" format="boolean"/>

@@ -26,16 +26,23 @@ package org.videolan.vlc.gui.discover
 
 import android.annotation.SuppressLint
 import android.annotation.TargetApi
+import android.net.Uri
 import android.os.Build
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
+import androidx.lifecycle.lifecycleScope
 import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.DiffUtil
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import org.videolan.libvlc.util.AndroidUtil
 import org.videolan.medialibrary.interfaces.media.MediaWrapper
 import org.videolan.medialibrary.interfaces.media.Subscription
@@ -47,13 +54,16 @@ import org.videolan.vlc.BR
 import org.videolan.vlc.R
 import org.videolan.vlc.gui.helpers.*
 import org.videolan.vlc.gui.video.*
+import org.videolan.vlc.gui.view.DiscoverRoundButton
 import org.videolan.vlc.gui.view.FastScroller
+import kotlin.random.Random
 
 class DiscoverAdapter : PagedListAdapter<MediaLibraryItem, DiscoverAdapter.ViewHolder>(DiscoverServiceCallback), FastScroller.SeparatedAdapter,
         MultiSelectAdapter<MediaLibraryItem>, IEventsSource<DiscoverFragment.DiscoverAction> by EventsSource() {
 
     var isListMode = true
     val multiSelectHelper = MultiSelectHelper(this, UPDATE_SELECTION)
+    private val progresses = HashMap<Uri, Long>()
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = getItem(position) ?: return
@@ -76,6 +86,7 @@ class DiscoverAdapter : PagedListAdapter<MediaLibraryItem, DiscoverAdapter.ViewH
                     }
                     UPDATE_SELECTION -> holder.selectView(multiSelectHelper.isSelected(position))
                     UPDATE_SEEN -> if (item is MediaWrapper) holder.binding.setVariable(BR.seen, item.seen)
+                    UPDATE_PROGRESS -> if (item is MediaWrapper) updateProgress(item, holder)
                 }
             }
         }
@@ -112,10 +123,54 @@ class DiscoverAdapter : PagedListAdapter<MediaLibraryItem, DiscoverAdapter.ViewH
                 if (!isListMode) holder.binding.setVariable(BR.resolution, null)
                 holder.binding.setVariable(BR.seen, item.seen)
                 holder.binding.setVariable(BR.max, 0)
+
+                updateProgress(item, holder)
             }
         }
     }
 
+    /**
+     * Update the progress view
+     *
+     * @param item the item
+     * @param holder the adapter holder
+     */
+    private fun updateProgress(item: MediaWrapper, holder: ViewHolder) {
+        val position = if (progresses.keys.contains(item.uri)) {
+            progresses[item.uri]!!.toFloat() / item.length
+        } else if (item.position != -1F) item.position else {
+            val lastTime = item.time
+            var max = 0F
+            var progress = 0F
+            if (lastTime > 0) {
+                max = item.length / 1000F
+                progress = lastTime / 1000F
+            }
+            if (lastTime == -1L) 0F else (progress / max).coerceAtMost(1F).coerceAtLeast(0F)
+        }
+        if (position > 1F) {
+            holder.binding.setVariable(BR.seen, 1L)
+            holder.binding.setVariable(BR.progress, 0F)
+        } else holder.binding.setVariable(BR.progress, position)
+    }
+
+    /**
+     * Add a time entry to the map for a media
+     *
+     * @param uri the media uri
+     * @param time the new time
+     */
+    fun setProgress(uri: Uri, time: Long) {
+        progresses[uri] = time
+    }
+
+    /**
+     * Clear the progress map
+     *
+     */
+    fun clearRefreshes() {
+        progresses.clear()
+    }
 
 
     @TargetApi(Build.VERSION_CODES.M)
@@ -146,6 +201,32 @@ class DiscoverAdapter : PagedListAdapter<MediaLibraryItem, DiscoverAdapter.ViewH
         fun onAddPlayQueueClick(@Suppress("UNUSED_PARAMETER") v: View) {
             val position = layoutPosition
             if (isPositionValid(position)) getItem(position)?.let { eventsChannel.trySend(DiscoverFragment.DiscoverAddPlayQueueClick(layoutPosition, it)) }
+        }
+
+        // todo this is temporary methods ( onPlayButtonClick, animateButton) to demonstrate the DiscoverRoundButton animation
+        fun onPlayButtonClick(@Suppress("UNUSED_PARAMETER") v: View) {
+            if (v is DiscoverRoundButton) {
+                if (v.progress == 1F) v.progress = 0F
+                animateButton(v)
+            }
+
+        }
+
+        val increment =  0.001F + Random.nextFloat() *(0.05F - 0.0001F)
+        fun animateButton(v:DiscoverRoundButton) {
+            (v.context as? AppCompatActivity)?.let {
+                it.lifecycleScope.launch{
+                    withContext(Dispatchers.IO) {
+                        delay(16)
+                    }
+                    if (v.progress < 1F) {
+
+                        val newProgress = (v.progress + increment).coerceAtMost(1F)
+                        v.progress = newProgress
+                        animateButton(v)
+                    }
+                }
+            }
         }
 
         fun onClick(@Suppress("UNUSED_PARAMETER") v: View) {
@@ -190,6 +271,7 @@ private object DiscoverServiceCallback : DiffUtil.ItemCallback<MediaLibraryItem>
     override fun getChangePayload(oldItem: MediaLibraryItem, newItem: MediaLibraryItem) = when {
         (oldItem is Subscription && newItem is Subscription) && oldItem.nbMedia != newItem.nbMedia -> UPDATE_NB_MEDIA
         (oldItem is MediaWrapper && newItem is MediaWrapper) && oldItem.date != newItem.date -> UPDATE_NB_MEDIA
+        (oldItem is MediaWrapper && newItem is MediaWrapper) && oldItem.time != newItem.time -> UPDATE_PROGRESS
         oldItem.artworkMrl != newItem.artworkMrl -> UPDATE_THUMB
         else -> UPDATE_SEEN
     }
