@@ -868,6 +868,8 @@ abstract public class Medialibrary {
     abstract public int getAudioCount(String query);
     abstract public MediaWrapper[] searchVideo(String query, int sort, boolean desc, boolean includeMissing, boolean onlyFavorites, int nbItems, int offset);
     abstract public int getVideoCount(String query);
+    abstract public MediaWrapper[] searchSubscriptionMedia(String query, int sort, boolean desc, boolean includeMissing, boolean onlyFavorites, int nbItems, int offset);
+    abstract public int getSearchSubscriptionMediaCount(String query);
     abstract public Artist[] searchArtist(String query);
     abstract public Artist[] searchArtist(String query, int sort, boolean desc, boolean includeMissing, boolean onlyFavorites, int nbItems, int offset);
     abstract public Album[] searchAlbum(String query);

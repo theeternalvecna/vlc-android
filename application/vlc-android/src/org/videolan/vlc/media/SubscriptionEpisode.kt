@@ -46,7 +46,8 @@ class SubscriptionEpisode(mw: MediaWrapper, private val subscriptions: List<Subs
         if (subscriptions.isEmpty()) return super.getArtworkMrl()
         return subscriptions[0].artworkMrl
     }
-    fun summary() = if(description.isNullOrBlank()) HtmlCompat.fromHtml(description
+
+    fun summary() = if (description.isNullOrBlank()) HtmlCompat.fromHtml(description
             ?: ("<p>Lorem ipsum dolor sit amet, <a href=\"http://google.com\">consectetur adipiscing</a> elit. <b>Phasellus</b> ante metus, volutpat eget ultricies sit amet, sagittis ut justo. Praesent dignissim imperdiet tellus at malesuada. Integer tincidunt dui justo, vitae blandit tortor volutpat quis. Fusce aliquet, lectus quis suscipit interdum, augue enim elementum arcu, vitae egestas quam diam at magna. Sed rhoncus dui sed posuere elementum. Phasellus id nunc in ligula dictum facilisis eu sed dolor. Donec at urna sit amet est pulvinar mollis eget vel quam. Praesent sed iaculis mi. Mauris convallis nibh vel tortor congue, nec scelerisque libero fringilla. In ac orci eget massa maximus convallis. Vestibulum malesuada elit lacus, non viverra metus imperdiet eget. Aliquam eget sollicitudin enim, sed hendrerit lorem. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis sed ligula sagittis orci consectetur hendrerit.</p>" +
                     "Donec nec nibh eu est hendrerit pellentesque in eu est. Phasellus sodales ex in dolor ornare mattis. Nam rhoncus posuere consequat. Quisque lacinia, ante condimentum condimentum luctus, erat mi imperdiet libero, vel malesuada sem tellus non est. Nulla elementum, purus ut tempus scelerisque, nisi augue faucibus massa, in lacinia nisi justo a nisl. Morbi eget ligula in tellus ultricies ultricies. Nullam consequat mi vitae sodales faucibus. Aenean at ullamcorper orci, non interdum metus. Suspendisse in rutrum odio, non cursus libero. Vestibulum ut erat sollicitudin, commodo lorem eu, pellentesque tortor. Curabitur feugiat ex ut dui gravida, non fringilla mi venenatis.</p><p>" +
                     "Praesent sit amet sapien neque. Duis convallis hendrerit ornare. Mauris rutrum nulla non sem volutpat gravida. Suspendisse ultricies ante id enim congue, laoreet tristique nisl lacinia. Ut ultrices libero id velit bibendum mollis. Nam mauris urna, sagittis imperdiet lacus aliquam, suscipit venenatis orci. Phasellus lobortis mauris quis pellentesque congue. Maecenas tempor nisi a libero sollicitudin tristique. Vivamus mollis augue egestas massa elementum blandit. Fusce nec dictum ipsum.</p><p>" +
@@ -67,4 +68,15 @@ class SubscriptionEpisode(mw: MediaWrapper, private val subscriptions: List<Subs
                     "Sed ut dignissim odio. Vestibulum sed posuere massa, at fermentum ipsum. Nunc elit est, venenatis imperdiet semper nec, fringilla viverra velit. Quisque ultricies condimentum tempor. Quisque in ipsum pharetra, sollicitudin ex vel, vehicula dolor. Aenean pharetra pharetra nulla nec vehicula. Quisque ut enim ipsum. Curabitur nulla risus, euismod id nisi vel, fringilla pellentesque velit. Maecenas id dignissim libero, ut eleifend neque. Curabitur et mauris et arcu fringilla malesuada. Mauris nec venenatis dui. Maecenas dictum tortor a finibus interdum. Curabitur consectetur condimentum augue quis semper. Phasellus pellentesque pulvinar elit non semper.</p><p>" +
                     "Praesent luctus, purus et commodo dignissim, lorem lorem commodo erat, a dapibus velit mauris et ipsum. Sed at risus at urna pulvinar placerat ut et eros. Nunc varius lacinia elit eu fringilla. Nulla nec erat vestibulum mauris ullamcorper tristique. Etiam vitae eleifend nulla. Nunc faucibus sit amet libero vel porta. Suspendisse lorem nulla, varius id mi a, aliquet ultrices mauris. Donec semper felis eu quam pulvinar, et volutpat libero congue. Nam sed suscipit est, eu facilisis nibh. Vivamus leo urna, consequat vitae auctor ut, pharetra a magna. Phasellus nec euismod urna. Donec gravida, est ac aliquet gravida, risus nisl vehicula felis, dignissim hendrerit lectus arcu pharetra purus. Sed faucibus vehicula ex et imperdiet. Suspendisse potenti.</p>"), 0)
     else description
+
+    fun getProgress() = if (position != -1F) position else {
+        val lastTime = time
+        var max = 0F
+        var progress = 0F
+        if (lastTime > 0) {
+            max = length / 1000F
+            progress = lastTime / 1000F
+        }
+        if (lastTime == -1L) 0F else (progress / max).coerceAtMost(1F).coerceAtLeast(0F)
+    }
 }

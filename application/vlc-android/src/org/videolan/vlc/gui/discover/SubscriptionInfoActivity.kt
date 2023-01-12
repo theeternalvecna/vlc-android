@@ -33,9 +33,6 @@ import android.os.Build
 import android.os.Bundle
 import android.os.Parcelable
 import android.text.method.LinkMovementMethod
-import android.widget.ImageView
-import android.widget.TextView
-import androidx.core.widget.TextViewCompat
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.lifecycleScope
 import androidx.palette.graphics.Palette
@@ -71,13 +68,17 @@ class SubscriptionInfoActivity : AudioPlayerContainerActivity() {
         else
             intent.parcelable<Parcelable>(KEY_MEDIA) as MediaWrapper
 
-        binding.media = SubscriptionEpisode(media, listOf(), PlaylistManager.hasMedia(media.uri))
+        val subscriptionEpisode = SubscriptionEpisode(media, listOf(), PlaylistManager.hasMedia(media.uri))
+        binding.media = subscriptionEpisode
         viewModel = getViewModel(media)
         viewModel.subscriptionEpisode.observe(this) {
             binding.media = it
             showArtwork(this, it.artworkMrl)
         }
         lifecycleScope.launch { viewModel.loadEpisodeSubs() }
+
+        binding.progress = subscriptionEpisode.getProgress()
+
 
         fragmentContainer = binding.songs
         binding.summary.movementMethod = LinkMovementMethod.getInstance()
@@ -121,16 +122,20 @@ class SubscriptionInfoActivity : AudioPlayerContainerActivity() {
                         palette.getLightVibrantColor(Color.WHITE)
                     } // Night mode is active, we're using dark theme
                 }
+                val paletteMutedColor = when (currentNightMode) {
+                    Configuration.UI_MODE_NIGHT_NO -> {
+                        palette.getDarkMutedColor(Color.BLACK)
+                    } // Night mode is not active, we're using the light theme
+                    else -> {
+                        palette.getLightMutedColor(Color.WHITE)
+                    } // Night mode is active, we're using dark theme
+                }
                 binding.summary.setLinkTextColor(ColorStateList.valueOf(paletteColor))
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) arrayOf(binding.playButton, binding.textView40, binding.textView41).forEach {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) arrayOf(binding.playButton, binding.downloadButton, binding.playqueueButton).forEach {
 
                     val colorStateList = ColorStateList.valueOf(paletteColor)
                     it.backgroundTintList = colorStateList
-                    if (it is TextView) {
-                        TextViewCompat.setCompoundDrawableTintList(it, ColorStateList.valueOf(paletteColor))
-                        it.setTextColor(paletteColor)
-                    }
-                    if (it is ImageView) it.imageTintList = colorStateList
+                    it.setColor(paletteColor, paletteMutedColor)
                 }
             }
         }

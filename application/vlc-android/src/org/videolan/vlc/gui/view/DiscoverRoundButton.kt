@@ -26,14 +26,17 @@
 package org.videolan.vlc.gui.view
 
 import android.content.Context
+import android.content.res.ColorStateList
 import android.graphics.*
 import android.graphics.Paint.Style
+import android.os.Build
 import android.util.AttributeSet
 import android.util.Log
 import android.view.LayoutInflater
 import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.annotation.RequiresApi
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.databinding.BindingAdapter
 import org.videolan.tools.dp
@@ -229,6 +232,15 @@ class DiscoverRoundButton : FrameLayout {
 
     fun setText(text: String) {
         textView.text = text
+    }
+
+    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
+    fun setColor(paletteColor: Int, paletteMutedColor: Int) {
+        progressBackgroundColor = paletteColor
+        progressColor = paletteMutedColor
+        val valueOf = ColorStateList.valueOf(paletteColor)
+        imageView.imageTintList = valueOf
+        textView.setTextColor(valueOf)
     }
 }
 

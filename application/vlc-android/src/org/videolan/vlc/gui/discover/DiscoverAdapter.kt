@@ -56,6 +56,7 @@ import org.videolan.vlc.gui.helpers.*
 import org.videolan.vlc.gui.video.*
 import org.videolan.vlc.gui.view.DiscoverRoundButton
 import org.videolan.vlc.gui.view.FastScroller
+import org.videolan.vlc.media.SubscriptionEpisode
 import kotlin.random.Random
 
 class DiscoverAdapter : PagedListAdapter<MediaLibraryItem, DiscoverAdapter.ViewHolder>(DiscoverServiceCallback), FastScroller.SeparatedAdapter,
@@ -86,7 +87,7 @@ class DiscoverAdapter : PagedListAdapter<MediaLibraryItem, DiscoverAdapter.ViewH
                     }
                     UPDATE_SELECTION -> holder.selectView(multiSelectHelper.isSelected(position))
                     UPDATE_SEEN -> if (item is MediaWrapper) holder.binding.setVariable(BR.seen, item.seen)
-                    UPDATE_PROGRESS -> if (item is MediaWrapper) updateProgress(item, holder)
+                    UPDATE_PROGRESS -> if (item is SubscriptionEpisode) updateProgress(item, holder)
                 }
             }
         }
@@ -118,7 +119,7 @@ class DiscoverAdapter : PagedListAdapter<MediaLibraryItem, DiscoverAdapter.ViewH
                 holder.binding.setVariable(BR.max, 0)
                 holder.binding.setVariable(BR.time, holder.itemView.context.resources.getQuantityString(R.plurals.media_quantity, item.nbMedia, item.nbMedia))
             }
-            is MediaWrapper -> {
+            is SubscriptionEpisode -> {
                 holder.title.text = item.title
                 if (!isListMode) holder.binding.setVariable(BR.resolution, null)
                 holder.binding.setVariable(BR.seen, item.seen)
@@ -135,19 +136,10 @@ class DiscoverAdapter : PagedListAdapter<MediaLibraryItem, DiscoverAdapter.ViewH
      * @param item the item
      * @param holder the adapter holder
      */
-    private fun updateProgress(item: MediaWrapper, holder: ViewHolder) {
+    private fun updateProgress(item: SubscriptionEpisode, holder: ViewHolder) {
         val position = if (progresses.keys.contains(item.uri)) {
             progresses[item.uri]!!.toFloat() / item.length
-        } else if (item.position != -1F) item.position else {
-            val lastTime = item.time
-            var max = 0F
-            var progress = 0F
-            if (lastTime > 0) {
-                max = item.length / 1000F
-                progress = lastTime / 1000F
-            }
-            if (lastTime == -1L) 0F else (progress / max).coerceAtMost(1F).coerceAtLeast(0F)
-        }
+        } else item.getProgress()
         if (position > 1F) {
             holder.binding.setVariable(BR.seen, 1L)
             holder.binding.setVariable(BR.progress, 0F)

@@ -537,6 +537,32 @@ getSearchVideoCount(JNIEnv* env, jobject thiz, jstring filterQuery) {
     return count;
 }
 
+jobjectArray
+searchSubscriptionMedia(JNIEnv* env, jobject thiz, jstring filterQuery, jint sortingCriteria, jboolean desc, jboolean includeMissing, jboolean onlyFavorites,  jint nbItems,  jint offset)
+{
+    AndroidMediaLibrary *aml = MediaLibrary_getInstance(env, thiz);
+    medialibrary::QueryParameters params = generateParams(sortingCriteria, desc, includeMissing, onlyFavorites);
+    const char *queryChar = env->GetStringUTFChars(filterQuery, JNI_FALSE);
+    const auto query = aml->searchSubscriptionMedia(queryChar, &params);
+    const auto searchResult = nbItems != 0 ? query->items(nbItems, offset) : query->all();
+    jobjectArray mediaList = (jobjectArray) env->NewObjectArray(searchResult.size(), ml_fields.MediaWrapper.clazz, NULL);
+    int index = -1;
+    for(medialibrary::MediaPtr const& media : searchResult) {
+        auto item = mediaToMediaWrapper(env, &ml_fields, media);
+        env->SetObjectArrayElement(mediaList, ++index, item.get());
+    }
+    env->ReleaseStringUTFChars(filterQuery, queryChar);
+    return mediaList;
+}
+
+jint
+getSubscriptionMediaCount(JNIEnv* env, jobject thiz, jstring filterQuery) {
+    const char *queryChar = env->GetStringUTFChars(filterQuery, JNI_FALSE);
+    jint count =  MediaLibrary_getInstance(env, thiz)->searchSubscriptionMedia(queryChar)->count();
+    env->ReleaseStringUTFChars(filterQuery, queryChar);
+    return count;
+}
+
 jint
 getSearchAudioCount(JNIEnv* env, jobject thiz, jstring filterQuery) {
     const char *queryChar = env->GetStringUTFChars(filterQuery, JNI_FALSE);
@@ -2513,6 +2539,8 @@ static JNINativeMethod methods[] = {
     {"nativeSearchPagedMedia", "(Ljava/lang/String;IZZZII)[Lorg/videolan/medialibrary/interfaces/media/MediaWrapper;", (void*)searchPagedMedia},
     {"nativeSearchPagedAudio", "(Ljava/lang/String;IZZZII)[Lorg/videolan/medialibrary/interfaces/media/MediaWrapper;", (void*)searchPagedAudio},
     {"nativeSearchPagedVideo", "(Ljava/lang/String;IZZZII)[Lorg/videolan/medialibrary/interfaces/media/MediaWrapper;", (void*)searchPagedVideo},
+    {"nativeSearchSubscriptionMedia", "(Ljava/lang/String;IZZZII)[Lorg/videolan/medialibrary/interfaces/media/MediaWrapper;", (void*)searchSubscriptionMedia},
+    {"nativeGetSubscriptionMediaCount", "(Ljava/lang/String;)I", (void*)getSubscriptionMediaCount },
     {"nativeGetSearchVideoCount", "(Ljava/lang/String;)I", (void*)getSearchVideoCount },
     {"nativeGetSearchAudioCount", "(Ljava/lang/String;)I", (void*)getSearchAudioCount },
     {"nativeGetSearchMediaCount", "(Ljava/lang/String;)I", (void*)getSearchMediaCount },

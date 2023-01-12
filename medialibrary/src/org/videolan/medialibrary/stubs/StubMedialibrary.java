@@ -622,6 +622,17 @@ public class StubMedialibrary extends Medialibrary {
         return count;
     }
 
+
+    @Override
+    public MediaWrapper[] searchSubscriptionMedia(String query, int sort, boolean desc, boolean includeMissing, boolean onlyFavorites, int nbItems, int offset) {
+        return new MediaWrapper[0];
+    }
+
+    @Override
+    public int getSearchSubscriptionMediaCount(String query) {
+        return 0;
+    }
+
     public Artist[] searchArtist(String query) {
         ArrayList<Artist> results = new ArrayList<>();
         for (Artist artist : dt.mArtists) {
