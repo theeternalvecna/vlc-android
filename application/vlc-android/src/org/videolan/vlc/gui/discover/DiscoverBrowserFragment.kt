@@ -39,10 +39,11 @@ import org.videolan.tools.isStarted
 import org.videolan.vlc.R
 import org.videolan.vlc.gui.BaseFragment
 import org.videolan.vlc.gui.dialogs.PodcastAddDialog
+import org.videolan.vlc.interfaces.Filterable
 import org.videolan.vlc.util.findCurrentFragment
 import org.videolan.vlc.util.findFragmentAt
 
-class DiscoverBrowserFragment : BaseFragment(), TabLayout.OnTabSelectedListener {
+class DiscoverBrowserFragment : BaseFragment(), TabLayout.OnTabSelectedListener, Filterable {
     override fun getTitle() = getString(R.string.discover)
     private lateinit var pagerAdapter: DiscoverAdapter
     override val hasTabs = true
@@ -82,6 +83,35 @@ class DiscoverBrowserFragment : BaseFragment(), TabLayout.OnTabSelectedListener 
     override fun onActionItemClicked(mode: ActionMode?, item: MenuItem?) = false
 
     override fun onDestroyActionMode(mode: ActionMode?) {}
+
+    /**
+     * Finds current fragment
+     *
+     * @return the current shown fragment
+     */
+    private fun getCurrentFragment() = requireActivity().supportFragmentManager.findFragmentByTag("f" + viewPager.currentItem)
+
+    override fun getFilterQuery() = try {
+        (getCurrentFragment() as? Filterable)?.getFilterQuery()
+    } catch (e: Exception) {
+        null
+    }
+
+    override fun enableSearchOption() = (getCurrentFragment() as? Filterable)?.enableSearchOption() ?: false
+
+    override fun filter(query: String) {
+        (getCurrentFragment() as? Filterable)?.filter(query)
+    }
+
+    override fun restoreList() {
+        (getCurrentFragment() as? Filterable)?.restoreList()
+    }
+
+    override fun setSearchVisibility(visible: Boolean) {
+        (getCurrentFragment() as? Filterable)?.setSearchVisibility(visible)
+    }
+
+    override fun allowedToExpand() = (getCurrentFragment() as? Filterable)?.allowedToExpand() ?: false
 
     private fun setupTabLayout() {
         if (tabLayout == null || !::viewPager.isInitialized) return

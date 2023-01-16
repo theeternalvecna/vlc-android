@@ -25,6 +25,7 @@ import org.videolan.vlc.gui.helpers.UiTools
 import org.videolan.vlc.gui.helpers.UiTools.addToPlaylist
 import org.videolan.vlc.gui.helpers.UiTools.createShortcut
 import org.videolan.vlc.gui.view.EmptyLoadingState
+import org.videolan.vlc.interfaces.Filterable
 import org.videolan.vlc.media.MediaUtils
 import org.videolan.vlc.util.Permissions
 import org.videolan.vlc.util.launchWhenStarted
@@ -34,7 +35,7 @@ import org.videolan.vlc.viewmodels.subscription.getViewModel
 
 private const val TAG = "VLC/DiscFeedFr"
 
-class DiscoverFeedFragment : DiscoverFragment<DiscoverFeedViewModel>() {
+class DiscoverFeedFragment : DiscoverFragment<DiscoverFeedViewModel>(), Filterable {
 
     private lateinit var feedAdapter: DiscoverAdapter
     private lateinit var binding: SubscriptionGridBinding

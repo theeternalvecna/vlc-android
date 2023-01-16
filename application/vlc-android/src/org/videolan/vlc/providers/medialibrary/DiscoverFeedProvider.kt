@@ -34,11 +34,16 @@ class DiscoverFeedProvider(context: Context, model: SortableModel) : Medialibrar
     override fun canSortByFileNameName() = true
 
 
-    override fun getTotalCount() = if (model.filterQuery == null) medialibrary.getSubscriptionMediaCount(true)
-    else 0
+    override fun getTotalCount() = if (model.filterQuery == null)
+        medialibrary.getSubscriptionMediaCount(true)
+    else
+        medialibrary.getSearchSubscriptionMediaCount(model.filterQuery)
 
     override fun getPage(loadSize: Int, startposition: Int): Array<SubscriptionEpisode> {
-        val list = medialibrary.getSubscriptionMedia(model.sort, model.desc, true, false, loadSize, startposition)
+        val list =  if (model.filterQuery == null)
+            medialibrary.getSubscriptionMedia(model.sort, model.desc, true, false, loadSize, startposition)
+        else
+            medialibrary.searchSubscriptionMedia(model.filterQuery, model.sort, model.desc, true, false, loadSize, startposition)
         return list.map {
             SubscriptionEpisode(it,  it.subscriptions.toList(), PlaylistManager.hasMedia(it.uri))
         }.toTypedArray()

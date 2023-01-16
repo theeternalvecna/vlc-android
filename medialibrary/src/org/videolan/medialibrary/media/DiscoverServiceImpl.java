@@ -70,6 +70,18 @@ public class DiscoverServiceImpl extends DiscoverService {
     }
 
     @Override
+    public Subscription[] searchSubscriptions(String query, int sort, boolean desc, boolean includeMissing, boolean onlyFavorites, int nbItems, int offset) {
+        final Medialibrary ml = Medialibrary.getInstance();
+        return ml.isInitiated() ? nativeSearchSubscriptions(ml, mType.value, query, sort, desc, includeMissing, onlyFavorites, nbItems, offset) : new Subscription[0];
+    }
+
+    @Override
+    public int searchSubscriptionsCount(String query, int sort, boolean desc, boolean includeMissing) {
+        final Medialibrary ml = Medialibrary.getInstance();
+        return ml.isInitiated() ? nativeSearchSubscriptionsCount(ml, mType.value, query) : 0;
+    }
+
+    @Override
     public boolean refresh() {
         final Medialibrary ml = Medialibrary.getInstance();
         return ml.isInitiated() && nativeServiceRefresh(ml, this.mType.value);
@@ -84,5 +96,7 @@ public class DiscoverServiceImpl extends DiscoverService {
     private native boolean nativeSetMaxCachedSize(Medialibrary ml, int type, long size);
     private native Subscription[] nativeGetSubscriptions(Medialibrary ml, int type, int sort, boolean desc, boolean includeMissing, boolean onlyFavorites);
     private native MediaWrapper[] nativeGetServiceMedia(Medialibrary ml, int type, int sort, boolean desc, boolean includeMissing, boolean onlyFavorites);
+    private native Subscription[] nativeSearchSubscriptions(Medialibrary ml, int type, String query, int sort, boolean desc, boolean includeMissing, boolean onlyFavorites, int nbItems, int offset);
+    private native int nativeSearchSubscriptionsCount(Medialibrary ml, int type, String query);
     private native boolean nativeServiceRefresh(Medialibrary ml, int type);
 }

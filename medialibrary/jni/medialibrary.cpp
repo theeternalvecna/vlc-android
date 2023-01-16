@@ -1243,6 +1243,39 @@ getSearchAlbumFromArtistCount(JNIEnv* env, jobject thiz, jobject medialibrary, j
     return (jint) (query != nullptr ? query->count() : 0);
 }
 
+jobjectArray
+searchSubscriptionsFromService(JNIEnv* env, jobject thiz, jobject medialibrary, jint _type, jstring filterQuery, jint sortingCriteria, jboolean desc, jboolean includeMissing, jboolean onlyFavorites,  jint nbItems,  jint offset)
+{
+    AndroidMediaLibrary *aml = MediaLibrary_getInstance(env, medialibrary);
+    medialibrary::QueryParameters params = generateParams(sortingCriteria, desc, includeMissing, onlyFavorites);
+    const char *queryChar = env->GetStringUTFChars(filterQuery, JNI_FALSE);
+    medialibrary::IService::Type type = (medialibrary::IService::Type)_type;
+    const auto query = aml->searchSubscriptionsFromService(type, queryChar, &params);
+    if (query == nullptr)
+    {
+        env->ReleaseStringUTFChars(filterQuery, queryChar);
+        return (jobjectArray) env->NewObjectArray(0, ml_fields.Subscription.clazz, NULL);
+    }
+    std::vector<medialibrary::SubscriptionPtr> subscriptions = nbItems != 0 ? query->items(nbItems, offset) : query->all();
+    jobjectArray subscriptionsRefs = (jobjectArray) env->NewObjectArray(subscriptions.size(), ml_fields.Subscription.clazz, NULL);
+    int index = -1;
+    for(medialibrary::SubscriptionPtr const& subscription : subscriptions) {
+        auto item = convertSubscriptionObject(env, &ml_fields, subscription);
+        env->SetObjectArrayElement(subscriptionsRefs, ++index, item.get());
+    }
+    env->ReleaseStringUTFChars(filterQuery, queryChar);
+    return subscriptionsRefs;
+}
+
+jint
+searchSubscriptionsFromServiceCount(JNIEnv* env, jobject thiz, jobject medialibrary, jint _type, jstring filterQuery) {
+    const char *queryChar = env->GetStringUTFChars(filterQuery, JNI_FALSE);
+    medialibrary::IService::Type type = (medialibrary::IService::Type)_type;
+    const auto query = MediaLibrary_getInstance(env, medialibrary)->searchSubscriptionsFromService(type, queryChar);
+    env->ReleaseStringUTFChars(filterQuery, queryChar);
+    return (jint) (query != nullptr ? query->count() : 0);
+}
+
 
 /*
  * Genre methods
@@ -2730,6 +2763,8 @@ static JNINativeMethod service_methods[] = {
     {"nativeGetSubscriptions", "(Lorg/videolan/medialibrary/interfaces/Medialibrary;IIZZZ)[Lorg/videolan/medialibrary/interfaces/media/Subscription;", (void*)getSubscriptions},
     {"nativeGetServiceMedia", "(Lorg/videolan/medialibrary/interfaces/Medialibrary;IIZZZ)[Lorg/videolan/medialibrary/interfaces/media/MediaWrapper;", (void*)getServiceMedia},
     {"nativeServiceRefresh", "(Lorg/videolan/medialibrary/interfaces/Medialibrary;I)Z", (void*)serviceRefresh},
+    {"nativeSearchSubscriptions", "(Lorg/videolan/medialibrary/interfaces/Medialibrary;ILjava/lang/String;IZZZII)[Lorg/videolan/medialibrary/interfaces/media/Subscription;", (void*)searchSubscriptionsFromService },
+    {"nativeSearchSubscriptionsCount", "(Lorg/videolan/medialibrary/interfaces/Medialibrary;ILjava/lang/String;)I", (void*)searchSubscriptionsFromServiceCount },
 };
 
 static JNINativeMethod subscription_methods[] = {

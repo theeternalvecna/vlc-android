@@ -34,15 +34,16 @@ class ServiceContentProvider(val service : DiscoverService, context: Context, mo
 
     override fun canSortByFileNameName() = true
 
-    override fun getTotalCount() = if (model.filterQuery == null) service.nbSubscriptions
-     //fixme
-     else service.nbSubscriptions
+    override fun getTotalCount() = if (model.filterQuery == null)
+        service.nbSubscriptions
+    else
+        service.searchSubscriptionsCount(model.filterQuery, sort, desc, true)
 
     override fun getPage(loadSize: Int, startposition: Int): Array<Subscription> {
-        val list = if (model.filterQuery == null) service.getSubscriptions(sort, desc, true, false) else
-            //fixme
+        val list = if (model.filterQuery == null)
             service.getSubscriptions(sort, desc, true, false)
-//        model.viewModelScope.launch { completeHeaders(list, startposition) }
+        else
+            service.searchSubscriptions(model.filterQuery, sort, desc, true, false, loadSize, startposition)
         return list
     }
 

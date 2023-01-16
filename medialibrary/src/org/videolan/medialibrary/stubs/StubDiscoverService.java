@@ -70,6 +70,16 @@ public class StubDiscoverService extends DiscoverService {
     }
 
     @Override
+    public Subscription[] searchSubscriptions(String query, int sort, boolean desc, boolean includeMissing, boolean onlyFavorites, int nbItems, int offset) {
+        return new Subscription[0];
+    }
+
+    @Override
+    public int searchSubscriptionsCount(String query, int sort, boolean desc, boolean includeMissing) {
+        return 0;
+    }
+
+    @Override
     public int getNbMedia() {
         return 0;
     }

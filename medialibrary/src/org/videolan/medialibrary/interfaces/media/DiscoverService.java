@@ -90,6 +90,8 @@ public abstract class DiscoverService extends MediaLibraryItem implements Parcel
     public abstract boolean setMaxCachedSize(long size);
     public abstract Subscription[] getSubscriptions(int sort, boolean desc, boolean includeMissing, boolean onlyFavorites);
     public abstract MediaWrapper[] getMedia(int sortingCriteria, boolean desc, boolean includeMissing, boolean onlyFavorites);
+    public abstract Subscription[] searchSubscriptions(String query, int sort, boolean desc, boolean includeMissing, boolean onlyFavorites, int nbItems, int offset);
+    public abstract int searchSubscriptionsCount(String query,int sort, boolean desc, boolean includeMissing);
     public abstract boolean refresh();
 
     @Override

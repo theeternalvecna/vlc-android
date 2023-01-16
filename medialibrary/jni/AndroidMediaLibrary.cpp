@@ -290,6 +290,13 @@ AndroidMediaLibrary::searchAlbumsFromArtist( int64_t artistId, const std::string
     return artist == nullptr ? nullptr : artist->searchAlbums(query, params);
 }
 
+medialibrary::Query<medialibrary::ISubscription>
+AndroidMediaLibrary::searchSubscriptionsFromService( medialibrary::IService::Type type, const std::string& query, const medialibrary::QueryParameters* params )
+{
+    auto service = p_ml->service(type);
+    return service == nullptr ? nullptr : service->searchSubscription(query, params);
+}
+
 medialibrary::Query<medialibrary::IMedia>
 AndroidMediaLibrary::searchFromGenre( int64_t genreId, const std::string& query, const medialibrary::QueryParameters* params )
 {

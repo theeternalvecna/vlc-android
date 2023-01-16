@@ -75,6 +75,7 @@ public:
     medialibrary::Query<medialibrary::IMedia> searchFromAlbum( int64_t albumId, const std::string& query, const medialibrary::QueryParameters* params = nullptr );
     medialibrary::Query<medialibrary::IMedia> searchFromArtist( int64_t artistId, const std::string& query, const medialibrary::QueryParameters* params = nullptr );
     medialibrary::Query<medialibrary::IAlbum> searchAlbumsFromArtist( int64_t artistId, const std::string& query, const medialibrary::QueryParameters* params = nullptr );
+    medialibrary::Query<medialibrary::ISubscription> searchSubscriptionsFromService( medialibrary::IService::Type type, const std::string& query, const medialibrary::QueryParameters* params = nullptr );
     medialibrary::Query<medialibrary::IMedia> searchFromGenre( int64_t genreId, const std::string& query, const medialibrary::QueryParameters* params = nullptr );
     medialibrary::Query<medialibrary::IAlbum> searchAlbumsFromGenre( int64_t genreId, const std::string& query, const medialibrary::QueryParameters* params = nullptr );
     medialibrary::Query<medialibrary::IMedia> searchFromPlaylist( int64_t playlistId, const std::string& query, const medialibrary::QueryParameters* params = nullptr );
