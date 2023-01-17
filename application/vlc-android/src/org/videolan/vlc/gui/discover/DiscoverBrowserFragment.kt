@@ -35,6 +35,8 @@ import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import org.videolan.medialibrary.interfaces.media.DiscoverService
 import org.videolan.medialibrary.media.DiscoverServiceImpl
+import org.videolan.tools.KEY_DISCOVER_CURRENT_TAB
+import org.videolan.tools.Settings
 import org.videolan.tools.isStarted
 import org.videolan.vlc.R
 import org.videolan.vlc.gui.BaseFragment
@@ -63,6 +65,7 @@ class DiscoverBrowserFragment : BaseFragment(), TabLayout.OnTabSelectedListener,
         //placeholder service
         pagerAdapter = DiscoverAdapter(requireActivity(), DiscoverServiceImpl(DiscoverService.Type.PODCAST, 0, 0, 0))
         viewPager.adapter = pagerAdapter
+        viewPager.currentItem = Settings.getInstance(requireActivity()).getInt(KEY_DISCOVER_CURRENT_TAB, 0).coerceAtMost(pagerAdapter.itemCount-1)
     }
 
     override fun onStart() {
@@ -144,7 +147,11 @@ class DiscoverBrowserFragment : BaseFragment(), TabLayout.OnTabSelectedListener,
         }
     }
 
-    override fun onTabSelected(tab: TabLayout.Tab?) {}
+    override fun onTabSelected(tab: TabLayout.Tab?) {
+        tab?.let {
+            Settings.getInstance(requireActivity()).edit().putInt(KEY_DISCOVER_CURRENT_TAB, it.position).apply()
+        }
+    }
 
     override fun onTabUnselected(tab: TabLayout.Tab?) {
         if (isStarted()) tab?.position?.let {

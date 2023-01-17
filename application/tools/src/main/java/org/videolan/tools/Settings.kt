@@ -126,6 +126,10 @@ const val KEY_SHOW_TRACK_INFO = "show_track_info"
 const val ML_SCAN_ON = 0
 const val ML_SCAN_OFF = 1
 
+//Discover
+
+const val KEY_DISCOVER_CURRENT_TAB = "key_discover_current_tab"
+
 //Remote access
 const val KEY_ENABLE_REMOTE_ACCESS = "enable_remote_access"
 const val KEY_REMOTE_ACCESS_ML_CONTENT = "remote_access_medialibrary_content"
