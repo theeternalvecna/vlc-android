@@ -42,7 +42,7 @@ import kotlinx.coroutines.withContext
 import org.videolan.medialibrary.interfaces.media.MediaWrapper
 import org.videolan.resources.util.parcelable
 import org.videolan.vlc.R
-import org.videolan.vlc.databinding.SubscriptionInfoActivityBinding
+import org.videolan.vlc.databinding.SubscriptionEpisodeInfoActivityBinding
 import org.videolan.vlc.gui.AudioPlayerContainerActivity
 import org.videolan.vlc.gui.browser.KEY_MEDIA
 import org.videolan.vlc.gui.helpers.AudioUtil
@@ -52,17 +52,17 @@ import org.videolan.vlc.media.MediaUtils
 import org.videolan.vlc.media.PlaylistManager
 import org.videolan.vlc.media.SubscriptionEpisode
 import org.videolan.vlc.util.getScreenWidth
-import org.videolan.vlc.viewmodels.subscription.DiscoverSubInfoViewModel
+import org.videolan.vlc.viewmodels.subscription.DiscoverSubEpisodeViewModel
 import org.videolan.vlc.viewmodels.subscription.getViewModel
 
-class SubscriptionInfoActivity : AudioPlayerContainerActivity() {
-    private lateinit var viewModel: DiscoverSubInfoViewModel
-    private lateinit var binding: SubscriptionInfoActivityBinding
+class SubscriptionEpisodeInfoActivity : AudioPlayerContainerActivity() {
+    private lateinit var viewModel: DiscoverSubEpisodeViewModel
+    private lateinit var binding: SubscriptionEpisodeInfoActivityBinding
 
     public override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        binding = DataBindingUtil.setContentView(this, R.layout.subscription_info_activity)
+        binding = DataBindingUtil.setContentView(this, R.layout.subscription_episode_info_activity)
         val media = if (savedInstanceState != null)
             savedInstanceState.parcelable<Parcelable>(KEY_MEDIA) as MediaWrapper
         else
@@ -89,14 +89,14 @@ class SubscriptionInfoActivity : AudioPlayerContainerActivity() {
         }
     }
 
-    private fun showArtwork(context: SubscriptionInfoActivity, artworkMrl: String) {
+    private fun showArtwork(context: SubscriptionEpisodeInfoActivity, artworkMrl: String) {
         lifecycleScope.launch {
             val cover = withContext(Dispatchers.IO) {
                 val width = if (binding.backgroundView.width > 0) binding.backgroundView.width else context.getScreenWidth()
                 AudioUtil.readCoverBitmap(Uri.decode(artworkMrl), width)
             }
             if (cover != null) {
-                binding.cover = BitmapDrawable(this@SubscriptionInfoActivity.resources, cover)
+                binding.cover = BitmapDrawable(this@SubscriptionEpisodeInfoActivity.resources, cover)
                 binding.appbar.setExpanded(true, true)
                 val radius = 45f
                 val palette = Palette.from(cover).generate()

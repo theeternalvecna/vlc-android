@@ -972,7 +972,7 @@
             android:name=".gui.HeaderMediaListActivity"
             android:theme="@style/Theme.VLC.NoStatus"/>
         <activity
-            android:name=".gui.discover.SubscriptionInfoActivity"
+            android:name=".gui.discover.SubscriptionEpisodeInfoActivity"
             android:theme="@style/Theme.VLC.NoStatus"/>
         <activity
             android:name=".gui.InfoActivity"

@@ -103,7 +103,7 @@ abstract class DiscoverFragment<T : MedialibraryViewModel>: MediaBrowserFragment
                 //todo open the subscription screen
             }
             is MediaWrapper -> {
-                val i = Intent(requireActivity(), SubscriptionInfoActivity::class.java)
+                val i = Intent(requireActivity(), SubscriptionEpisodeInfoActivity::class.java)
                 i.putExtra(KEY_MEDIA, item)
                 startActivity(i)
             }

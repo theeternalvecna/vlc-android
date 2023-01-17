@@ -31,11 +31,11 @@ import androidx.lifecycle.ViewModelProvider
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.videolan.medialibrary.interfaces.media.MediaWrapper
-import org.videolan.vlc.gui.discover.SubscriptionInfoActivity
+import org.videolan.vlc.gui.discover.SubscriptionEpisodeInfoActivity
 import org.videolan.vlc.media.PlaylistManager
 import org.videolan.vlc.media.SubscriptionEpisode
 
-class DiscoverSubInfoViewModel(private val context: Context, val media: MediaWrapper) :  ViewModel()  {
+class DiscoverSubEpisodeViewModel(private val context: Context, val media: MediaWrapper) :  ViewModel()  {
 
     val subscriptionEpisode: MutableLiveData<SubscriptionEpisode> = MutableLiveData()
 
@@ -51,9 +51,9 @@ class DiscoverSubInfoViewModel(private val context: Context, val media: MediaWra
     class Factory(val context: Context, val media: MediaWrapper) : ViewModelProvider.NewInstanceFactory() {
         override fun <T : ViewModel> create(modelClass: Class<T>): T {
             @Suppress("UNCHECKED_CAST")
-            return DiscoverSubInfoViewModel(context.applicationContext, media) as T
+            return DiscoverSubEpisodeViewModel(context.applicationContext, media) as T
         }
     }
 }
 
-internal fun SubscriptionInfoActivity.getViewModel(media: MediaWrapper) = ViewModelProvider(this, DiscoverSubInfoViewModel.Factory(this, media))[DiscoverSubInfoViewModel::class.java]
+internal fun SubscriptionEpisodeInfoActivity.getViewModel(media: MediaWrapper) = ViewModelProvider(this, DiscoverSubEpisodeViewModel.Factory(this, media))[DiscoverSubEpisodeViewModel::class.java]
