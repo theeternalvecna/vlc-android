@@ -47,6 +47,7 @@ import org.videolan.vlc.gui.AudioPlayerContainerActivity
 import org.videolan.vlc.gui.browser.KEY_MEDIA
 import org.videolan.vlc.gui.helpers.AudioUtil
 import org.videolan.vlc.gui.helpers.UiTools
+import org.videolan.vlc.gui.helpers.linkify
 import org.videolan.vlc.gui.helpers.setAlpha
 import org.videolan.vlc.media.MediaUtils
 import org.videolan.vlc.media.PlaylistManager
@@ -82,6 +83,7 @@ class SubscriptionEpisodeInfoActivity : AudioPlayerContainerActivity() {
 
         fragmentContainer = binding.songs
         binding.summary.movementMethod = LinkMovementMethod.getInstance()
+        binding.summary.linkify(subscriptionEpisode.summary())
         initAudioPlayerContainerActivity()
 
         binding.playButton.setOnClickListener {
@@ -132,10 +134,7 @@ class SubscriptionEpisodeInfoActivity : AudioPlayerContainerActivity() {
                 }
                 binding.summary.setLinkTextColor(ColorStateList.valueOf(paletteColor))
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) arrayOf(binding.playButton, binding.downloadButton, binding.playqueueButton).forEach {
-
-                    val colorStateList = ColorStateList.valueOf(paletteColor)
-                    it.backgroundTintList = colorStateList
-                    it.setColor(paletteColor, paletteMutedColor)
+                    it.setColor(paletteColor)
                 }
             }
         }

@@ -61,9 +61,10 @@ class DiscoverFeedFragment : DiscoverFragment<DiscoverFeedViewModel>(), Filterab
         playlistModel.progress.observe(this) { progress ->
             playlistModel.currentMediaWrapper?.uri?.let { uri ->
                 feedAdapter.setProgress(uri, progress.time)
-                val item = feedAdapter.currentList?.toTypedArray()?.first { it is MediaWrapper && it.uri == uri }
-                feedAdapter.notifyItemChanged(feedAdapter.currentList?.toTypedArray()?.indexOf(item)
-                        ?: 0, UPDATE_PROGRESS)
+                feedAdapter.currentList?.toTypedArray()?.firstOrNull { it is MediaWrapper && it.uri == uri }?.let {
+                    feedAdapter.notifyItemChanged(feedAdapter.currentList?.toTypedArray()?.indexOf(it)
+                            ?: 0, UPDATE_PROGRESS)
+                }
             }
         }
     }

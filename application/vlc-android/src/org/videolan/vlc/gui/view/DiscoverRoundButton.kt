@@ -235,12 +235,10 @@ class DiscoverRoundButton : FrameLayout {
     }
 
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
-    fun setColor(paletteColor: Int, paletteMutedColor: Int) {
-        progressBackgroundColor = paletteColor
-        progressColor = paletteMutedColor
+    fun setColor(paletteColor: Int) {
+        progressColor = paletteColor
         val valueOf = ColorStateList.valueOf(paletteColor)
-        imageView.imageTintList = valueOf
-        textView.setTextColor(valueOf)
+        backgroundTintList = valueOf
     }
 }
 

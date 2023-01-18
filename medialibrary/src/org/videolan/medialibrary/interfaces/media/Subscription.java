@@ -66,6 +66,16 @@ public abstract class Subscription extends MediaLibraryItem {
         return mArtworkMRL;
     }
 
+    //fixme. These two methods are placeholders waiting for the author and summary to be implemented in the ML
+    public String getAuthor() {
+        return "Podcast Author";
+    }
+
+    public String getSummary() {
+        return "Podcast Author is publishing "+getTitle()+"\n<b>Overwhelmed</b> by choice in the Peak TV era?<br/> <u>Join</u> hosts and IRL friends Tolani Shoneye (of 'The Receipts' podcast fame) and Gena-mour Barrett (who works for Netflix) as they discuss what they're watching, and what they think * you * should be watching too. Each week they'll be accompanied by a guest from the world of Netflix, who'll share a recommendation of their own. From brand new shows to overlooked gems, 10/10 Would Recommend is a freewheeling, unfiltered review show that will help you spend less time choosing, and more time actually watching. Produced by Broccoli Productions and @NetflixUK. Follow the hosts: @smilegena, @tolly_t" +
+                "\nLink: https://feeds.simplecast.com/VJWbV9DP";
+    }
+
 
     public abstract int getNewMediaNotification();
     public abstract boolean setNewMediaNotification(int value);
@@ -90,6 +100,7 @@ public abstract class Subscription extends MediaLibraryItem {
         dest.writeInt(this.mType == null ? -1 : this.mType.ordinal());
         dest.writeLong(this.mParentId);
         dest.writeInt(this.mNbMedia);
+        dest.writeString(this.mArtworkMRL);
     }
 
     public void readFromParcel(Parcel source) {

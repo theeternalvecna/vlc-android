@@ -222,6 +222,13 @@ fun asyncTextItem(view: TextView, item: MediaLibraryItem?) {
     setTextAsync(view, text, params)
 }
 
+@BindingAdapter("layoutMarginStart")
+fun setLayoutMarginStart(view: View, dimen: Float) {
+    val layoutParams = view.layoutParams as MarginLayoutParams
+    layoutParams.marginStart = dimen.toInt()
+    view.layoutParams = layoutParams
+}
+
 @BindingAdapter("layoutMarginTop")
 fun setLayoutMarginTop(view: View, dimen: Int) {
     val layoutParams = view.layoutParams as MarginLayoutParams

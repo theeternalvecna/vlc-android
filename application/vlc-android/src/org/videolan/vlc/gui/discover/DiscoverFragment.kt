@@ -100,7 +100,9 @@ abstract class DiscoverFragment<T : MedialibraryViewModel>: MediaBrowserFragment
             invalidateActionMode()
         } else when (item) {
             is Subscription -> {
-                //todo open the subscription screen
+                val i = Intent(requireActivity(), SubscriptionInfoActivity::class.java)
+                i.putExtra(KEY_MEDIA, item)
+                startActivity(i)
             }
             is MediaWrapper -> {
                 val i = Intent(requireActivity(), SubscriptionEpisodeInfoActivity::class.java)

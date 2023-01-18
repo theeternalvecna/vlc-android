@@ -64,6 +64,10 @@
         <variable
                 name="holder"
                 type="org.videolan.vlc.gui.discover.DiscoverAdapter.ViewHolder" />
+
+        <variable
+                name="smallItem"
+                type="boolean" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -80,6 +84,48 @@
             android:orientation="horizontal"
             vlc:mediaContentDescription="@{media}">
 
+        <TextView
+                android:id="@+id/textView40"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="16dp"
+                android:drawableStart="@drawable/ic_clock"
+                android:drawablePadding="4dp"
+                android:fontFamily="sans-serif-medium"
+                android:gravity="center_vertical"
+                android:text="@{media.releaseDate(textView40, true)}"
+                android:textColor="?attr/font_default"
+                android:visibility="@{smallItem ? View.VISIBLE : View.GONE}"
+                tools:text="Today"
+                vlc:layout_constraintEnd_toEndOf="parent"
+                vlc:layout_constraintHorizontal_bias="0.5"
+                vlc:layout_constraintStart_toStartOf="parent"
+                vlc:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+                android:id="@+id/ml_item_title"
+                style="@style/VLC.TextViewTitle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="16dp"
+                android:ellipsize="end"
+                android:fontFamily="sans-serif-medium"
+                android:gravity="center_vertical"
+                android:lineSpacingMultiplier="1"
+                android:text="@{media.title}"
+                android:textColor="?attr/font_default"
+                android:textSize="16sp"
+                tools:text="Star wars Episode 1"
+                vlc:layoutMarginStart="@{smallItem ? @dimen/kl_normal : @dimen/kl_none}"
+                vlc:layout_constraintEnd_toEndOf="parent"
+                vlc:layout_constraintHorizontal_bias="1.0"
+                vlc:layout_constraintStart_toStartOf="@+id/container"
+                vlc:layout_constraintTop_toBottomOf="@+id/textView40"
+                vlc:layout_constraintVertical_chainStyle="packed" />
+
         <com.google.android.material.card.MaterialCardView
                 android:id="@+id/container"
                 style="@style/VLCCardView"
@@ -88,6 +134,7 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
                 android:clickable="true"
+                android:visibility="@{smallItem ? View.GONE : View.VISIBLE}"
                 android:focusable="true"
                 android:foreground="?android:attr/selectableItemBackground"
                 android:importantForAccessibility="no"
@@ -145,26 +192,6 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
         </com.google.android.material.card.MaterialCardView>
 
-        <TextView
-                android:id="@+id/ml_item_title"
-                style="@style/VLC.TextViewTitle"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:layout_marginEnd="4dp"
-                android:ellipsize="end"
-                android:gravity="center_vertical"
-                android:lineSpacingMultiplier="1"
-                android:text="@{media.title}"
-                android:textColor="?attr/font_default"
-                android:textSize="16sp"
-                tools:text="Star wars Episode 1"
-                vlc:layout_constraintEnd_toStartOf="@+id/item_more"
-                vlc:layout_constraintHorizontal_bias="1.0"
-                vlc:layout_constraintStart_toStartOf="@+id/container"
-                vlc:layout_constraintTop_toTopOf="parent"
-                vlc:layout_constraintVertical_chainStyle="packed" />
-
         <ImageView
                 android:id="@+id/item_more"
                 android:layout_width="wrap_content"
@@ -192,6 +219,7 @@
                 android:maxLines="1"
                 android:text="@{media.subsText()}"
                 android:textColor="?attr/font_default"
+                android:visibility="@{smallItem ? View.GONE : View.VISIBLE}"
                 tools:text="Subscription title"
                 vlc:layout_constraintBottom_toTopOf="@+id/textView38"
                 vlc:layout_constraintEnd_toStartOf="@+id/item_more"
@@ -207,10 +235,11 @@
                 android:layout_marginTop="2dp"
                 android:layout_marginEnd="8dp"
                 android:drawableStart="@drawable/ic_clock"
+                android:visibility="@{smallItem ? View.GONE : View.VISIBLE}"
                 android:drawablePadding="4dp"
                 android:fontFamily="sans-serif-medium"
                 android:gravity="center_vertical"
-                android:text="@{media.releaseDate(textView38)}"
+                android:text="@{media.releaseDate(textView38, false)}"
                 android:textColor="?attr/font_default"
                 tools:text="Today"
                 vlc:layout_constraintBottom_toBottomOf="@+id/container"
@@ -237,6 +266,7 @@
                 android:layout_marginTop="16dp"
                 android:layout_marginBottom="16dp"
                 vlc:drb_button_icon="@drawable/ic_play_sub"
+                vlc:layoutMarginStart="@{smallItem ? @dimen/kl_normal : @dimen/kl_none}"
                 vlc:drb_icon="false"
                 android:onClick="@{holder::onPlayClick}"
                 vlc:roundButtonText="@{media.dateDuration()}"

@@ -27,8 +27,6 @@ package org.videolan.vlc.viewmodels.subscription
 import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
 import org.videolan.medialibrary.interfaces.Medialibrary
 import org.videolan.medialibrary.interfaces.media.MediaWrapper
 import org.videolan.medialibrary.media.MediaLibraryItem
@@ -43,13 +41,6 @@ class DiscoverFeedViewModel(context: Context) : MedialibraryViewModel(context)  
     init {
         sort = Medialibrary.SORT_RELEASEDATE
         desc = true
-    }
-    suspend fun markAsPlayed(media: MediaWrapper) = withContext(Dispatchers.IO){
-        if (media.seen == 0L) media.setPlayCount(1L)
-    }
-
-    suspend fun markAsUnplayed(media: MediaWrapper) = withContext(Dispatchers.IO) {
-       media.setPlayCount(0L)
     }
 
     fun appendMedia(item: MediaWrapper, position: Int) {

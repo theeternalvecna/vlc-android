@@ -27,6 +27,8 @@ import org.videolan.medialibrary.interfaces.Medialibrary
 import org.videolan.medialibrary.interfaces.media.*
 import org.videolan.medialibrary.media.MediaLibraryItem
 import org.videolan.tools.Settings
+import org.videolan.vlc.media.PlaylistManager
+import org.videolan.vlc.media.SubscriptionEpisode
 import org.videolan.vlc.viewmodels.SortableModel
 
 class TracksProvider(val parent : MediaLibraryItem?, context: Context, model: SortableModel) : MedialibraryProvider<MediaWrapper>(context, model) {
@@ -60,12 +62,18 @@ class TracksProvider(val parent : MediaLibraryItem?, context: Context, model: So
             is Album -> parent.getPagedTracks(sort, desc, Settings.includeMissing, onlyFavorites, loadSize, startposition)
             is Genre -> parent.getPagedTracks(sort, desc, Settings.includeMissing, onlyFavorites, loadSize, startposition)
             is Playlist -> parent.getPagedTracks(loadSize, startposition, Settings.includeMissing, onlyFavorites)
+            is Subscription -> parent.getMedia(sort, desc, Settings.includeMissing, onlyFavorites).map {
+                SubscriptionEpisode(it,  it.subscriptions.toList(), PlaylistManager.hasMedia(it.uri))
+            }.toTypedArray() as Array<MediaWrapper>
             else -> medialibrary.getPagedAudio(sort, desc, Settings.includeMissing, onlyFavorites, loadSize, startposition)
         } else when(parent) {
             is Artist -> parent.searchTracks(model.filterQuery, sort, desc, Settings.includeMissing, onlyFavorites, loadSize, startposition)
             is Album -> parent.searchTracks(model.filterQuery, sort, desc, Settings.includeMissing, onlyFavorites, loadSize, startposition)
             is Genre -> parent.searchTracks(model.filterQuery, sort, desc, Settings.includeMissing, onlyFavorites, loadSize, startposition)
             is Playlist -> parent.searchTracks(model.filterQuery, sort, desc, Settings.includeMissing, onlyFavorites, loadSize, startposition)
+            is Subscription -> parent.searchMedias(model.filterQuery, sort, desc, Settings.includeMissing, onlyFavorites, loadSize, startposition).map {
+                SubscriptionEpisode(it,  it.subscriptions.toList(), PlaylistManager.hasMedia(it.uri))
+            }.toTypedArray() as Array<MediaWrapper>
             else -> medialibrary.searchAudio(model.filterQuery, sort, desc, Settings.includeMissing, onlyFavorites, loadSize, startposition)
         }
         model.viewModelScope.launch { completeHeaders(list, startposition) }
@@ -77,6 +85,7 @@ class TracksProvider(val parent : MediaLibraryItem?, context: Context, model: So
         is Playlist -> parent.getRealTracksCount(Settings.includeMissing, onlyFavorites)
         is Artist,
         is Genre -> parent.tracksCount
+        is Subscription -> parent.tracksCount
         else -> medialibrary.audioCount
     } else when(parent) {
         is Artist -> parent.searchTracksCount(model.filterQuery)

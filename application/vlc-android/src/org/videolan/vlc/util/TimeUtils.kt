@@ -51,20 +51,24 @@ package org.videolan.vlc.util
 import android.content.Context
 import android.text.format.DateUtils
 import org.videolan.vlc.R
+import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.*
 import java.util.concurrent.TimeUnit
 
 object TimeUtils {
+    val dateFormat:DateFormat by lazy { DateFormat.getDateInstance(DateFormat.MEDIUM) }
 
     /**
      * Format a timestamp to a natural string (Today, yesterday, 2 weeks ago, ...)
      *
      * @param context the context to use to retrieve the strings
      * @param timestamp the timestamp to format in ms
+     * @param precise if set to true, it will return the exact date formatted using the locale instead
      * @return a formated string
      */
-    fun formatDateToNatural(context: Context, timestamp: Long): String {
+    fun formatDateToNatural(context: Context, timestamp: Long, precise: Boolean): String {
+        if (precise) return dateFormat.format(Date(timestamp))
         if (DateUtils.isToday(timestamp)) return context.getString(R.string.today)
         val yesterday = Calendar.getInstance()
         yesterday.add(Calendar.DAY_OF_YEAR, -1)

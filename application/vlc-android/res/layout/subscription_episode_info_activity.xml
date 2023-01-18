@@ -160,7 +160,7 @@
                             android:layout_marginStart="@dimen/default_margin"
                             android:layout_marginTop="@dimen/half_default_margin"
                             android:contentDescription="@{TalkbackUtil.INSTANCE.getReleaseDate(context, releaseYear)}"
-                            android:text="@{media.releaseDate(releaseDate)}"
+                            android:text="@{media.releaseDate(releaseDate, true)}"
                             tools:text="2000"
                             vlc:layout_constraintStart_toEndOf="@+id/playlist_cover_card"
                             vlc:layout_constraintTop_toBottomOf="@+id/subscription_title" />
@@ -257,7 +257,6 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="16dp"
                     android:lineSpacingExtra="2sp"
-                    android:text="@{media.summary()}"
                     android:textSize="16sp" />
         </androidx.core.widget.NestedScrollView>
 

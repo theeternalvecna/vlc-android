@@ -41,7 +41,11 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.renderscript.*
+import android.text.SpannableString
 import android.text.TextUtils
+import android.text.method.LinkMovementMethod
+import android.text.style.URLSpan
+import android.text.util.Linkify
 import android.view.*
 import android.view.animation.*
 import android.view.inputmethod.InputMethodManager
@@ -62,6 +66,7 @@ import androidx.core.content.pm.ShortcutManagerCompat
 import androidx.core.graphics.drawable.IconCompat
 import androidx.core.net.toUri
 import androidx.core.os.bundleOf
+import androidx.core.text.HtmlCompat
 import androidx.core.view.MenuItemCompat
 import androidx.databinding.BindingAdapter
 import androidx.fragment.app.FragmentActivity
@@ -103,6 +108,7 @@ import org.videolan.vlc.util.LifecycleAwareScheduler
 import org.videolan.vlc.util.SchedulerCallback
 import org.videolan.vlc.util.ThumbnailsProvider
 import org.videolan.vlc.util.openLinkIfPossible
+import java.util.regex.Pattern
 import kotlin.math.min
 
 object UiTools {
@@ -993,3 +999,31 @@ suspend fun fillActionMode(context: Context, mode: ActionMode, multiSelectHelper
  * @return a color Int with the new alpha
  */
 fun Int.setAlpha(alpha:Float) = Color.argb((255 * alpha).toInt(), Color.red(this), Color.green(this), Color.blue(this))
+
+/**
+ * Set text to the [TextView], use the html code if any and transforms links into clickable ones
+ *
+ * @param textToLinkify the text to set to the [TextView]
+ */
+fun TextView.linkify(textToLinkify: String) {
+    val htmlSpannable = HtmlCompat.fromHtml(textToLinkify.replace("\n", "<br/>"), HtmlCompat.FROM_HTML_MODE_LEGACY)
+
+    val htmlUrlSpans = htmlSpannable.getSpans(0, htmlSpannable.length, URLSpan::class.java)
+
+    val linkifySpannable = SpannableString(htmlSpannable)
+    Linkify.addLinks(linkifySpannable, Linkify.WEB_URLS or Linkify.EMAIL_ADDRESSES)
+    Linkify.addLinks(linkifySpannable, Pattern.compile("[@]+[A-Za-z0-9-_]+"), "https://twitter.com/", null) { _, url ->
+        url.substring(1) //remove the @ sign
+    }
+
+    htmlUrlSpans.forEach { span ->
+        linkifySpannable.setSpan(span, htmlSpannable.getSpanStart(span), htmlSpannable.getSpanEnd(span), 0)
+    }
+
+    text = linkifySpannable.trimEnd()
+    movementMethod = LinkMovementMethod.getInstance()
+    autoLinkMask = 0
+
+
+
+}

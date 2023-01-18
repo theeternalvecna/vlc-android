@@ -53,7 +53,4 @@ class DiscoverFeedProvider(context: Context, model: SortableModel) : Medialibrar
         SubscriptionEpisode(it,  it.subscriptions.toList(), PlaylistManager.hasMedia(it.uri))
     }.toTypedArray()
 
-    fun appendMedia(position: Int) {
-        pagedList.value?.get(position)?.inPlayQueue = true
-    }
 }

@@ -52,6 +52,7 @@ import org.videolan.tools.MultiSelectAdapter
 import org.videolan.tools.MultiSelectHelper
 import org.videolan.vlc.BR
 import org.videolan.vlc.R
+import org.videolan.vlc.databinding.SubscriptionListItemBinding
 import org.videolan.vlc.gui.helpers.*
 import org.videolan.vlc.gui.video.*
 import org.videolan.vlc.gui.view.DiscoverRoundButton
@@ -59,12 +60,13 @@ import org.videolan.vlc.gui.view.FastScroller
 import org.videolan.vlc.media.SubscriptionEpisode
 import kotlin.random.Random
 
-class DiscoverAdapter : PagedListAdapter<MediaLibraryItem, DiscoverAdapter.ViewHolder>(DiscoverServiceCallback), FastScroller.SeparatedAdapter,
+class DiscoverAdapter(private val smallItem:Boolean = false) : PagedListAdapter<MediaLibraryItem, DiscoverAdapter.ViewHolder>(DiscoverServiceCallback), FastScroller.SeparatedAdapter,
         MultiSelectAdapter<MediaLibraryItem>, IEventsSource<DiscoverFragment.DiscoverAction> by EventsSource() {
 
     var isListMode = true
     val multiSelectHelper = MultiSelectHelper(this, UPDATE_SELECTION)
     private val progresses = HashMap<Uri, Long>()
+    var paletteColor: Int = -1
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = getItem(position) ?: return
@@ -88,6 +90,7 @@ class DiscoverAdapter : PagedListAdapter<MediaLibraryItem, DiscoverAdapter.ViewH
                     UPDATE_SELECTION -> holder.selectView(multiSelectHelper.isSelected(position))
                     UPDATE_SEEN -> if (item is MediaWrapper) holder.binding.setVariable(BR.seen, item.seen)
                     UPDATE_PROGRESS -> if (item is SubscriptionEpisode) updateProgress(item, holder)
+                    UPDATE_PAYLOAD -> if (item is SubscriptionEpisode) updateColor(holder)
                 }
             }
         }
@@ -124,6 +127,8 @@ class DiscoverAdapter : PagedListAdapter<MediaLibraryItem, DiscoverAdapter.ViewH
                 if (!isListMode) holder.binding.setVariable(BR.resolution, null)
                 holder.binding.setVariable(BR.seen, item.seen)
                 holder.binding.setVariable(BR.max, 0)
+                holder.binding.setVariable(BR.smallItem, smallItem)
+                updateColor(holder)
 
                 updateProgress(item, holder)
             }
@@ -146,6 +151,15 @@ class DiscoverAdapter : PagedListAdapter<MediaLibraryItem, DiscoverAdapter.ViewH
         } else holder.binding.setVariable(BR.progress, position)
     }
 
+
+    private fun updateColor(holder: ViewHolder) {
+        (holder.binding as? SubscriptionListItemBinding)?.let {
+            it.playButton.setColor(paletteColor)
+            it.downloadButton.setColor(paletteColor)
+            it.playqueueButton.setColor(paletteColor)
+        }
+    }
+
     /**
      * Add a time entry to the map for a media
      *
@@ -164,7 +178,6 @@ class DiscoverAdapter : PagedListAdapter<MediaLibraryItem, DiscoverAdapter.ViewH
         progresses.clear()
     }
 
-
     @TargetApi(Build.VERSION_CODES.M)
     inner class ViewHolder(binding: ViewDataBinding) : SelectorViewHolder<ViewDataBinding>(binding) {
         val title : TextView = itemView.findViewById(R.id.ml_item_title)
@@ -172,7 +185,6 @@ class DiscoverAdapter : PagedListAdapter<MediaLibraryItem, DiscoverAdapter.ViewH
 
         init {
             binding.setVariable(BR.holder, this)
-            binding.setVariable(BR.cover, UiTools.getDefaultVideoDrawable(itemView.context))
             if (AndroidUtil.isMarshMallowOrLater)
                 itemView.setOnContextClickListener { v ->
                     onMoreClick(v)
