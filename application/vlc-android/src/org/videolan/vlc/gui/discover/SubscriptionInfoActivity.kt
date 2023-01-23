@@ -32,6 +32,8 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.os.Parcelable
+import android.view.Menu
+import android.view.MenuItem
 import androidx.appcompat.view.ActionMode
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
@@ -51,6 +53,7 @@ import org.videolan.medialibrary.interfaces.media.VideoGroup
 import org.videolan.medialibrary.media.MediaLibraryItem
 import org.videolan.resources.*
 import org.videolan.resources.util.parcelable
+import org.videolan.tools.MultiSelectHelper
 import org.videolan.tools.dp
 import org.videolan.tools.setGone
 import org.videolan.vlc.R
@@ -70,12 +73,12 @@ import org.videolan.vlc.util.launchWhenStarted
 import org.videolan.vlc.viewmodels.mobile.PlaylistViewModel
 import org.videolan.vlc.viewmodels.mobile.getViewModel
 
-class SubscriptionInfoActivity: AudioPlayerContainerActivity(), CtxActionReceiver {
+class SubscriptionInfoActivity: AudioPlayerContainerActivity(), CtxActionReceiver, ActionMode.Callback {
+    private lateinit var multiSelectHelper: MultiSelectHelper<MediaLibraryItem>
     private lateinit var feedAdapter: DiscoverAdapter
     private lateinit var binding: SubscriptionInfoActivityBinding
     private lateinit var viewModel: PlaylistViewModel
     lateinit var media:Subscription
-    //todo
     var actionMode: ActionMode? = null
 
     override val displayTitle = true
@@ -121,7 +124,7 @@ class SubscriptionInfoActivity: AudioPlayerContainerActivity(), CtxActionReceive
         showArtwork(media.artworkMrl)
 
         feedAdapter.events.onEach { it.process() }.launchWhenStarted(lifecycleScope)
-
+        multiSelectHelper = feedAdapter.multiSelectHelper
 
         fragmentContainer = binding.songs
         initAudioPlayerContainerActivity()
@@ -196,6 +199,51 @@ class SubscriptionInfoActivity: AudioPlayerContainerActivity(), CtxActionReceive
         }
     }
 
+    private fun startActionMode() {
+        actionMode = startSupportActionMode(this)
+    }
+
+    private fun stopActionMode() = actionMode?.let {
+        it.finish()
+        onDestroyActionMode(it)
+    }
+
+    private fun invalidateActionMode() {
+        if (actionMode != null)
+            actionMode!!.invalidate()
+    }
+
+    override fun onCreateActionMode(mode: ActionMode, menu: Menu): Boolean {
+        feedAdapter.multiSelectHelper.toggleActionMode(true, feedAdapter.itemCount)
+        mode.menuInflater?.inflate(R.menu.action_mode_discover_feed, menu)
+        return true
+    }
+
+
+    override fun onPrepareActionMode(mode: ActionMode, menu: Menu): Boolean {
+        return false
+    }
+
+    override fun onActionItemClicked(mode: ActionMode, item: MenuItem): Boolean {
+        val list = multiSelectHelper.getSelection().map { it as MediaWrapper }
+
+        when (item.itemId) {
+            R.id.action_feed_play -> {
+                MediaUtils.openList(this, list, 0, false)
+            }
+            else -> return false
+        }
+        stopActionMode()
+        return true
+    }
+
+    override fun onDestroyActionMode(mode: ActionMode?) {
+        feedAdapter.multiSelectHelper.toggleActionMode(false, feedAdapter.itemCount)
+        actionMode = null
+        feedAdapter.multiSelectHelper.clearSelection()
+    }
+
+
     fun play(position: Int, item: MediaWrapper) {
         viewModel.play(item, position)
         feedAdapter.notifyItemChanged(position)
@@ -208,9 +256,8 @@ class SubscriptionInfoActivity: AudioPlayerContainerActivity(), CtxActionReceive
 
     private fun onClick(position: Int, item: MediaLibraryItem) {
         if (actionMode != null) {
-            //todo
-//            multiSelectHelper.toggleSelection(position)
-//            invalidateActionMode()
+            multiSelectHelper.toggleSelection(position)
+            invalidateActionMode()
         } else when (item) {
             is Subscription -> {
                 val i = Intent(this, SubscriptionInfoActivity::class.java)
@@ -226,10 +273,9 @@ class SubscriptionInfoActivity: AudioPlayerContainerActivity(), CtxActionReceive
     }
 
     private fun onLongClick(position: Int) {
-        ///todo
 //        if (actionMode == null && inSearchMode()) UiTools.setKeyboardVisibility(getRootView(), false)
-//        multiSelectHelper.toggleSelection(position, true)
-//        if (actionMode == null) startActionMode() else invalidateActionMode()
+        multiSelectHelper.toggleSelection(position, true)
+        if (actionMode == null) startActionMode() else invalidateActionMode()
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
