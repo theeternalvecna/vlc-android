@@ -431,7 +431,7 @@ class MediaParsingService : LifecycleService(), DevicesDiscoveryCb {
     }
 
     private fun exitCommand() {
-        if (!medialibrary.isWorking && !serviceLock && !discoverTriggered) {
+        if (!medialibrary.isWorking && !serviceLock && !discoverTriggered && !scanPaused) {
             lastNotificationTime = 0L
             if (wakeLock.isHeld) try {
                 wakeLock.release()
