@@ -466,7 +466,7 @@ class MediaParsingService : LifecycleService(), DevicesDiscoveryCb {
             return
         }
         val status = progress.value
-        progress.value = if (status === null) ScanProgress(parsing, progressText, inDiscovery) else status.copy(parsing = parsing, progressText = progressText, inDiscovery = inDiscovery)
+        progress.value = if (status === null) ScanProgress(parsing, progressText, inDiscovery, scanPaused) else status.copy(parsing = parsing, progressText = progressText, inDiscovery = inDiscovery, paused = scanPaused)
     }
 
     @OptIn(ObsoleteCoroutinesApi::class)
@@ -544,7 +544,7 @@ class MediaParsingService : LifecycleService(), DevicesDiscoveryCb {
     }
 }
 
-data class ScanProgress(val parsing: Float, val progressText: String, val inDiscovery:Boolean)
+data class ScanProgress(val parsing: Float, val progressText: String, val inDiscovery:Boolean, val paused:Boolean)
 data class DiscoveryError(val entryPoint: String)
 
 fun Context.reloadLibrary() {

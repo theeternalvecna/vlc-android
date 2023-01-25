@@ -82,6 +82,9 @@
     <string name="ringtone_set">The file \'%1$s\' was set as the ringtone.</string>
     <string name="ringtone_error">An error occurred while setting the ringtone.</string>
     <string name="pause">Pause</string>
+    <string name="paused">Paused</string>
+    <string name="scan_discovering_paused">Discovering is paused</string>
+    <string name="scan_parsing_paused">Parsing is paused</string>
     <string name="unknown_artist">Unknown Artist</string>
     <string name="unknown_album">Unknown Album</string>
     <string name="unknown_genre">Unknown Genre</string>
