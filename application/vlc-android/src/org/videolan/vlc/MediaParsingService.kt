@@ -86,6 +86,7 @@ class MediaParsingService : LifecycleService(), DevicesDiscoveryCb {
     private lateinit var notificationActor : SendChannel<Notification>
     var lastDone = -1
     var lastScheduled = -1
+    private var ending: Boolean = false
 
     private val exceptionHandler = when {
         BuildConfig.BETA -> Medialibrary.MedialibraryExceptionHandler { context, errMsg, _ ->
@@ -130,6 +131,7 @@ class MediaParsingService : LifecycleService(), DevicesDiscoveryCb {
         val filter = IntentFilter()
         filter.addAction(ACTION_PAUSE_SCAN)
         filter.addAction(ACTION_RESUME_SCAN)
+        filter.addAction(ACTION_CANCEL_SCAN)
         registerReceiver(receiver, filter)
         val pm = applicationContext.getSystemService<PowerManager>()!!
         wakeLock = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "VLC:MediaParsingService")
@@ -430,8 +432,8 @@ class MediaParsingService : LifecycleService(), DevicesDiscoveryCb {
         if (reload <= 0) exitCommand()
     }
 
-    private fun exitCommand() {
-        if (!medialibrary.isWorking && !serviceLock && !discoverTriggered && !scanPaused) {
+    private fun exitCommand(force:Boolean = false) {
+        if (force || (!medialibrary.isWorking && !serviceLock && !discoverTriggered && !scanPaused)) {
             lastNotificationTime = 0L
             if (wakeLock.isHeld) try {
                 wakeLock.release()
@@ -439,6 +441,7 @@ class MediaParsingService : LifecycleService(), DevicesDiscoveryCb {
                 //catching here as isHeld is not thread safe
             }
             localBroadcastManager.sendBroadcast(Intent(ACTION_CONTENT_INDEXING))
+            if (force) ending = true
             //todo reenable entry point when ready
             if (::notificationActor.isInitialized) notificationActor.trySend(Hide)
             //Delay service stop to ensure service goes foreground.
@@ -461,7 +464,7 @@ class MediaParsingService : LifecycleService(), DevicesDiscoveryCb {
     private inner class LocalBinder : Binder()
 
     private fun showProgress(parsing: Float, progressText: String) {
-        if (parsing == -1F) {
+        if (parsing == -1F || ending) {
             progress.value = null
             return
         }
@@ -528,6 +531,11 @@ class MediaParsingService : LifecycleService(), DevicesDiscoveryCb {
                     if (!wakeLock.isHeld) wakeLock.acquire()
                     medialibrary.resumeBackgroundOperations()
                     scanPaused = false
+                }
+                ACTION_CANCEL_SCAN -> {
+                    if (!wakeLock.isHeld) wakeLock.acquire()
+                    scanPaused = false
+                    exitCommand(true)
                 }
             }
             notificationActor.trySend(Show(lastDone, lastScheduled))

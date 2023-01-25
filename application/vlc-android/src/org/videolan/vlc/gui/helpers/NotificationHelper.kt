@@ -166,6 +166,10 @@ object NotificationHelper {
         else
             NotificationCompat.Action(R.drawable.ic_pause_notif, ctx.getString(R.string.pause), pi)
         scanCompatBuilder.addAction(playpause)
+        if (paused) {
+            val piCancel = PendingIntent.getBroadcast(ctx.applicationContext.getContextWithLocale(AppContextProvider.locale), 0, Intent(ACTION_CANCEL_SCAN), PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE)
+            scanCompatBuilder.addAction(NotificationCompat.Action(R.drawable.ic_stop_notif, ctx.getString(R.string.cancel), piCancel))
+        }
         return scanCompatBuilder.build()
     }
 

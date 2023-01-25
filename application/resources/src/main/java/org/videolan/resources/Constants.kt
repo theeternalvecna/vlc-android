@@ -96,6 +96,7 @@ const val EXTRA_PATH = "extra_path"
 const val EXTRA_UUID = "extra_uuid"
 const val ACTION_RESUME_SCAN = "action_resume_scan"
 const val ACTION_PAUSE_SCAN = "action_pause_scan"
+const val ACTION_CANCEL_SCAN = "action_cancel_scan"
 const val ACTION_CONTENT_INDEXING = "action_content_indexing"
 
 // VideoPlayerActivity
