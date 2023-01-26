@@ -1132,6 +1132,8 @@
     <string name="discover">Discover</string>
     <string name="discover_feed">Feed</string>
     <string name="discover_podcast">Podcast</string>
+    <string name="subscription_settings">Subscription settings</string>
+    <string name="filter">Filter</string>
 
 
 

@@ -59,7 +59,7 @@ import org.videolan.tools.setGone
 import org.videolan.tools.setVisible
 import org.videolan.vlc.R
 import org.videolan.vlc.databinding.SubscriptionInfoActivityBinding
-import org.videolan.vlc.gui.AudioPlayerContainerActivity
+import org.videolan.vlc.gui.ContentActivity
 import org.videolan.vlc.gui.browser.KEY_MEDIA
 import org.videolan.vlc.gui.dialogs.CtxActionReceiver
 import org.videolan.vlc.gui.dialogs.SavePlaylistDialog
@@ -69,12 +69,13 @@ import org.videolan.vlc.gui.helpers.UiTools
 import org.videolan.vlc.gui.helpers.UiTools.addToPlaylist
 import org.videolan.vlc.gui.helpers.UiTools.createShortcut
 import org.videolan.vlc.gui.helpers.linkify
+import org.videolan.vlc.interfaces.Filterable
 import org.videolan.vlc.media.MediaUtils
 import org.videolan.vlc.util.launchWhenStarted
 import org.videolan.vlc.viewmodels.mobile.PlaylistViewModel
 import org.videolan.vlc.viewmodels.mobile.getViewModel
 
-class SubscriptionInfoActivity: AudioPlayerContainerActivity(), CtxActionReceiver, ActionMode.Callback {
+class SubscriptionInfoActivity: ContentActivity(), CtxActionReceiver, ActionMode.Callback, Filterable {
     private lateinit var multiSelectHelper: MultiSelectHelper<MediaLibraryItem>
     private lateinit var feedAdapter: DiscoverAdapter
     private lateinit var binding: SubscriptionInfoActivityBinding
@@ -206,6 +207,23 @@ class SubscriptionInfoActivity: AudioPlayerContainerActivity(), CtxActionReceive
         }
     }
 
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.subscription_info_option, menu)
+        super.onCreateOptionsMenu(menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.ml_menu_subscription_filter -> {
+
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
+
+    }
+
     private fun startActionMode() {
         actionMode = startSupportActionMode(this)
     }
@@ -309,4 +327,18 @@ class SubscriptionInfoActivity: AudioPlayerContainerActivity(), CtxActionReceive
             }
         }
     }
+
+    override fun getFilterQuery() = viewModel.filterQuery
+
+    override fun enableSearchOption() = true
+
+    override fun filter(query: String) {
+        viewModel.filter(query)
+    }
+
+    override fun restoreList() = viewModel.restore()
+
+    override fun setSearchVisibility(visible: Boolean) { }
+
+    override fun allowedToExpand() = true
 }
