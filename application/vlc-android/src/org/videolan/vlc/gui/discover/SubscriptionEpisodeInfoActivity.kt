@@ -36,11 +36,13 @@ import android.text.method.LinkMovementMethod
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.lifecycleScope
 import androidx.palette.graphics.Palette
+import com.google.android.material.appbar.MaterialToolbar
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.videolan.medialibrary.interfaces.media.MediaWrapper
 import org.videolan.resources.util.parcelable
+import org.videolan.tools.dp
 import org.videolan.vlc.R
 import org.videolan.vlc.databinding.SubscriptionEpisodeInfoActivityBinding
 import org.videolan.vlc.gui.AudioPlayerContainerActivity
@@ -69,7 +71,25 @@ class SubscriptionEpisodeInfoActivity : AudioPlayerContainerActivity() {
         else
             intent.parcelable<Parcelable>(KEY_MEDIA) as MediaWrapper
 
+        val toolbar = findViewById<MaterialToolbar>(R.id.main_toolbar)
+        setSupportActionBar(toolbar)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.title = ""
+        supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_close_up)
+
+        binding.topmargin = 86.dp
+        toolbar.addOnLayoutChangeListener { v, left, top, right, bottom, oldLeft, oldTop, oldRight, oldBottom ->
+            binding.topmargin = bottom + 8.dp
+        }
+
         val subscriptionEpisode = SubscriptionEpisode(media, listOf(), PlaylistManager.hasMedia(media.uri))
+        binding.appbar.addOnOffsetChangedListener { appBarLayout, verticalOffset ->
+            if (verticalOffset < (-80).dp) {
+                supportActionBar?.title = subscriptionEpisode.title
+            } else supportActionBar?.title = ""
+        }
+
+        binding.collapsingToolbar.title = subscriptionEpisode.title
         binding.media = subscriptionEpisode
         viewModel = getViewModel(media)
         viewModel.subscriptionEpisode.observe(this) {
@@ -126,14 +146,15 @@ class SubscriptionEpisodeInfoActivity : AudioPlayerContainerActivity() {
                 }
                 val paletteMutedColor = when (currentNightMode) {
                     Configuration.UI_MODE_NIGHT_NO -> {
-                        palette.getDarkMutedColor(Color.BLACK)
+                        palette.getLightMutedColor(Color.BLACK)
                     } // Night mode is not active, we're using the light theme
                     else -> {
-                        palette.getLightMutedColor(Color.WHITE)
+                        palette.getDarkMutedColor(Color.WHITE)
                     } // Night mode is active, we're using dark theme
                 }
                 binding.summary.setLinkTextColor(ColorStateList.valueOf(paletteColor))
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) arrayOf(binding.playButton, binding.downloadButton, binding.playqueueButton).forEach {
+                    binding.collapsingToolbar.setContentScrimColor(paletteMutedColor)
                     it.setColor(paletteColor)
                 }
             }
