@@ -148,6 +148,7 @@ class DiscoverBrowserFragment : BaseFragment(), TabLayout.OnTabSelectedListener,
     }
 
     override fun onTabSelected(tab: TabLayout.Tab?) {
+        if (!isStarted()) return
         tab?.let {
             Settings.getInstance(requireActivity()).edit().putInt(KEY_DISCOVER_CURRENT_TAB, it.position).apply()
         }
