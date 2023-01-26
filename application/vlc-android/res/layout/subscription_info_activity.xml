@@ -170,11 +170,22 @@
                         android:background="@drawable/summary_more"
                         android:drawableEnd="@drawable/ic_collapse_arrow_emoji"
                         android:drawablePadding="16dp"
-                        android:foreground="?attr/selectableItemBackground"
                         android:paddingStart="64dp"
                         android:text="@string/more"
                         vlc:layout_constraintBottom_toBottomOf="@+id/summary"
                         vlc:layout_constraintEnd_toEndOf="@+id/summary" />
+
+                <TextView
+                        android:id="@+id/summary_less"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:drawableEnd="@drawable/ic_expand_arrow_emoji"
+                        android:drawablePadding="16dp"
+                        android:paddingStart="64dp"
+                        android:text="@string/less"
+                        android:visibility="gone"
+                        vlc:layout_constraintEnd_toEndOf="@+id/summary"
+                        vlc:layout_constraintTop_toBottomOf="@+id/summary" />
 
                 <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/episode_list"

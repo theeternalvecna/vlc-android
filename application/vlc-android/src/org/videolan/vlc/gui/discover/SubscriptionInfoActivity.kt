@@ -56,6 +56,7 @@ import org.videolan.resources.util.parcelable
 import org.videolan.tools.MultiSelectHelper
 import org.videolan.tools.dp
 import org.videolan.tools.setGone
+import org.videolan.tools.setVisible
 import org.videolan.vlc.R
 import org.videolan.vlc.databinding.SubscriptionInfoActivityBinding
 import org.videolan.vlc.gui.AudioPlayerContainerActivity
@@ -113,6 +114,12 @@ class SubscriptionInfoActivity: AudioPlayerContainerActivity(), CtxActionReceive
         binding.summaryMore.setOnClickListener {
             binding.summary.maxLines = Int.MAX_VALUE
             binding.summaryMore.setGone()
+            binding.summaryLess.setVisible()
+        }
+        binding.summaryLess.setOnClickListener {
+            binding.summary.maxLines = 3
+            binding.summaryLess.setGone()
+            binding.summaryMore.setVisible()
         }
 
         binding.summary.setOnLineCountChangedListener {lineCount ->
