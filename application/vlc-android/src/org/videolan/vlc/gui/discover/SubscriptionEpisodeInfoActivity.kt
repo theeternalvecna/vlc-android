@@ -120,7 +120,7 @@ class SubscriptionEpisodeInfoActivity : AudioPlayerContainerActivity() {
             if (cover != null) {
                 binding.cover = BitmapDrawable(this@SubscriptionEpisodeInfoActivity.resources, cover)
                 binding.appbar.setExpanded(true, true)
-                val radius = 45f
+                val radius = 25f
                 val palette = Palette.from(cover).generate()
                 val currentNightMode = resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
                 val paletteBackgroundColor = when (currentNightMode) {
