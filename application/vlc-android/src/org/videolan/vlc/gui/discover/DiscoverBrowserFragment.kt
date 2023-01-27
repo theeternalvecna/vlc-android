@@ -65,7 +65,6 @@ class DiscoverBrowserFragment : BaseFragment(), TabLayout.OnTabSelectedListener,
         //placeholder service
         pagerAdapter = DiscoverAdapter(requireActivity(), DiscoverServiceImpl(DiscoverService.Type.PODCAST, 0, 0, 0))
         viewPager.adapter = pagerAdapter
-        viewPager.currentItem = Settings.getInstance(requireActivity()).getInt(KEY_DISCOVER_CURRENT_TAB, 0).coerceAtMost(pagerAdapter.itemCount-1)
     }
 
     override fun onStart() {
@@ -127,6 +126,7 @@ class DiscoverBrowserFragment : BaseFragment(), TabLayout.OnTabSelectedListener,
             }.attach()
         }
         tabLayout?.addOnTabSelectedListener(this)
+        tabLayout?.getTabAt(Settings.getInstance(requireActivity()).getInt(KEY_DISCOVER_CURRENT_TAB, 0).coerceAtMost(pagerAdapter.itemCount-1))?.select()
     }
 
     private fun unSetTabLayout() {
