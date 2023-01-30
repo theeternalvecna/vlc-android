@@ -723,7 +723,7 @@ public class StubMedialibrary extends Medialibrary {
     }
 
     @Override
-    public boolean setSubscriptionMaxCachedMedia(int nbMedia) {
+    public boolean setSubscriptionMaxCacheMedia(int nbMedia) {
         return false;
     }
 
@@ -733,12 +733,12 @@ public class StubMedialibrary extends Medialibrary {
     }
 
     @Override
-    public boolean setGlobalSubscriptionMaxCacheSize(long size) {
+    public boolean setGlobalMaxCacheSize(long size) {
         return false;
     }
 
     @Override
-    public int getSubscriptionMaxCachedMedia() {
+    public int getSubscriptionMaxCacheMedia() {
         return -1;
     }
 
@@ -748,7 +748,7 @@ public class StubMedialibrary extends Medialibrary {
     }
 
     @Override
-    public long getGlobalSubscriptionMaxCacheSize() {
+    public long getGlobalMaxCacheSize() {
         return -1L;
     }
 

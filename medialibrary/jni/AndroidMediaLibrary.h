@@ -198,12 +198,12 @@ public:
     medialibrary::SubscriptionPtr subscription( int64_t id);
     bool fitsInSubscriptionCache( const medialibrary::IMedia& m);
     void cacheNewSubscriptionMedia();
-    bool setSubscriptionMaxCachedMedia( int nbMedia );
+    bool setSubscriptionMaxCacheMedia( int nbMedia );
     bool setSubscriptionMaxCacheSize( long size );
-    bool setGlobalSubscriptionMaxCacheSize( long size );
-    uint32_t getSubscriptionMaxCachedMedia();
+    bool setGlobalMaxCacheSize( long size );
+    uint32_t getSubscriptionMaxCacheMedia();
     uint64_t getSubscriptionMaxCacheSize();
-    uint64_t getGlobalSubscriptionMaxCacheSize();
+    uint64_t getGlobalMaxCacheSize();
     bool refreshAllSubscriptions();
     void onSubscriptionsAdded( std::vector<medialibrary::SubscriptionPtr> );
     void onSubscriptionsModified( std::set<int64_t> );

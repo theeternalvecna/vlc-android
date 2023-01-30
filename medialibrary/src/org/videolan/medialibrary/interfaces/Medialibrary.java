@@ -885,13 +885,13 @@ abstract public class Medialibrary {
     abstract public DiscoverService getService(DiscoverService.Type type);
     abstract public boolean fitsInSubscriptionCache(MediaWrapper media);
     abstract public void cacheNewSubscriptionMedia();
-    abstract public boolean setSubscriptionMaxCachedMedia(int nbMedia);
+    abstract public boolean setSubscriptionMaxCacheMedia(int nbMedia);
     abstract public boolean setSubscriptionMaxCacheSize(long size);
     abstract public MediaWrapper[] getSubscriptionMedia(int sort, boolean desc, boolean includeMissing, boolean onlyFavorites, int nbItems, int offset);
     abstract public int getSubscriptionMediaCount(boolean includeMissing);
-    abstract public boolean setGlobalSubscriptionMaxCacheSize(long size);
-    abstract public int getSubscriptionMaxCachedMedia();
+    abstract public boolean setGlobalMaxCacheSize(long size);
+    abstract public int getSubscriptionMaxCacheMedia();
     abstract public long getSubscriptionMaxCacheSize();
-    abstract public long getGlobalSubscriptionMaxCacheSize();
+    abstract public long getGlobalMaxCacheSize();
     abstract public boolean refreshAllSubscriptions();
 }

@@ -47,13 +47,13 @@ public class DiscoverServiceImpl extends DiscoverService {
     @Override
     public long getMaxCachedSize() {
         final Medialibrary ml = Medialibrary.getInstance();
-        return ml.isInitiated() ? nativeGetMaxCachedSize(ml, this.mType.value) : -2L;
+        return ml.isInitiated() ? nativeGetMaxCacheSize(ml, this.mType.value) : -2L;
     }
 
     @Override
     public boolean setMaxCachedSize(long size) {
         final Medialibrary ml = Medialibrary.getInstance();
-        return ml.isInitiated() && nativeSetMaxCachedSize(ml, this.mType.value, size);
+        return ml.isInitiated() && nativeSetMaxCacheSize(ml, this.mType.value, size);
     }
 
     @Override
@@ -92,8 +92,8 @@ public class DiscoverServiceImpl extends DiscoverService {
     private native boolean nativeSetAutoDownloadEnabled(Medialibrary ml, int type, boolean enabled);
     private native boolean nativeIsNewMediaNotificationEnabled(Medialibrary ml, int type);
     private native boolean nativeSetNewMediaNotificationEnabled(Medialibrary ml, int type, boolean enabled);
-    private native long nativeGetMaxCachedSize(Medialibrary ml, int type);
-    private native boolean nativeSetMaxCachedSize(Medialibrary ml, int type, long size);
+    private native long nativeGetMaxCacheSize(Medialibrary ml, int type);
+    private native boolean nativeSetMaxCacheSize(Medialibrary ml, int type, long size);
     private native Subscription[] nativeGetSubscriptions(Medialibrary ml, int type, int sort, boolean desc, boolean includeMissing, boolean onlyFavorites);
     private native MediaWrapper[] nativeGetServiceMedia(Medialibrary ml, int type, int sort, boolean desc, boolean includeMissing, boolean onlyFavorites);
     private native Subscription[] nativeSearchSubscriptions(Medialibrary ml, int type, String query, int sort, boolean desc, boolean includeMissing, boolean onlyFavorites, int nbItems, int offset);

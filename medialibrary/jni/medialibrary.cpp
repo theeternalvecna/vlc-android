@@ -2209,30 +2209,23 @@ cacheNewSubscriptionMedia(JNIEnv* env, jobject thiz, jobject medialibrary)
 }
 
 jboolean
-setSubscriptionMaxCachedMedia(JNIEnv* env, jobject thiz, jobject medialibrary, jint nbMedia)
+setSubscriptionMaxCacheMedia(JNIEnv* env, jobject thiz, jobject medialibrary, jint nbMedia)
 {
     AndroidMediaLibrary *aml = MediaLibrary_getInstance(env, medialibrary);
-    return aml->setSubscriptionMaxCachedMedia(nbMedia);
+    return aml->setSubscriptionMaxCacheMedia(nbMedia);
 }
 
 jboolean
-setSubscriptionMaxCacheSize(JNIEnv* env, jobject thiz, jobject medialibrary, jlong size)
+setGlobalMaxCacheSize(JNIEnv* env, jobject thiz, jobject medialibrary, jlong size)
 {
     AndroidMediaLibrary *aml = MediaLibrary_getInstance(env, medialibrary);
-    return aml->setSubscriptionMaxCacheSize(size);
+    return aml->setGlobalMaxCacheSize(size);
 }
 
-jboolean
-setGlobalSubscriptionMaxCacheSize(JNIEnv* env, jobject thiz, jobject medialibrary, jlong size)
+jint getSubscriptionMaxCacheMedia(JNIEnv* env, jobject thiz, jobject medialibrary)
 {
     AndroidMediaLibrary *aml = MediaLibrary_getInstance(env, medialibrary);
-    return aml->setGlobalSubscriptionMaxCacheSize(size);
-}
-
-jint getSubscriptionMaxCachedMedia(JNIEnv* env, jobject thiz, jobject medialibrary)
-{
-    AndroidMediaLibrary *aml = MediaLibrary_getInstance(env, medialibrary);
-    return aml->getSubscriptionMaxCachedMedia();
+    return aml->getSubscriptionMaxCacheMedia();
 }
 
 jlong getSubscriptionMaxCacheSize(JNIEnv* env, jobject thiz, jobject medialibrary)
@@ -2241,10 +2234,10 @@ jlong getSubscriptionMaxCacheSize(JNIEnv* env, jobject thiz, jobject medialibrar
     return aml->getSubscriptionMaxCacheSize();
 }
 
-jlong getGlobalSubscriptionMaxCacheSize(JNIEnv* env, jobject thiz, jobject medialibrary)
+jlong getGlobalMaxCacheSize(JNIEnv* env, jobject thiz, jobject medialibrary)
 {
     AndroidMediaLibrary *aml = MediaLibrary_getInstance(env, medialibrary);
-    return aml->getGlobalSubscriptionMaxCacheSize();
+    return aml->getGlobalMaxCacheSize();
 }
 
 jboolean refreshAllSubscriptions(JNIEnv* env, jobject thiz, jobject ml)
@@ -2320,7 +2313,7 @@ setNewMediaNotificationEnabled(JNIEnv *env, jobject thiz, jobject medialibrary, 
 }
 
 jlong
-getMaxCachedSize(JNIEnv *env, jobject thiz, jobject medialibrary, jint _type)
+serviceGetMaxCacheSize(JNIEnv *env, jobject thiz, jobject medialibrary, jint _type)
 {
     AndroidMediaLibrary *aml = MediaLibrary_getInstance(env, medialibrary);
     medialibrary::IService::Type type = (medialibrary::IService::Type)_type;
@@ -2330,7 +2323,7 @@ getMaxCachedSize(JNIEnv *env, jobject thiz, jobject medialibrary, jint _type)
 }
 
 jboolean
-setMaxCachedSize(JNIEnv *env, jobject thiz, jobject medialibrary, jint _type, jlong size)
+serviceSetMaxCacheSize(JNIEnv *env, jobject thiz, jobject medialibrary, jint _type, jlong size)
 {
     AndroidMediaLibrary *aml = MediaLibrary_getInstance(env, medialibrary);
     medialibrary::IService::Type type = (medialibrary::IService::Type)_type;
@@ -2416,7 +2409,7 @@ setSubscriptionNewMediaNotification(JNIEnv *env, jobject thiz, jobject medialibr
 }
 
 jlong
-getSubscriptionCachedSize(JNIEnv *env, jobject thiz, jobject medialibrary, jlong id)
+subscriptionGetCacheSize(JNIEnv *env, jobject thiz, jobject medialibrary, jlong id)
 {
     AndroidMediaLibrary *aml = MediaLibrary_getInstance(env, medialibrary);
     medialibrary::SubscriptionPtr subscriptionPtr = aml->subscription(id);
@@ -2425,7 +2418,7 @@ getSubscriptionCachedSize(JNIEnv *env, jobject thiz, jobject medialibrary, jlong
 }
 
 jlong
-getSubscriptionMaxCachedSize(JNIEnv *env, jobject thiz, jobject medialibrary, jlong id)
+subscriptionGetMaxCacheSize(JNIEnv *env, jobject thiz, jobject medialibrary, jlong id)
 {
     AndroidMediaLibrary *aml = MediaLibrary_getInstance(env, medialibrary);
     medialibrary::SubscriptionPtr subscriptionPtr = aml->subscription(id);
@@ -2434,12 +2427,39 @@ getSubscriptionMaxCachedSize(JNIEnv *env, jobject thiz, jobject medialibrary, jl
 }
 
 jboolean
-setSubscriptionMaxCachedSize(JNIEnv *env, jobject thiz, jobject medialibrary, jlong id, jlong size)
+subscriptionSetMaxCacheSize(JNIEnv* env, jobject thiz, jobject medialibrary, jlong id, jlong size)
+{
+     AndroidMediaLibrary *aml = MediaLibrary_getInstance(env, medialibrary);
+    medialibrary::SubscriptionPtr subscriptionPtr = aml->subscription(id);
+    if (subscriptionPtr == nullptr) return false;
+    return subscriptionPtr->setMaxCachedSize(size);
+}
+
+jboolean
+setSubscriptionMaxCacheSize(JNIEnv *env, jobject thiz, jobject medialibrary, jlong id, jlong size)
 {
     AndroidMediaLibrary *aml = MediaLibrary_getInstance(env, medialibrary);
     medialibrary::SubscriptionPtr subscriptionPtr = aml->subscription(id);
     if (subscriptionPtr == nullptr) return false;
     return subscriptionPtr->setMaxCachedSize(size);
+}
+
+jint
+subscriptionGetMaxCacheMedia(JNIEnv *env, jobject thiz, jobject medialibrary, jlong id)
+{
+    AndroidMediaLibrary *aml = MediaLibrary_getInstance(env, medialibrary);
+    medialibrary::SubscriptionPtr subscriptionPtr = aml->subscription(id);
+    if (subscriptionPtr == nullptr) return -2;
+    return subscriptionPtr->maxCachedMedia();
+}
+
+jboolean
+subscriptionSetMaxCacheMedia(JNIEnv *env, jobject thiz, jobject medialibrary, jlong id, jint nbMedia)
+{
+    AndroidMediaLibrary *aml = MediaLibrary_getInstance(env, medialibrary);
+    medialibrary::SubscriptionPtr subscriptionPtr = aml->subscription(id);
+    if (subscriptionPtr == nullptr) return false;
+    return subscriptionPtr->setMaxCachedMedia(nbMedia);
 }
 
 jboolean
@@ -2638,14 +2658,14 @@ static JNINativeMethod methods[] = {
     {"nativeGetService", "(I)Lorg/videolan/medialibrary/interfaces/media/DiscoverService;", (void*)getService},
     {"nativeFitsInSubscriptionCache", "(Lorg/videolan/medialibrary/interfaces/Medialibrary;J)Z", (void*)fitsInSubscriptionCache},
     {"nativeCacheNewSubscriptionMedia", "(Lorg/videolan/medialibrary/interfaces/Medialibrary;)V", (void*)cacheNewSubscriptionMedia},
-    {"nativeSetSubscriptionMaxCacheMedia", "(Lorg/videolan/medialibrary/interfaces/Medialibrary;I)Z", (void*)setSubscriptionMaxCachedMedia},
+    {"nativeSetSubscriptionMaxCacheMedia", "(Lorg/videolan/medialibrary/interfaces/Medialibrary;I)Z", (void*)setSubscriptionMaxCacheMedia},
     {"nativeSetSubscriptionMaxCacheSize", "(Lorg/videolan/medialibrary/interfaces/Medialibrary;J)Z", (void*)setSubscriptionMaxCacheSize},
     {"nativeGetSubscriptionMedia", "(IZZZII)[Lorg/videolan/medialibrary/interfaces/media/MediaWrapper;", (void*)getAllSubscriptionMedia },
     {"nativeGetSubscriptionMediaCount", "(Z)I", (void*)getAllSubscriptionMediaCount },
-    {"nativeSetGlobalSubscriptionMaxCacheSize", "(Lorg/videolan/medialibrary/interfaces/Medialibrary;J)Z", (void*)setGlobalSubscriptionMaxCacheSize},
-    {"nativeGetSubscriptionMaxCacheMedia", "(Lorg/videolan/medialibrary/interfaces/Medialibrary;)I", (void*)getSubscriptionMaxCachedMedia},
+    {"nativeSetGlobalMaxCacheSize", "(Lorg/videolan/medialibrary/interfaces/Medialibrary;J)Z", (void*)setGlobalMaxCacheSize},
+    {"nativeGetSubscriptionMaxCacheMedia", "(Lorg/videolan/medialibrary/interfaces/Medialibrary;)I", (void*)getSubscriptionMaxCacheMedia},
     {"nativeGetSubscriptionMaxCacheSize", "(Lorg/videolan/medialibrary/interfaces/Medialibrary;)J", (void*)getSubscriptionMaxCacheSize},
-    {"nativeGetGlobalSubscriptionMaxCacheSize", "(Lorg/videolan/medialibrary/interfaces/Medialibrary;)J", (void*)getGlobalSubscriptionMaxCacheSize},
+    {"nativeGetGlobalMaxCacheSize", "(Lorg/videolan/medialibrary/interfaces/Medialibrary;)J", (void*)getGlobalMaxCacheSize},
     {"nativeRefreshAllSubscriptions", "(Lorg/videolan/medialibrary/interfaces/Medialibrary;)Z", (void*)refreshAllSubscriptions},
 };
 
@@ -2758,8 +2778,8 @@ static JNINativeMethod service_methods[] = {
     {"nativeSetAutoDownloadEnabled", "(Lorg/videolan/medialibrary/interfaces/Medialibrary;IZ)Z", (void*)setAutoDownloadEnabled},
     {"nativeIsNewMediaNotificationEnabled", "(Lorg/videolan/medialibrary/interfaces/Medialibrary;I)Z", (void*)isNewMediaNotificationEnabled},
     {"nativeSetNewMediaNotificationEnabled", "(Lorg/videolan/medialibrary/interfaces/Medialibrary;IZ)Z", (void*)setNewMediaNotificationEnabled},
-    {"nativeGetMaxCachedSize", "(Lorg/videolan/medialibrary/interfaces/Medialibrary;I)J", (void*)getMaxCachedSize},
-    {"nativeSetMaxCachedSize", "(Lorg/videolan/medialibrary/interfaces/Medialibrary;IJ)Z", (void*)setMaxCachedSize},
+    {"nativeGetMaxCacheSize", "(Lorg/videolan/medialibrary/interfaces/Medialibrary;I)J", (void*)serviceGetMaxCacheSize},
+    {"nativeSetMaxCacheSize", "(Lorg/videolan/medialibrary/interfaces/Medialibrary;IJ)Z", (void*)serviceSetMaxCacheSize},
     {"nativeGetSubscriptions", "(Lorg/videolan/medialibrary/interfaces/Medialibrary;IIZZZ)[Lorg/videolan/medialibrary/interfaces/media/Subscription;", (void*)getSubscriptions},
     {"nativeGetServiceMedia", "(Lorg/videolan/medialibrary/interfaces/Medialibrary;IIZZZ)[Lorg/videolan/medialibrary/interfaces/media/MediaWrapper;", (void*)getServiceMedia},
     {"nativeServiceRefresh", "(Lorg/videolan/medialibrary/interfaces/Medialibrary;I)Z", (void*)serviceRefresh},
@@ -2769,10 +2789,11 @@ static JNINativeMethod service_methods[] = {
 
 static JNINativeMethod subscription_methods[] = {
     {"nativeSubscriptionNewMediaNotification", "(Lorg/videolan/medialibrary/interfaces/Medialibrary;J)I", (void*)subscriptionNewMediaNotification},
-    {"nativeSetSubscriptionNewMediaNotification", "(Lorg/videolan/medialibrary/interfaces/Medialibrary;JI)Z", (void*)setSubscriptionNewMediaNotification},
-    {"nativeGetSubscriptionCachedSize", "(Lorg/videolan/medialibrary/interfaces/Medialibrary;J)J", (void*)getSubscriptionCachedSize},
-    {"nativeGetSubscriptionMaxCachedSize", "(Lorg/videolan/medialibrary/interfaces/Medialibrary;J)J", (void*)getSubscriptionMaxCachedSize},
-    {"nativeSetSubscriptionMaxCachedSize", "(Lorg/videolan/medialibrary/interfaces/Medialibrary;JJ)Z", (void*)setSubscriptionMaxCachedSize},
+    {"nativeGetCacheSize", "(Lorg/videolan/medialibrary/interfaces/Medialibrary;J)J", (void*)subscriptionGetCacheSize},
+    {"nativeGetMaxCacheSize", "(Lorg/videolan/medialibrary/interfaces/Medialibrary;J)J", (void*)subscriptionGetMaxCacheSize},
+    {"nativeSetMaxCacheSize", "(Lorg/videolan/medialibrary/interfaces/Medialibrary;JJ)Z", (void*)subscriptionSetMaxCacheSize},
+    {"nativeGetMaxCacheMedia", "(Lorg/videolan/medialibrary/interfaces/Medialibrary;J)I", (void*)subscriptionGetMaxCacheMedia},
+    {"nativeSetMaxCacheMedia", "(Lorg/videolan/medialibrary/interfaces/Medialibrary;JI)Z", (void*)subscriptionSetMaxCacheMedia},
     {"nativeGetChildSubscriptions", "(Lorg/videolan/medialibrary/interfaces/Medialibrary;JIZZZ)[Lorg/videolan/medialibrary/interfaces/media/Subscription;", (void*)getChildSubscriptions},
     {"nativeGetParent", "(Lorg/videolan/medialibrary/interfaces/Medialibrary;J)Lorg/videolan/medialibrary/interfaces/media/Subscription;", (void*)getParent},
     {"nativeSubscriptionRefresh", "(Lorg/videolan/medialibrary/interfaces/Medialibrary;J)Z", (void*)refresh},

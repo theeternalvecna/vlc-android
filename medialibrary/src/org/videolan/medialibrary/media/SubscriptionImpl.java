@@ -28,21 +28,33 @@ public class SubscriptionImpl extends Subscription {
     }
 
     @Override
-    public long getCachedSize() {
+    public long getCacheSize() {
         final Medialibrary ml = Medialibrary.getInstance();
-        return ml.isInitiated() ? nativeGetSubscriptionCachedSize(ml, this.mId) : -2;
+        return ml.isInitiated() ? nativeGetCacheSize(ml, this.mId) : -2;
     }
 
     @Override
-    public long getMaxCachedSize() {
+    public long getMaxCacheSize() {
         final Medialibrary ml = Medialibrary.getInstance();
-        return ml.isInitiated() ? nativeGetSubscriptionMaxCachedSize(ml, this.mId) : -2;
+        return ml.isInitiated() ? nativeGetMaxCacheSize(ml, this.mId) : -2;
     }
 
     @Override
-    public boolean setMaxCachedSize(long size) {
+    public boolean setMaxCacheSize(long size) {
         final Medialibrary ml = Medialibrary.getInstance();
-        return ml.isInitiated() && nativeSetSubscriptionMaxCachedSize(ml, this.mId, size);
+        return ml.isInitiated() && nativeSetMaxCacheSize(ml, this.mId, size);
+    }
+
+    @Override
+    public int getMaxCacheMedia() {
+        final Medialibrary ml = Medialibrary.getInstance();
+        return ml.isInitiated() ? nativeGetMaxCacheMedia(ml, this.mId) : -2;
+    }
+
+    @Override
+    public boolean setMaxCacheMedia(int size) {
+        final Medialibrary ml = Medialibrary.getInstance();
+        return ml.isInitiated() && nativeSetMaxCacheMedia(ml, this.mId, size);
     }
 
     @Override
@@ -84,9 +96,11 @@ public class SubscriptionImpl extends Subscription {
 
     private native int nativeSubscriptionNewMediaNotification(Medialibrary ml, long id);
     private native boolean nativeSetSubscriptionNewMediaNotification(Medialibrary ml, long id, int value);
-    private native long nativeGetSubscriptionCachedSize(Medialibrary ml, long id);
-    private native long nativeGetSubscriptionMaxCachedSize(Medialibrary ml, long id);
-    private native boolean nativeSetSubscriptionMaxCachedSize(Medialibrary ml, long id, long size);
+    private native long nativeGetCacheSize(Medialibrary ml, long id);
+    private native long nativeGetMaxCacheSize(Medialibrary ml, long id);
+    private native boolean nativeSetMaxCacheSize(Medialibrary ml, long id, long size);
+    private native int nativeGetMaxCacheMedia(Medialibrary ml, long id);
+    private native boolean nativeSetMaxCacheMedia(Medialibrary ml, long id, int nbMedia);
     private native Subscription[] nativeGetChildSubscriptions(Medialibrary ml, long id, int sortingCriteria, boolean desc, boolean includeMissing, boolean onlyFavorites);
     private native Subscription nativeGetParent(Medialibrary ml, long id);
     private native boolean nativeSubscriptionRefresh(Medialibrary ml, long id);

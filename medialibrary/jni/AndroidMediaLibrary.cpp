@@ -1270,7 +1270,7 @@ AndroidMediaLibrary::cacheNewSubscriptionMedia()
 }
 
 bool
-AndroidMediaLibrary::setSubscriptionMaxCachedMedia( int nbMedia )
+AndroidMediaLibrary::setSubscriptionMaxCacheMedia( int nbMedia )
 {
     return p_ml->setSubscriptionMaxCachedMedia( nbMedia );
 }
@@ -1282,13 +1282,13 @@ AndroidMediaLibrary::setSubscriptionMaxCacheSize( long size )
 }
 
 bool
-AndroidMediaLibrary::setGlobalSubscriptionMaxCacheSize( long size )
+AndroidMediaLibrary::setGlobalMaxCacheSize( long size )
 {
     return p_ml->setMaxCacheSize( size );
 }
 
 uint32_t
-AndroidMediaLibrary::getSubscriptionMaxCachedMedia()
+AndroidMediaLibrary::getSubscriptionMaxCacheMedia()
 {
     return p_ml->getSubscriptionMaxCachedMedia();
 }
@@ -1300,7 +1300,7 @@ AndroidMediaLibrary::getSubscriptionMaxCacheSize()
 }
 
 uint64_t
-AndroidMediaLibrary::getGlobalSubscriptionMaxCacheSize()
+AndroidMediaLibrary::getGlobalMaxCacheSize()
 {
     return p_ml->getMaxCacheSize();
 }

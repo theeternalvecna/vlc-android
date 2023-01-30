@@ -636,7 +636,7 @@ public class MedialibraryImpl extends Medialibrary {
     }
 
     @Override
-    public boolean setSubscriptionMaxCachedMedia(int nbMedia) {
+    public boolean setSubscriptionMaxCacheMedia(int nbMedia) {
         return mIsInitiated && nativeSetSubscriptionMaxCacheMedia(this, nbMedia);
     }
 
@@ -646,12 +646,12 @@ public class MedialibraryImpl extends Medialibrary {
     }
 
     @Override
-    public boolean setGlobalSubscriptionMaxCacheSize(long size) {
-        return mIsInitiated && nativeSetGlobalSubscriptionMaxCacheSize(this, size);
+    public boolean setGlobalMaxCacheSize(long size) {
+        return mIsInitiated && nativeSetGlobalMaxCacheSize(this, size);
     }
 
     @Override
-    public int getSubscriptionMaxCachedMedia() {
+    public int getSubscriptionMaxCacheMedia() {
         return mIsInitiated ? nativeGetSubscriptionMaxCacheMedia(this) : -1;
     }
 
@@ -661,8 +661,8 @@ public class MedialibraryImpl extends Medialibrary {
     }
 
     @Override
-    public long getGlobalSubscriptionMaxCacheSize() {
-        return mIsInitiated ? nativeGetGlobalSubscriptionMaxCacheSize(this) : -1L;
+    public long getGlobalMaxCacheSize() {
+        return mIsInitiated ? nativeGetGlobalMaxCacheSize(this) : -1L;
     }
 
     @Override
@@ -783,9 +783,9 @@ public class MedialibraryImpl extends Medialibrary {
     private native void nativeCacheNewSubscriptionMedia(Medialibrary ml);
     private native boolean nativeSetSubscriptionMaxCacheMedia(Medialibrary ml, int nbMedia);
     private native boolean nativeSetSubscriptionMaxCacheSize(Medialibrary ml, long size);
-    private native boolean nativeSetGlobalSubscriptionMaxCacheSize(Medialibrary ml, long size);
+    private native boolean nativeSetGlobalMaxCacheSize(Medialibrary ml, long size);
     private native int nativeGetSubscriptionMaxCacheMedia(Medialibrary ml);
     private native long nativeGetSubscriptionMaxCacheSize(Medialibrary ml);
-    private native long nativeGetGlobalSubscriptionMaxCacheSize(Medialibrary ml);
+    private native long nativeGetGlobalMaxCacheSize(Medialibrary ml);
     private native boolean nativeRefreshAllSubscriptions(Medialibrary ml);
 }

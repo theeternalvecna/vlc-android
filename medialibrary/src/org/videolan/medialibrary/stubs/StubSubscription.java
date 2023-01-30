@@ -25,17 +25,27 @@ public class StubSubscription extends Subscription {
     }
 
     @Override
-    public long getCachedSize() {
+    public long getCacheSize() {
         return 0;
     }
 
     @Override
-    public long getMaxCachedSize() {
+    public long getMaxCacheSize() {
         return 0;
     }
 
     @Override
-    public boolean setMaxCachedSize(long size) {
+    public boolean setMaxCacheSize(long size) {
+        return false;
+    }
+
+    @Override
+    public int getMaxCacheMedia() {
+        return 0;
+    }
+
+    @Override
+    public boolean setMaxCacheMedia(int size) {
         return false;
     }
 
