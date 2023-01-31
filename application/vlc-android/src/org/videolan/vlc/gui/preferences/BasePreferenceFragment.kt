@@ -34,10 +34,7 @@ import org.videolan.resources.util.parcelable
 import org.videolan.vlc.R
 import org.videolan.vlc.gui.preferences.hack.MultiSelectListPreferenceDialogFragmentCompat
 import org.videolan.vlc.gui.preferences.search.PreferenceItem
-import org.videolan.vlc.gui.view.NumberPickerPreference
-import org.videolan.vlc.gui.view.NumberPickerPreferenceDialog
-import org.videolan.vlc.gui.view.SubscriptionNumberPreference
-import org.videolan.vlc.gui.view.SubscriptionNumberPreferenceDialog
+import org.videolan.vlc.gui.view.*
 
 abstract class BasePreferenceFragment : PreferenceFragmentCompat() {
 
@@ -78,6 +75,12 @@ abstract class BasePreferenceFragment : PreferenceFragmentCompat() {
         }
         if (preference is SubscriptionNumberPreference) {
             val dialog = SubscriptionNumberPreferenceDialog.newInstance(preference.key)
+            dialog.setTargetFragment(this, 0)
+            dialog.show(parentFragmentManager, DIALOG_FRAGMENT_TAG)
+            return
+        }
+        if (preference is SubscriptionFileSizePreference) {
+            val dialog = SubscriptionFileSizePreferenceDialog.newInstance(preference.key)
             dialog.setTargetFragment(this, 0)
             dialog.show(parentFragmentManager, DIALOG_FRAGMENT_TAG)
             return
