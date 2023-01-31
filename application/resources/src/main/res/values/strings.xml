@@ -1136,6 +1136,8 @@
     <string name="filter">Filter</string>
 
 
+    <string name="follow_parent">Follow parent</string>
+    <string name="none">None</string>
 
     <!--    accessibility-->
     <string name="talkback_media_content_description">%s - title: %s - duration: %s</string>
