@@ -61,9 +61,7 @@ import org.videolan.vlc.R
 import org.videolan.vlc.databinding.SubscriptionInfoActivityBinding
 import org.videolan.vlc.gui.ContentActivity
 import org.videolan.vlc.gui.browser.KEY_MEDIA
-import org.videolan.vlc.gui.dialogs.CtxActionReceiver
-import org.videolan.vlc.gui.dialogs.SavePlaylistDialog
-import org.videolan.vlc.gui.dialogs.showContext
+import org.videolan.vlc.gui.dialogs.*
 import org.videolan.vlc.gui.helpers.AudioUtil
 import org.videolan.vlc.gui.helpers.UiTools
 import org.videolan.vlc.gui.helpers.UiTools.addToPlaylist
@@ -217,6 +215,11 @@ class SubscriptionInfoActivity: ContentActivity(), CtxActionReceiver, ActionMode
         return when (item.itemId) {
             R.id.ml_menu_subscription_filter -> {
 
+                true
+            }
+            R.id.ml_menu_subscription_settings -> {
+                val subscriptionSettingsDialog = SubscriptionSettingsDialog.newInstance(subscription = media)
+                subscriptionSettingsDialog.show(supportFragmentManager, "fragment_subscription_settings")
                 true
             }
             else -> super.onOptionsItemSelected(item)

@@ -1134,6 +1134,10 @@
     <string name="discover_podcast">Podcast</string>
     <string name="subscription_settings">Subscription settings</string>
     <string name="filter">Filter</string>
+    <string name="subscription_nb_download">Max cache media</string>
+    <string name="subscription_max_cache_size">Max cache size</string>
+    <string name="enabled">Enabled</string>
+    <string name="subscription_notification">Notification on new media</string>
 
 
     <string name="follow_parent">Follow parent</string>
