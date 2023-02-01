@@ -37,6 +37,7 @@ import org.videolan.medialibrary.interfaces.media.DiscoverService
 import org.videolan.medialibrary.media.DiscoverServiceImpl
 import org.videolan.tools.KEY_DISCOVER_CURRENT_TAB
 import org.videolan.tools.Settings
+import org.videolan.tools.isStarted
 import org.videolan.vlc.R
 import org.videolan.vlc.gui.BaseFragment
 import org.videolan.vlc.gui.dialogs.PodcastAddDialog
@@ -147,19 +148,19 @@ class DiscoverBrowserFragment : BaseFragment(), TabLayout.OnTabSelectedListener,
     }
 
     override fun onTabSelected(tab: TabLayout.Tab?) {
-        if (isAdded) tab?.let {
+        if (isAdded && isStarted()) tab?.let {
             Settings.getInstance(requireActivity()).edit().putInt(KEY_DISCOVER_CURRENT_TAB, it.position).apply()
         }
     }
 
     override fun onTabUnselected(tab: TabLayout.Tab?) {
-        if (isAdded) tab?.position?.let {
+        if (isAdded && isStarted()) tab?.position?.let {
             (viewPager.findFragmentAt(parentFragmentManager, it) as? BaseFragment)?.stopActionMode()
         }
     }
 
     override fun onTabReselected(tab: TabLayout.Tab?) {
-        if (isAdded) (viewPager.findCurrentFragment(parentFragmentManager) as? DiscoverFragment<*>)?.scrollToTop()
+        if (isAdded && isStarted()) (viewPager.findCurrentFragment(parentFragmentManager) as? DiscoverFragment<*>)?.scrollToTop()
     }
 
     override fun onFabPlayClick(view: View) {
