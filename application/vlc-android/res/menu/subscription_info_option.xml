@@ -36,4 +36,9 @@
             android:orderInCategory="3"
             android:title="@string/subscription_settings"
             app:showAsAction="ifRoom" />
+    <item
+            android:id="@+id/ml_menu_subscription_unsubscribe"
+            android:orderInCategory="4"
+            android:title="@string/subscription_unsubscribe"
+            app:showAsAction="never" />
 </menu>

@@ -1133,6 +1133,7 @@
     <string name="discover_feed">Feed</string>
     <string name="discover_podcast">Podcast</string>
     <string name="subscription_settings">Subscription settings</string>
+    <string name="subscription_unsubscribe">Unsubscribe</string>
     <string name="filter">Filter</string>
     <string name="subscription_nb_download">Max cache media</string>
     <string name="subscription_max_cache_size">Max cache size</string>

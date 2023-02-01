@@ -78,7 +78,7 @@ class SubscriptionInfoActivity: ContentActivity(), CtxActionReceiver, ActionMode
     private lateinit var feedAdapter: DiscoverAdapter
     private lateinit var binding: SubscriptionInfoActivityBinding
     private lateinit var viewModel: PlaylistViewModel
-    lateinit var media:Subscription
+    lateinit var subscription:Subscription
     var actionMode: ActionMode? = null
 
     override val displayTitle = true
@@ -87,13 +87,13 @@ class SubscriptionInfoActivity: ContentActivity(), CtxActionReceiver, ActionMode
         super.onCreate(savedInstanceState)
 
         binding = DataBindingUtil.setContentView(this, R.layout.subscription_info_activity)
-        media = if (savedInstanceState != null)
+        subscription = if (savedInstanceState != null)
             savedInstanceState.parcelable<Parcelable>(KEY_MEDIA) as Subscription
         else
             intent.parcelable<Parcelable>(KEY_MEDIA) as Subscription
 
-        binding.media = media
-        viewModel = getViewModel(media)
+        binding.media = subscription
+        viewModel = getViewModel(subscription)
         val toolbar = findViewById<MaterialToolbar>(R.id.main_toolbar)
         setSupportActionBar(toolbar)
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
@@ -124,10 +124,10 @@ class SubscriptionInfoActivity: ContentActivity(), CtxActionReceiver, ActionMode
         binding.summary.setOnLineCountChangedListener {lineCount ->
             if (lineCount <= binding.summary.maxLines)  binding.summaryMore.setGone()
         }
-        binding.summary.linkify(media.summary)
+        binding.summary.linkify(subscription.summary)
         binding.summary.setLinkTextColor(ContextCompat.getColor(this, R.color.orange500))
 
-        showArtwork(media.artworkMrl)
+        showArtwork(subscription.artworkMrl)
 
         feedAdapter.events.onEach { it.process() }.launchWhenStarted(lifecycleScope)
         multiSelectHelper = feedAdapter.multiSelectHelper
@@ -218,8 +218,15 @@ class SubscriptionInfoActivity: ContentActivity(), CtxActionReceiver, ActionMode
                 true
             }
             R.id.ml_menu_subscription_settings -> {
-                val subscriptionSettingsDialog = SubscriptionSettingsDialog.newInstance(subscription = media)
+                val subscriptionSettingsDialog = SubscriptionSettingsDialog.newInstance(subscription = subscription)
                 subscriptionSettingsDialog.show(supportFragmentManager, "fragment_subscription_settings")
+                true
+            }
+            R.id.ml_menu_subscription_unsubscribe -> {
+                lifecycleScope.launch(Dispatchers.IO) {
+                    subscription.delete()
+                }
+                finish()
                 true
             }
             else -> super.onOptionsItemSelected(item)
@@ -307,7 +314,7 @@ class SubscriptionInfoActivity: ContentActivity(), CtxActionReceiver, ActionMode
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
-        outState.putParcelable(KEY_MEDIA, media)
+        outState.putParcelable(KEY_MEDIA, subscription)
         super.onSaveInstanceState(outState)
     }
 

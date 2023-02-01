@@ -192,7 +192,9 @@ class DiscoverServiceFragment : DiscoverFragment<ServiceContentViewModel>(), Fil
         val activity = activity ?: return
         when (val media = subscriptionListAdapter.getItem(position)) {
             is Subscription -> when (option) {
-                CTX_DELETE -> removeItem(media)
+                CTX_UNSUBSCRIBE -> {
+                    media.delete()
+                }
             }
         }
     }
