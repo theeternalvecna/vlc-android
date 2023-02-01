@@ -66,7 +66,7 @@ class DiscoverAdapter(private val smallItem:Boolean = false) : PagedListAdapter<
     var isListMode = true
     val multiSelectHelper = MultiSelectHelper(this, UPDATE_SELECTION)
     private val progresses = HashMap<Uri, Long>()
-    var paletteColor: Int = -1
+    var paletteColor: Int = Int.MIN_VALUE
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = getItem(position) ?: return
@@ -153,7 +153,7 @@ class DiscoverAdapter(private val smallItem:Boolean = false) : PagedListAdapter<
 
 
     private fun updateColor(holder: ViewHolder) {
-        (holder.binding as? SubscriptionListItemBinding)?.let {
+        if (paletteColor != Int.MIN_VALUE) (holder.binding as? SubscriptionListItemBinding)?.let {
             it.playButton.setColor(paletteColor)
             it.downloadButton.setColor(paletteColor)
             it.playqueueButton.setColor(paletteColor)
