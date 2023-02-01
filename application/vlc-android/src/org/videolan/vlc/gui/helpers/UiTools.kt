@@ -122,6 +122,7 @@ object UiTools {
     private var DEFAULT_COVER_MOVIE_DRAWABLE: BitmapDrawable? = null
     private var DEFAULT_COVER_TVSHOW_DRAWABLE: BitmapDrawable? = null
     private var DEFAULT_COVER_FOLDER_DRAWABLE: BitmapDrawable? = null
+    private var DEFAULT_COVER_PODCAST_DRAWABLE: BitmapDrawable? = null
 
     private var DEFAULT_COVER_VIDEO_DRAWABLE_BIG: BitmapDrawable? = null
     private var DEFAULT_COVER_AUDIO_DRAWABLE_BIG: BitmapDrawable? = null
@@ -130,6 +131,7 @@ object UiTools {
     private var DEFAULT_COVER_MOVIE_DRAWABLE_BIG: BitmapDrawable? = null
     private var DEFAULT_COVER_TVSHOW_DRAWABLE_BIG: BitmapDrawable? = null
     private var DEFAULT_COVER_FOLDER_DRAWABLE_BIG: BitmapDrawable? = null
+    private var DEFAULT_COVER_PODCAST_DRAWABLE_BIG: BitmapDrawable? = null
 
     private val sHandler = Handler(Looper.getMainLooper())
     private const val DELETE_DURATION = 3000
@@ -160,6 +162,20 @@ object UiTools {
             DEFAULT_COVER_FOLDER_DRAWABLE = BitmapDrawable(context.resources, getBitmapFromDrawable(context, R.drawable.ic_menu_folder))
         }
         return DEFAULT_COVER_FOLDER_DRAWABLE!!
+    }
+
+    fun getDefaultPodcastDrawable(context: Context): BitmapDrawable {
+        if (DEFAULT_COVER_PODCAST_DRAWABLE == null) {
+            DEFAULT_COVER_PODCAST_DRAWABLE = BitmapDrawable(context.resources, getBitmapFromDrawable(context, R.drawable.ic_no_podcast))
+        }
+        return DEFAULT_COVER_PODCAST_DRAWABLE!!
+    }
+
+    fun getDefaultPodcastDrawableBig(context: Context): BitmapDrawable {
+        if (DEFAULT_COVER_PODCAST_DRAWABLE_BIG == null) {
+            DEFAULT_COVER_PODCAST_DRAWABLE_BIG = BitmapDrawable(context.resources, getBitmapFromDrawable(context, R.drawable.ic_podcast_big))
+        }
+        return DEFAULT_COVER_PODCAST_DRAWABLE_BIG!!
     }
 
     fun getDefaultAlbumDrawable(context: Context): BitmapDrawable {

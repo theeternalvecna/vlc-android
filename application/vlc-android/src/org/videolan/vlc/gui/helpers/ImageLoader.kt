@@ -32,6 +32,7 @@ import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.videolan.medialibrary.interfaces.Medialibrary
+import org.videolan.medialibrary.interfaces.media.DiscoverService
 import org.videolan.medialibrary.interfaces.media.Folder
 import org.videolan.medialibrary.interfaces.media.MediaWrapper
 import org.videolan.medialibrary.media.DummyItem
@@ -103,6 +104,13 @@ fun getAudioIconDrawable(context: Context?, type: Int, big: Boolean = false): Bi
         MediaLibraryItem.TYPE_ALBUM -> if (big) UiTools.getDefaultAlbumDrawableBig(it) else UiTools.getDefaultAlbumDrawable(it)
         MediaLibraryItem.TYPE_ARTIST -> if (big) UiTools.getDefaultArtistDrawableBig(it) else UiTools.getDefaultArtistDrawable(it)
         MediaLibraryItem.TYPE_MEDIA -> if (big) UiTools.getDefaultAudioDrawableBig(it) else UiTools.getDefaultAudioDrawable(it)
+        else -> null
+    }
+}
+
+fun getSubscriptionIconDrawable(context: Context?, type: DiscoverService.Type, big: Boolean = false): BitmapDrawable? = context?.let {
+    when (type) {
+        DiscoverService.Type.PODCAST -> if (big) UiTools.getDefaultPodcastDrawableBig(it) else UiTools.getDefaultPodcastDrawable(it)
         else -> null
     }
 }

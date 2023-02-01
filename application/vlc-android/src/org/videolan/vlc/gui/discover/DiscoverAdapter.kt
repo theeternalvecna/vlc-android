@@ -26,6 +26,7 @@ package org.videolan.vlc.gui.discover
 
 import android.annotation.SuppressLint
 import android.annotation.TargetApi
+import android.graphics.drawable.BitmapDrawable
 import android.net.Uri
 import android.os.Build
 import android.view.LayoutInflater
@@ -44,6 +45,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.videolan.libvlc.util.AndroidUtil
+import org.videolan.medialibrary.interfaces.media.DiscoverService
 import org.videolan.medialibrary.interfaces.media.MediaWrapper
 import org.videolan.medialibrary.interfaces.media.Subscription
 import org.videolan.medialibrary.media.MediaLibraryItem
@@ -60,13 +62,20 @@ import org.videolan.vlc.gui.view.FastScroller
 import org.videolan.vlc.media.SubscriptionEpisode
 import kotlin.random.Random
 
-class DiscoverAdapter(private val smallItem:Boolean = false) : PagedListAdapter<MediaLibraryItem, DiscoverAdapter.ViewHolder>(DiscoverServiceCallback), FastScroller.SeparatedAdapter,
+open class DiscoverAdapter(private val smallItem:Boolean = false) : PagedListAdapter<MediaLibraryItem, DiscoverAdapter.ViewHolder>(DiscoverServiceCallback), FastScroller.SeparatedAdapter,
         MultiSelectAdapter<MediaLibraryItem>, IEventsSource<DiscoverFragment.DiscoverAction> by EventsSource() {
 
     var isListMode = true
     val multiSelectHelper = MultiSelectHelper(this, UPDATE_SELECTION)
     private val progresses = HashMap<Uri, Long>()
     var paletteColor: Int = Int.MIN_VALUE
+    protected val defaultPodcastCover: BitmapDrawable?
+
+
+    init {
+        val ctx = AppContextProvider.appContext
+        defaultPodcastCover = getSubscriptionIconDrawable(ctx, DiscoverService.Type.PODCAST, !smallItem)
+    }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = getItem(position) ?: return
@@ -178,18 +187,29 @@ class DiscoverAdapter(private val smallItem:Boolean = false) : PagedListAdapter<
         progresses.clear()
     }
 
+
+    override fun onViewRecycled(holder: ViewHolder) {
+        holder.recycle()
+        super.onViewRecycled(holder)
+    }
+
     @TargetApi(Build.VERSION_CODES.M)
     inner class ViewHolder(binding: ViewDataBinding) : SelectorViewHolder<ViewDataBinding>(binding) {
         val title : TextView = itemView.findViewById(R.id.ml_item_title)
         val more : ImageView = itemView.findViewById(R.id.item_more)
 
         init {
+            defaultPodcastCover?.let { binding.setVariable(BR.cover, it) }
             binding.setVariable(BR.holder, this)
             if (AndroidUtil.isMarshMallowOrLater)
                 itemView.setOnContextClickListener { v ->
                     onMoreClick(v)
                     true
                 }
+        }
+
+        fun recycle() {
+            defaultPodcastCover?.let { binding.setVariable(BR.cover, it) }
         }
 
         fun onImageClick(@Suppress("UNUSED_PARAMETER") v: View) {
