@@ -96,7 +96,7 @@
                 android:fontFamily="sans-serif-medium"
                 android:gravity="center_vertical"
                 android:text="@{media.releaseDate(textView40, true)}"
-                android:textColor="?attr/font_default"
+                vlc:textColorRead="@{seen != 0L}"
                 android:visibility="@{smallItem ? View.VISIBLE : View.GONE}"
                 tools:text="Today"
                 vlc:layout_constraintEnd_toEndOf="parent"
@@ -116,7 +116,7 @@
                 android:gravity="center_vertical"
                 android:lineSpacingMultiplier="1"
                 android:text="@{media.title}"
-                android:textColor="?attr/font_default"
+                vlc:textColorRead="@{seen != 0L}"
                 android:textSize="16sp"
                 tools:text="Star wars Episode 1"
                 vlc:layoutMarginStart="@{smallItem ? @dimen/kl_normal : @dimen/kl_none}"
@@ -174,21 +174,6 @@
                         vlc:layout_constraintStart_toStartOf="@+id/ml_item_thumbnail"
                         vlc:layout_constraintTop_toTopOf="@+id/ml_item_thumbnail" />
 
-                <ImageView
-                        android:id="@+id/ml_item_seen3"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="4dp"
-                        android:layout_marginEnd="4dp"
-                        android:background="@drawable/rounded_corners_black_more_transparent"
-                        android:padding="3dp"
-                        android:visibility="@{seen == 0L ? View.GONE : View.VISIBLE, default=gone}"
-                        tools:visibility="visible"
-                        vlc:layout_constraintEnd_toEndOf="parent"
-                        vlc:layout_constraintTop_toTopOf="parent"
-                        vlc:layout_goneMarginStart="4dp"
-                        vlc:srcCompat="@drawable/ic_check" />
-
             </androidx.constraintlayout.widget.ConstraintLayout>
         </com.google.android.material.card.MaterialCardView>
 
@@ -218,7 +203,7 @@
                 android:layout_marginBottom="2dp"
                 android:maxLines="1"
                 android:text="@{media.subsText()}"
-                android:textColor="?attr/font_default"
+                vlc:textColorRead="@{seen != 0L}"
                 android:visibility="@{smallItem ? View.GONE : View.VISIBLE}"
                 tools:text="Subscription title"
                 vlc:layout_constraintBottom_toTopOf="@+id/textView38"
@@ -230,23 +215,38 @@
 
         <TextView
                 android:id="@+id/textView38"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="2dp"
-                android:layout_marginEnd="8dp"
                 android:drawableStart="@drawable/ic_clock"
-                android:visibility="@{smallItem ? View.GONE : View.VISIBLE}"
                 android:drawablePadding="4dp"
                 android:fontFamily="sans-serif-medium"
                 android:gravity="center_vertical"
                 android:text="@{media.releaseDate(textView38, false)}"
-                android:textColor="?attr/font_default"
+                android:visibility="@{smallItem ? View.GONE : View.VISIBLE}"
                 tools:text="Today"
                 vlc:layout_constraintBottom_toBottomOf="@+id/container"
-                vlc:layout_constraintEnd_toEndOf="@+id/textView37"
-                vlc:layout_constraintHorizontal_bias="0.5"
                 vlc:layout_constraintStart_toStartOf="@+id/textView37"
-                vlc:layout_constraintTop_toBottomOf="@+id/textView37" />
+                vlc:layout_constraintTop_toBottomOf="@+id/textView37"
+                vlc:textColorRead="@{seen != 0L}" />
+
+        <TextView
+                android:id="@+id/textView39"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_marginStart="8dp"
+                android:gravity="center_vertical"
+                android:paddingStart="6dp"
+                android:paddingEnd="6dp"
+                android:text="@string/played"
+                android:background="@drawable/rounded_background_light"
+                android:visibility="@{seen == 0L ? View.GONE : View.VISIBLE}"
+                android:textAllCaps="true"
+                android:textSize="12sp"
+                android:fontFamily="sans-serif-medium"
+                vlc:layout_constraintBottom_toBottomOf="@+id/textView38"
+                vlc:layout_constraintStart_toEndOf="@+id/textView38"
+                vlc:layout_constraintTop_toTopOf="@+id/textView38" />
 
         <ImageView
                 android:id="@+id/selected_check"

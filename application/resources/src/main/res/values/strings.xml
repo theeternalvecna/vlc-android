@@ -1139,6 +1139,7 @@
     <string name="enabled">Enabled</string>
     <string name="subscription_notification">Notification on new media</string>
 
+    <string name="played">Played</string>
 
     <string name="follow_parent">Follow parent</string>
     <string name="none">None</string>
