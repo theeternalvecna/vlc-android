@@ -2462,12 +2462,6 @@ subscriptionSetMaxCacheMedia(JNIEnv *env, jobject thiz, jobject medialibrary, jl
     return subscriptionPtr->setMaxCachedMedia(nbMedia);
 }
 
-jboolean
-removeSubscription(JNIEnv* env, jobject thiz, jlong id)
-{
-   return MediaLibrary_getInstance(env, thiz)->removeSubscription((int64_t)id);
-}
-
 jobjectArray
 getChildSubscriptions(JNIEnv* env, jobject thiz, jobject ml, jlong id, jint sortingCriteria, jboolean desc, jboolean includeMissing, jboolean onlyFavorites)
 {
