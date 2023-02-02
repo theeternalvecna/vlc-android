@@ -28,6 +28,7 @@ import android.content.Intent
 import android.content.res.ColorStateList
 import android.content.res.Configuration
 import android.graphics.Color
+import android.graphics.drawable.BitmapDrawable
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -99,6 +100,11 @@ class SubscriptionInfoActivity: ContentActivity(), CtxActionReceiver, ActionMode
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
         title = ""
 
+        binding.topmargin = 86.dp
+        toolbar.addOnLayoutChangeListener { v, left, top, right, bottom, oldLeft, oldTop, oldRight, oldBottom ->
+            binding.topmargin = bottom + 8.dp
+        }
+
         feedAdapter = DiscoverAdapter(true).apply { stateRestorationPolicy = RecyclerView.Adapter.StateRestorationPolicy.PREVENT_WHEN_EMPTY }
 
         binding.episodeList.layoutManager = LinearLayoutManager(this)
@@ -132,7 +138,7 @@ class SubscriptionInfoActivity: ContentActivity(), CtxActionReceiver, ActionMode
         feedAdapter.events.onEach { it.process() }.launchWhenStarted(lifecycleScope)
         multiSelectHelper = feedAdapter.multiSelectHelper
 
-        fragmentContainer = binding.songs
+        fragmentContainer = binding.episodeList
         initAudioPlayerContainerActivity()
     }
 
@@ -143,6 +149,7 @@ class SubscriptionInfoActivity: ContentActivity(), CtxActionReceiver, ActionMode
                 AudioUtil.readCoverBitmap(Uri.decode(artworkMrl), width)
             }
             if (cover != null) {
+                binding.cover = BitmapDrawable(resources, cover)
                 val palette = Palette.from(cover).generate()
 
                 val paletteColor = when (resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) {
