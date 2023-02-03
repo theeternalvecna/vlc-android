@@ -75,7 +75,6 @@ class MediaParsingService : LifecycleService(), DevicesDiscoveryCb {
 
     private val settings by lazy { Settings.getInstance(this) }
 
-    private var scanPaused = false
 
     @Volatile
     private var serviceLock = false
@@ -549,6 +548,7 @@ class MediaParsingService : LifecycleService(), DevicesDiscoveryCb {
         val discoveryError = MutableLiveData<DiscoveryError>()
         val newStorages = MutableLiveData<MutableList<String>>()
         val preselectedStorages = mutableListOf<String>()
+        var scanPaused = false
     }
 }
 

@@ -816,7 +816,7 @@ open class VideoPlayerActivity : AppCompatActivity(), PlaybackService.Callback, 
         removeDownloadedSubtitlesObserver()
         previousMediaPath = null
         addedExternalSubs.clear()
-        medialibrary.resumeBackgroundOperations()
+        if (!MediaParsingService.scanPaused) medialibrary.resumeBackgroundOperations()
     }
 
     private fun saveBrightness() {
