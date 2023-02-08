@@ -1139,6 +1139,7 @@
     <string name="subscription_max_cache_size">Max cache size</string>
     <string name="enabled">Enabled</string>
     <string name="subscription_notification">Notification on new media</string>
+    <string name="open_podcast">Open podcast</string>
 
     <string name="played">Played</string>
 

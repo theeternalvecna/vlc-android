@@ -1,5 +1,6 @@
 package org.videolan.vlc.gui.discover
 
+import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
@@ -19,6 +20,7 @@ import org.videolan.tools.Settings
 import org.videolan.tools.dp
 import org.videolan.vlc.R
 import org.videolan.vlc.databinding.SubscriptionGridBinding
+import org.videolan.vlc.gui.browser.KEY_MEDIA
 import org.videolan.vlc.gui.dialogs.SavePlaylistDialog
 import org.videolan.vlc.gui.helpers.ItemOffsetDecoration
 import org.videolan.vlc.gui.helpers.UiTools
@@ -208,6 +210,11 @@ class DiscoverFeedFragment : DiscoverFragment<DiscoverFeedViewModel>(), Filterab
                 CTX_ADD_SHORTCUT -> lifecycleScope.launch { requireActivity().createShortcut(media) }
                 CTX_MARK_AS_PLAYED -> lifecycleScope.launch { viewModel.markAsPlayed(media) }
                 CTX_MARK_AS_UNPLAYED -> lifecycleScope.launch { viewModel.markAsUnplayed(media) }
+                CTX_OPEN_PODCAST -> {
+                    val i = Intent(requireActivity(), SubscriptionInfoActivity::class.java)
+                    i.putExtra(KEY_MEDIA, media.subscriptions[0])
+                    startActivity(i)
+                }
             }
         }
     }

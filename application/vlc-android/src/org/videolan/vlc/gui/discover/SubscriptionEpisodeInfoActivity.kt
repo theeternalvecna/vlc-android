@@ -24,6 +24,7 @@
 
 package org.videolan.vlc.gui.discover
 
+import android.content.Intent
 import android.content.res.ColorStateList
 import android.content.res.Configuration
 import android.graphics.Color
@@ -108,6 +109,11 @@ class SubscriptionEpisodeInfoActivity : AudioPlayerContainerActivity() {
 
         binding.playButton.setOnClickListener {
             MediaUtils.playTracks(this, media, 0, false)
+        }
+        binding.playlistCoverCard.setOnClickListener {
+            val i = Intent(this, SubscriptionInfoActivity::class.java)
+            i.putExtra(KEY_MEDIA, subscriptionEpisode.subscriptions[0])
+            startActivity(i)
         }
     }
 
