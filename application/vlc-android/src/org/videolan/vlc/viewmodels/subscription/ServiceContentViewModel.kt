@@ -36,7 +36,7 @@ import org.videolan.vlc.providers.medialibrary.MedialibraryProvider
 import org.videolan.vlc.providers.medialibrary.ServiceContentProvider
 import org.videolan.vlc.viewmodels.MedialibraryViewModel
 
-class ServiceContentViewModel(context: Context, private val service: DiscoverService) : MedialibraryViewModel(context)  {
+class ServiceContentViewModel(context: Context, private val service: DiscoverService, var inCards:Boolean) : MedialibraryViewModel(context)  {
     val provider = ServiceContentProvider(service, context, this)
     override val providers: Array<MedialibraryProvider<out MediaLibraryItem>> = arrayOf(provider)
 
@@ -56,12 +56,12 @@ class ServiceContentViewModel(context: Context, private val service: DiscoverSer
         provider.loading.postValue(false)
     }
 
-    class Factory(val context: Context, private val service: DiscoverService) : ViewModelProvider.NewInstanceFactory() {
+    class Factory(val context: Context, private val service: DiscoverService, private val inCards:Boolean) : ViewModelProvider.NewInstanceFactory() {
         override fun <T : ViewModel> create(modelClass: Class<T>): T {
             @Suppress("UNCHECKED_CAST")
-            return ServiceContentViewModel(context.applicationContext, service) as T
+            return ServiceContentViewModel(context.applicationContext, service, inCards) as T
         }
     }
 }
 
-internal fun DiscoverServiceFragment.getViewModel(service: DiscoverService) = ViewModelProvider(requireActivity(), ServiceContentViewModel.Factory(requireContext(), service))[ServiceContentViewModel::class.java]
+internal fun DiscoverServiceFragment.getViewModel(service: DiscoverService, inCards:Boolean) = ViewModelProvider(requireActivity(), ServiceContentViewModel.Factory(requireContext(), service, inCards))[ServiceContentViewModel::class.java]

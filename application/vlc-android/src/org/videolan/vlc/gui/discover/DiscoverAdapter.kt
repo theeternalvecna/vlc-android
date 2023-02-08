@@ -54,7 +54,7 @@ import org.videolan.tools.MultiSelectAdapter
 import org.videolan.tools.MultiSelectHelper
 import org.videolan.vlc.BR
 import org.videolan.vlc.R
-import org.videolan.vlc.databinding.SubscriptionListItemBinding
+import org.videolan.vlc.databinding.SubscriptionEpisodeListItemBinding
 import org.videolan.vlc.gui.helpers.*
 import org.videolan.vlc.gui.video.*
 import org.videolan.vlc.gui.view.DiscoverRoundButton
@@ -62,6 +62,9 @@ import org.videolan.vlc.gui.view.FastScroller
 import org.videolan.vlc.media.SubscriptionEpisode
 import kotlin.random.Random
 
+private const val VIEW_TYPE_EPISODE = 0
+private const val VIEW_TYPE_SUB_CARD = 1
+private const val VIEW_TYPE_SUB_LIST = 2
 open class DiscoverAdapter(private val smallItem:Boolean = false) : PagedListAdapter<MediaLibraryItem, DiscoverAdapter.ViewHolder>(DiscoverServiceCallback), FastScroller.SeparatedAdapter,
         MultiSelectAdapter<MediaLibraryItem>, IEventsSource<DiscoverFragment.DiscoverAction> by EventsSource() {
 
@@ -110,12 +113,16 @@ open class DiscoverAdapter(private val smallItem:Boolean = false) : PagedListAda
     override fun getItem(position: Int) = if (isPositionValid(position)) super.getItem(position) else null
 
     override fun getItemViewType(position: Int): Int {
-        return if (isListMode) 0 else 1
+        return if (isListMode && getItem(position) is MediaWrapper) VIEW_TYPE_EPISODE else if (!isListMode) VIEW_TYPE_SUB_CARD else VIEW_TYPE_SUB_LIST
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val inflater = LayoutInflater.from(parent.context)
-        val binding = DataBindingUtil.inflate<ViewDataBinding>(inflater, if (viewType == 0) R.layout.subscription_list_item else R.layout.subscription_grid_item, parent, false)
+        val binding = DataBindingUtil.inflate<ViewDataBinding>(inflater, when (viewType) {
+            VIEW_TYPE_EPISODE -> R.layout.subscription_episode_list_item
+            VIEW_TYPE_SUB_CARD -> R.layout.subscription_grid_item
+            else -> R.layout.subscription_list_item
+        }, parent, false)
         return ViewHolder(binding)
     }
 
@@ -162,7 +169,7 @@ open class DiscoverAdapter(private val smallItem:Boolean = false) : PagedListAda
 
 
     private fun updateColor(holder: ViewHolder) {
-        if (paletteColor != Int.MIN_VALUE) (holder.binding as? SubscriptionListItemBinding)?.let {
+        if (paletteColor != Int.MIN_VALUE) (holder.binding as? SubscriptionEpisodeListItemBinding)?.let {
             it.playButton.setColor(paletteColor)
             it.downloadButton.setColor(paletteColor)
             it.playqueueButton.setColor(paletteColor)

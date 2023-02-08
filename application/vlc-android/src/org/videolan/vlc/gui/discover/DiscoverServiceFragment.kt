@@ -10,17 +10,16 @@ import androidx.lifecycle.lifecycleScope
 import androidx.paging.PagedList
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.coroutines.flow.onEach
+import org.videolan.medialibrary.interfaces.Medialibrary
 import org.videolan.medialibrary.interfaces.media.DiscoverService
 import org.videolan.medialibrary.interfaces.media.Subscription
 import org.videolan.medialibrary.media.MediaLibraryItem
 import org.videolan.resources.*
 import org.videolan.resources.util.parcelable
-import org.videolan.tools.MultiSelectHelper
-import org.videolan.tools.SUBSCRIPTION_CARD_MODE
-import org.videolan.tools.Settings
-import org.videolan.tools.dp
+import org.videolan.tools.*
 import org.videolan.vlc.R
 import org.videolan.vlc.databinding.SubscriptionGridBinding
+import org.videolan.vlc.gui.dialogs.*
 import org.videolan.vlc.gui.helpers.ItemOffsetDecoration
 import org.videolan.vlc.gui.helpers.UiTools
 import org.videolan.vlc.gui.video.*
@@ -34,10 +33,13 @@ import org.videolan.vlc.viewmodels.subscription.getViewModel
 private const val TAG = "VLC/DiscoverServiceFragment"
 
 class DiscoverServiceFragment : DiscoverFragment<ServiceContentViewModel>(), Filterable {
+    private lateinit var discoverService: DiscoverService
     private lateinit var subscriptionListAdapter: DiscoverAdapter
     private lateinit var binding: SubscriptionGridBinding
     private lateinit var settings: SharedPreferences
     private var gridItemDecoration: RecyclerView.ItemDecoration? = null
+    private val displayModeKey: String
+        get() = "display_mode_service_${discoverService.mType}"
 
     override fun hasFAB() = false
     override val hasTabs = true
@@ -53,8 +55,8 @@ class DiscoverServiceFragment : DiscoverFragment<ServiceContentViewModel>(), Fil
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         if (!::settings.isInitialized) settings = Settings.getInstance(requireContext())
-        val discoverService = arguments?.parcelable(KEY_SERVICE) as? DiscoverService ?: throw IllegalStateException("No service provided")
-        viewModel = getViewModel(discoverService)
+        discoverService = arguments?.parcelable(KEY_SERVICE) as? DiscoverService ?: throw IllegalStateException("No service provided")
+        viewModel = getViewModel(discoverService, settings.getBoolean(displayModeKey, true))
         subscriptionListAdapter = DiscoverAdapter().apply { stateRestorationPolicy = RecyclerView.Adapter.StateRestorationPolicy.PREVENT_WHEN_EMPTY }
         multiSelectHelper = subscriptionListAdapter.multiSelectHelper
     }
@@ -85,6 +87,28 @@ class DiscoverServiceFragment : DiscoverFragment<ServiceContentViewModel>(), Fil
         subscriptionListAdapter.events.onEach { it.process() }.launchWhenStarted(lifecycleScope)
     }
 
+    override fun onDisplaySettingChanged(key: String, value: Any) {
+        when (key) {
+            DISPLAY_IN_CARDS -> {
+                viewModel.inCards = value as Boolean
+                settings.putSingle(displayModeKey, value)
+                updateViewMode()
+            }
+            ONLY_FAVS -> {
+                viewModel.provider.showOnlyFavs(value as Boolean)
+                viewModel.refresh()
+            }
+            CURRENT_SORT -> {
+                @Suppress("UNCHECKED_CAST") val sort = value as Pair<Int, Boolean>
+                viewModel.provider.sort = sort.first
+                viewModel.provider.desc = sort.second
+                viewModel.refresh()
+            }
+        }
+    }
+
+
+
     override fun onStart() {
         super.onStart()
         updateViewMode()
@@ -107,7 +131,7 @@ class DiscoverServiceFragment : DiscoverFragment<ServiceContentViewModel>(), Fil
         }
         val res = resources
         if (gridItemDecoration == null) gridItemDecoration = ItemOffsetDecoration(resources, R.dimen.left_right_1610_margin, R.dimen.top_bottom_1610_margin)
-        val listMode = !settings.getBoolean(SUBSCRIPTION_CARD_MODE, true)
+        val listMode = !viewModel.inCards
 
         // Select between grid or list
         binding.videoGrid.removeItemDecoration(gridItemDecoration!!)
@@ -196,6 +220,33 @@ class DiscoverServiceFragment : DiscoverFragment<ServiceContentViewModel>(), Fil
                     media.delete()
                 }
             }
+        }
+    }
+
+    override fun onPrepareOptionsMenu(menu: Menu) {
+        menu.findItem(R.id.ml_menu_display_options).isVisible = true
+        menu.findItem(R.id.ml_menu_sortby).isVisible = false
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.ml_menu_display_options -> {
+                //filter all sorts and keep only applicable ones
+                val sorts = arrayListOf(Medialibrary.SORT_ALPHA, Medialibrary.SORT_FILENAME, Medialibrary.SORT_ARTIST, Medialibrary.SORT_ALBUM, Medialibrary.SORT_DURATION, Medialibrary.SORT_RELEASEDATE, Medialibrary.SORT_LASTMODIFICATIONDATE, Medialibrary.SORT_FILESIZE, Medialibrary.NbMedia).filter {
+                    viewModel.provider.canSortBy(it)
+                }
+                //Open the display settings Bottom sheet
+                DisplaySettingsDialog.newInstance(
+                        displayInCards = viewModel.inCards,
+                        onlyFavs = viewModel.provider.onlyFavorites,
+                        sorts = sorts,
+                        currentSort = viewModel.provider.sort,
+                        currentSortDesc = viewModel.provider.desc
+                )
+                        .show(requireActivity().supportFragmentManager, "DisplaySettingsDialog")
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
         }
     }
 }

@@ -32,8 +32,6 @@ import org.videolan.vlc.viewmodels.SortableModel
 
 class ServiceContentProvider(val service : DiscoverService, context: Context, model: SortableModel) : MedialibraryProvider<Subscription>(context, model){
 
-    override fun canSortByFileNameName() = true
-
     override fun getTotalCount() = if (model.filterQuery == null)
         service.nbSubscriptions
     else
