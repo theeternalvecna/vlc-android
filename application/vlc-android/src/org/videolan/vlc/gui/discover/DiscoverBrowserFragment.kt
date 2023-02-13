@@ -50,6 +50,7 @@ class DiscoverBrowserFragment : BaseFragment(), TabLayout.OnTabSelectedListener,
     private lateinit var pagerAdapter: DiscoverAdapter
     override val hasTabs = true
     private var tabLayout: TabLayout? = null
+    private lateinit var tabLayoutMediator: TabLayoutMediator
     private lateinit var viewPager: ViewPager2
     override fun hasFAB() = true
 
@@ -118,20 +119,22 @@ class DiscoverBrowserFragment : BaseFragment(), TabLayout.OnTabSelectedListener,
     private fun setupTabLayout() {
         if (tabLayout == null || !::viewPager.isInitialized) return
         tabLayout?.let {
-            TabLayoutMediator(it, viewPager) { tab, position ->
+            tabLayoutMediator = TabLayoutMediator(it, viewPager) { tab, position ->
                 tab.text = when (position) {
                     0 -> getString(R.string.discover_feed)
                     else -> getString(R.string.discover_podcast)
                 }
-            }.attach()
+            }
+            tabLayoutMediator.attach()
         }
         tabLayout?.addOnTabSelectedListener(this)
         tabLayout?.getTabAt(Settings.getInstance(requireActivity()).getInt(KEY_DISCOVER_CURRENT_TAB, 0).coerceAtMost(pagerAdapter.itemCount-1))?.select()
     }
 
     private fun unSetTabLayout() {
-        if (tabLayout != null || !::viewPager.isInitialized) return
+        if (tabLayout == null || !::viewPager.isInitialized) return
         tabLayout?.removeOnTabSelectedListener(this)
+        tabLayoutMediator.detach()
     }
 
     inner class DiscoverAdapter(fa: FragmentActivity, val service: DiscoverService) : FragmentStateAdapter(fa) {
