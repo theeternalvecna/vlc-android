@@ -28,7 +28,6 @@ import android.os.Bundle
 import android.view.*
 import androidx.appcompat.view.ActionMode
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentActivity
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayout
@@ -64,7 +63,7 @@ class DiscoverBrowserFragment : BaseFragment(), TabLayout.OnTabSelectedListener,
         tabLayout = requireActivity().findViewById(R.id.sliding_tabs)
         viewPager = view.findViewById(R.id.pager)
         //placeholder service
-        pagerAdapter = DiscoverAdapter(requireActivity(), DiscoverServiceImpl(DiscoverService.Type.PODCAST, 0, 0, 0))
+        pagerAdapter = DiscoverAdapter(this, DiscoverServiceImpl(DiscoverService.Type.PODCAST, 0, 0, 0))
         viewPager.adapter = pagerAdapter
     }
 
@@ -137,7 +136,7 @@ class DiscoverBrowserFragment : BaseFragment(), TabLayout.OnTabSelectedListener,
         tabLayoutMediator.detach()
     }
 
-    inner class DiscoverAdapter(fa: FragmentActivity, val service: DiscoverService) : FragmentStateAdapter(fa) {
+    inner class DiscoverAdapter(fa: DiscoverBrowserFragment, val service: DiscoverService) : FragmentStateAdapter(fa) {
 
         override fun getItemCount() = 2
 
