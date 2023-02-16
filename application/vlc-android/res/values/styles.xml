@@ -181,6 +181,8 @@
     </style>
 
     <style name="Theme.VLC.Appearance.Black" parent="Theme.Material3.Dark.NoActionBar">
+        <item name="alertDialogTheme">@style/ThemeOverlay.MaterialAlertDialog</item>
+        <item name="materialAlertDialogTheme">@style/ThemeOverlay.MaterialAlertDialog</item>
         <item name="marginTopContent">50dp</item>
         <item name="toolbar_popup_style">@style/ThemeOverlay.Material3.Dark</item>
 
