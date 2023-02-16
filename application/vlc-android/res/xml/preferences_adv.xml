@@ -18,7 +18,7 @@
             android:summary="@string/network_caching_summary"
             android:title="@string/network_caching"/>
 
-    <CheckBoxPreference
+    <SwitchPreference
             app:singleLineTitle="false"
             android:defaultValue="true"
             android:key="prefer_smbv1"
@@ -59,7 +59,7 @@
             android:title="@string/quit"/>
 
     <PreferenceCategory android:title="@string/performance_prefs_category">
-        <CheckBoxPreference
+        <SwitchPreference
                 app:singleLineTitle="false"
                 android:defaultValue="@bool/time_stretching_default"
                 android:key="enable_time_stretching_audio"
@@ -79,7 +79,7 @@
                 android:key="deblocking"
                 android:summary="@string/deblocking_summary"
                 android:title="@string/deblocking"/>
-        <CheckBoxPreference
+        <SwitchPreference
                 app:singleLineTitle="false"
                 android:defaultValue="false"
                 android:key="enable_frame_skip"
@@ -88,7 +88,7 @@
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/developer_prefs_category">
-        <CheckBoxPreference
+        <SwitchPreference
                 app:singleLineTitle="false"
                 android:defaultValue="true"
                 android:key="enable_verbose_mode"

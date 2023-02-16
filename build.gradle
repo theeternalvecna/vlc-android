@@ -52,7 +52,7 @@ ext {
     androidxCoreVersion = '1.7.0'
     appCompatVersion = '1.4.1'
     lifecycleVersion = '2.5.1'
-    androidxPreferencesVersion = '1.1.1'
+    androidxPreferencesVersion = '1.2.0'
     androidxVersion = '1.1.0'
     androidxActivityVersion = '1.6.0'
     androidxFragmentVersion = '1.5.3'
@@ -60,7 +60,7 @@ ext {
     androidxRecyclerviewVersion = '1.2.1'
     androidxMediaVersion = '1.1.0'
     androidxLeanbackVersion = '1.0.0'
-    androidxMaterialVersion = '1.7.0'
+    androidxMaterialVersion = '1.8.0'
     constraintLayoutVersion = '2.1.4'
     viewPager2Version = "1.0.0"
     archVersion = '2.1.0'

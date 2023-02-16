@@ -84,7 +84,7 @@ class PreferencesAudio : BasePreferenceFragment(), SharedPreferences.OnSharedPre
         }
 
         updatePassThroughSummary()
-        val opensles = "2" == preferenceManager.sharedPreferences.getString("aout", "0")
+        val opensles = "2" == preferenceManager.sharedPreferences?.getString("aout", "0")
         if (opensles) findPreference<Preference>("audio_digital_output")?.isVisible = false
         for (key in arrayOf("audio-replay-gain-default", "audio-replay-gain-preamp")) {
             findPreference<EditTextPreference>(key)?.setOnBindEditTextListener {
@@ -107,18 +107,20 @@ class PreferencesAudio : BasePreferenceFragment(), SharedPreferences.OnSharedPre
     }
 
     private fun updatePassThroughSummary() {
-        val pt = preferenceManager.sharedPreferences.getBoolean("audio_digital_output", false)
-        findPreference<Preference>("audio_digital_output")?.setSummary(if (pt) R.string.audio_digital_output_enabled else R.string.audio_digital_output_disabled)
+        val pt = preferenceManager.sharedPreferences?.getBoolean("audio_digital_output", false)
+        findPreference<Preference>("audio_digital_output")?.setSummary(
+            if (pt == true) R.string.audio_digital_output_enabled else R.string.audio_digital_output_disabled
+        )
     }
 
     override fun onStart() {
         super.onStart()
-        preferenceScreen.sharedPreferences.registerOnSharedPreferenceChangeListener(this)
+        preferenceScreen.sharedPreferences?.registerOnSharedPreferenceChangeListener(this)
     }
 
     override fun onStop() {
         super.onStop()
-        preferenceScreen.sharedPreferences.unregisterOnSharedPreferenceChangeListener(this)
+        preferenceScreen.sharedPreferences?.unregisterOnSharedPreferenceChangeListener(this)
     }
 
     override fun onPreferenceTreeClick(preference: Preference): Boolean {
@@ -156,8 +158,8 @@ class PreferencesAudio : BasePreferenceFragment(), SharedPreferences.OnSharedPre
         when (key) {
             "aout" -> {
                 lifecycleScope.launch { restartLibVLC() }
-                val opensles = "2" == preferenceManager.sharedPreferences.getString("aout", "0")
-                if (opensles) findPreference<CheckBoxPreference>("audio_digital_output")?.isChecked = false
+                val opensles = "2" == preferenceManager.sharedPreferences?.getString("aout", "0")
+                if (opensles) findPreference<SwitchPreference>("audio_digital_output")?.isChecked = false
                 findPreference<Preference>("audio_digital_output")?.isVisible = !opensles
             }
             "audio_digital_output" -> updatePassThroughSummary()

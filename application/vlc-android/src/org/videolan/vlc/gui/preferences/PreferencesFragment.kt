@@ -29,15 +29,14 @@ import android.os.Bundle
 import android.view.View
 import androidx.core.os.bundleOf
 import androidx.fragment.app.FragmentActivity
-import androidx.preference.CheckBoxPreference
 import androidx.preference.ListPreference
 import androidx.preference.Preference
+import androidx.preference.SwitchPreference
 import org.videolan.libvlc.util.AndroidUtil
 import org.videolan.medialibrary.interfaces.Medialibrary
 import org.videolan.resources.*
 import org.videolan.resources.util.parcelable
 import org.videolan.tools.*
-import org.videolan.vlc.BuildConfig
 import org.videolan.vlc.R
 import org.videolan.vlc.gui.SecondaryActivity
 import org.videolan.vlc.gui.dialogs.ConfirmAudioPlayQueueDialog
@@ -53,12 +52,12 @@ class PreferencesFragment : BasePreferenceFragment(), SharedPreferences.OnShared
 
     override fun onStart() {
         super.onStart()
-        preferenceScreen.sharedPreferences.registerOnSharedPreferenceChangeListener(this)
+        preferenceManager.sharedPreferences?.registerOnSharedPreferenceChangeListener(this)
     }
 
     override fun onStop() {
         super.onStop()
-        preferenceScreen.sharedPreferences.unregisterOnSharedPreferenceChangeListener(this)
+        preferenceManager.sharedPreferences?.unregisterOnSharedPreferenceChangeListener(this)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -115,7 +114,7 @@ class PreferencesFragment : BasePreferenceFragment(), SharedPreferences.OnShared
             }
             AUDIO_RESUME_PLAYBACK -> {
 
-                val audioResumePref = findPreference<CheckBoxPreference>(AUDIO_RESUME_PLAYBACK)
+                val audioResumePref = findPreference<SwitchPreference>(AUDIO_RESUME_PLAYBACK)
                 if (audioResumePref?.isChecked == false) {
                     val dialog = ConfirmAudioPlayQueueDialog()
                     dialog.show((activity as FragmentActivity).supportFragmentManager, ConfirmAudioPlayQueueDialog::class.simpleName)
@@ -163,8 +162,8 @@ class PreferencesFragment : BasePreferenceFragment(), SharedPreferences.OnShared
                 Permissions.checkDrawOverlaysPermission(activity)
             PLAYBACK_HISTORY -> {
                 if (sharedPreferences.getBoolean(key, true)) {
-                    findPreference<CheckBoxPreference>(AUDIO_RESUME_PLAYBACK)?.isChecked = true
-                    findPreference<CheckBoxPreference>(VIDEO_RESUME_PLAYBACK)?.isChecked = true
+                    findPreference<SwitchPreference>(AUDIO_RESUME_PLAYBACK)?.isChecked = true
+                    findPreference<SwitchPreference>(VIDEO_RESUME_PLAYBACK)?.isChecked = true
                 }
             }
         }

@@ -23,15 +23,13 @@
 
 package org.videolan.television.ui.preferences
 
-import android.annotation.TargetApi
 import android.content.Intent
 import android.content.SharedPreferences
-import android.os.Build
 import android.os.Bundle
 import android.widget.Toast
 import androidx.fragment.app.FragmentActivity
-import androidx.preference.CheckBoxPreference
 import androidx.preference.Preference
+import androidx.preference.SwitchPreference
 import org.videolan.medialibrary.interfaces.Medialibrary
 import org.videolan.resources.*
 import org.videolan.tools.*
@@ -39,7 +37,6 @@ import org.videolan.vlc.R
 import org.videolan.vlc.gui.SecondaryActivity
 import org.videolan.vlc.gui.dialogs.ConfirmAudioPlayQueueDialog
 
-@TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
 class PreferencesFragment : BasePreferenceFragment(), SharedPreferences.OnSharedPreferenceChangeListener {
 
     override fun getXml() = R.xml.preferences
@@ -55,21 +52,21 @@ class PreferencesFragment : BasePreferenceFragment(), SharedPreferences.OnShared
 
     override fun onStart() {
         super.onStart()
-        preferenceScreen.sharedPreferences.registerOnSharedPreferenceChangeListener(this)
+        preferenceScreen.sharedPreferences?.registerOnSharedPreferenceChangeListener(this)
     }
 
     override fun onPreferenceTreeClick(preference: Preference): Boolean {
-        val context = activity ?: return false
+        val activity = activity ?: return false
         return when (preference.key) {
             "directories" -> {
                 if (Medialibrary.getInstance().isWorking) {
                     Toast.makeText(
-                        context,
+                        activity,
                         getString(R.string.settings_ml_block_scan),
                         Toast.LENGTH_SHORT
                     ).show()
                 } else {
-                    val intent = Intent(context.applicationContext, SecondaryActivity::class.java)
+                    val intent = Intent(activity.applicationContext, SecondaryActivity::class.java)
                     intent.putExtra("fragment", SecondaryActivity.STORAGE_BROWSER)
                     startActivity(intent)
                     activity.setResult(RESULT_RESTART)
@@ -78,7 +75,7 @@ class PreferencesFragment : BasePreferenceFragment(), SharedPreferences.OnShared
             }
             AUDIO_RESUME_PLAYBACK -> {
 
-                val audioResumePref = findPreference<CheckBoxPreference>(AUDIO_RESUME_PLAYBACK)
+                val audioResumePref = findPreference<SwitchPreference>(AUDIO_RESUME_PLAYBACK)
                 if (audioResumePref?.isChecked == false) {
                     val dialog = ConfirmAudioPlayQueueDialog()
                     dialog.show((activity as FragmentActivity).supportFragmentManager, ConfirmAudioPlayQueueDialog::class.simpleName)
@@ -108,8 +105,7 @@ class PreferencesFragment : BasePreferenceFragment(), SharedPreferences.OnShared
                         .remove(KEY_CURRENT_MEDIA_RESUME)
                         .remove(KEY_CURRENT_MEDIA)
                         .apply()
-                val activity = activity
-                activity?.setResult(RESULT_RESTART)
+                activity.setResult(RESULT_RESTART)
                 return true
             }
             else -> super.onPreferenceTreeClick(preference)
@@ -120,8 +116,8 @@ class PreferencesFragment : BasePreferenceFragment(), SharedPreferences.OnShared
         when (key) {
             PLAYBACK_HISTORY -> {
                 if (sharedPreferences!!.getBoolean(key, true)) {
-                    findPreference<CheckBoxPreference>(AUDIO_RESUME_PLAYBACK)?.isChecked = true
-                    findPreference<CheckBoxPreference>(VIDEO_RESUME_PLAYBACK)?.isChecked = true
+                    findPreference<SwitchPreference>(AUDIO_RESUME_PLAYBACK)?.isChecked = true
+                    findPreference<SwitchPreference>(VIDEO_RESUME_PLAYBACK)?.isChecked = true
                 }
             }
         }
