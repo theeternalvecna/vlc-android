@@ -592,9 +592,9 @@
     <string name="browse_folder">Prebrskaj mapo</string>
     <string name="listen">Poslušaj</string>
     <string name="apply_to_bt">Uporabi za bluetooth napravo</string>
-    <string name="episodes">nanizanke</string>
-    <string name="movies">filmi</string>
-    <string name="videos">video posnetki</string>
+    <string name="episodes">Nanizanke</string>
+    <string name="movies">Filmi</string>
+    <string name="videos">Video posnetki</string>
     <string name="videos_all">Vsi videoposnetki</string>
     <string name="clear_playback_history">Počisti zgodovino predvajanja</string>
     <string name="ml_scanning">Iskanje predstavnih datotek</string>

@@ -646,9 +646,9 @@
     <string name="browse_folder">Browse folder</string>
     <string name="listen">Listen</string>
     <string name="apply_to_bt">Apply to bluetooth device</string>
-    <string name="episodes">episodes</string>
-    <string name="movies">movies</string>
-    <string name="videos">videos</string>
+    <string name="episodes">Episodes</string>
+    <string name="movies">Movies</string>
+    <string name="videos">Videos</string>
     <string name="videos_all">All videos</string>
     <string name="clear_playback_history">Clear playback history</string>
     <string name="ml_scanning">Scanning for media files</string>

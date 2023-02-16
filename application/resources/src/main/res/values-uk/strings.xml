@@ -626,9 +626,9 @@
     <string name="browse_folder">Огляд теки</string>
     <string name="listen">Прослухайте</string>
     <string name="apply_to_bt">Застосувати до пристрою bluetooth</string>
-    <string name="episodes">епізоди</string>
-    <string name="movies">фільми</string>
-    <string name="videos">відео</string>
+    <string name="episodes">Епізоди</string>
+    <string name="movies">Фільми</string>
+    <string name="videos">Відео</string>
     <string name="videos_all">Усі відео</string>
     <string name="clear_playback_history">Очистити журнал відтворення</string>
     <string name="ml_scanning">Сканування на медіафайли</string>

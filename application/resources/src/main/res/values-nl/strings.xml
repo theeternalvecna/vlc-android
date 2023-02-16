@@ -559,9 +559,9 @@
     <string name="browse_folder">Bladeren in map</string>
     <string name="listen">Luisteren</string>
     <string name="apply_to_bt">Toepassen op bluetooth-apparaat</string>
-    <string name="episodes">afleveringen</string>
-    <string name="movies">films</string>
-    <string name="videos">video\'s</string>
+    <string name="episodes">Afleveringen</string>
+    <string name="movies">Films</string>
+    <string name="videos">Video\'s</string>
     <string name="videos_all">Alle video\'s</string>
     <string name="clear_playback_history">Afspeelgeschiedenis wissen</string>
     <string name="ml_scanning">Zoeken naar mediabestanden</string>

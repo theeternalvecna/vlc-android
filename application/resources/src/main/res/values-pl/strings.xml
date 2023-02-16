@@ -499,9 +499,9 @@
     <string name="browse_folder">Przeglądaj folder</string>
     <string name="listen">Posłuchaj</string>
     <string name="apply_to_bt">Zastosuj do urządzenia Bluetooth</string>
-    <string name="episodes">odcinki</string>
-    <string name="movies">filmy</string>
-    <string name="videos">filmy</string>
+    <string name="episodes">Odcinki</string>
+    <string name="movies">Filmy</string>
+    <string name="videos">Filmy</string>
     <string name="videos_all">Wszystkie filmy</string>
     <string name="clear_playback_history">Wyczyść historię odtwarzania</string>
     <string name="ml_scanning">Wyszukiwanie plików multimedialnych</string>

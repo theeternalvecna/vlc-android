@@ -550,9 +550,9 @@
     <string name="browse_folder">Explorar pasta</string>
     <string name="listen">Escutar</string>
     <string name="apply_to_bt">Aplicar ao dispositivo bluetooth</string>
-    <string name="episodes">episódios</string>
-    <string name="movies">filmes</string>
-    <string name="videos">vídeos</string>
+    <string name="episodes">Episódios</string>
+    <string name="movies">Filmes</string>
+    <string name="videos">Vídeos</string>
     <string name="videos_all">Todos os vídeos</string>
     <string name="clear_playback_history">Limpar histórico de reprodução</string>
     <string name="ml_scanning">A procurar ficheiros multimédia</string>
