@@ -93,12 +93,12 @@
 
         <com.google.android.material.card.MaterialCardView
                 android:id="@+id/container"
-                style="@style/VLCCardView"
+                style="@style/VLCCardView.Elevated"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:clickable="true"
                 android:focusable="true"
-                        android:importantForAccessibility="no"
+                android:importantForAccessibility="no"
                 android:foreground="?android:attr/selectableItemBackground"
                 android:longClickable="true"
                 android:onClick="@{holder::onClick}"

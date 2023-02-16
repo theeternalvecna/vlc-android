@@ -46,7 +46,7 @@
                         app:layout_constraintEnd_toStartOf="@+id/play"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
-                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+                        style="@style/Widget.Material3.TextInputLayout.OutlinedBox.Dense"
                         tools:ignore="RtlSymmetry">
 
                     <com.google.android.material.textfield.TextInputEditText

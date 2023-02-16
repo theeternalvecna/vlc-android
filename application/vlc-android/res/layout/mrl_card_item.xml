@@ -36,7 +36,7 @@
 
 
     <com.google.android.material.card.MaterialCardView
-            style="@style/Widget.MaterialComponents.CardView"
+            style="@style/VLCCardView.Elevated"
             app:cardCornerRadius="8dp"
             app:cardElevation="0dp"
             app:strokeColor="?attr/card_border"
@@ -44,8 +44,6 @@
             android:contentDescription="@{TalkbackUtil.INSTANCE.getStream(context, item)}"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="?attr/card_background"
-            android:foreground="?android:attr/selectableItemBackground"
             android:longClickable="true">
 
         <androidx.constraintlayout.widget.ConstraintLayout

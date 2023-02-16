@@ -111,7 +111,7 @@
 
             <Button
                     android:id="@+id/color_picker_button_cancel"
-                    style="@style/Widget.MaterialComponents.Button.TextButton.Dialog"
+                    style="@style/Widget.Material3.Button.TextButton.Dialog"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="16dp"
@@ -122,7 +122,7 @@
 
             <Button
                     android:id="@+id/color_picker_button_ok"
-                    style="@style/Widget.MaterialComponents.Button.TextButton.Dialog"
+                    style="@style/Widget.Material3.Button.TextButton.Dialog"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="24dp"
