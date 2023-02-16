@@ -86,8 +86,7 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_chainStyle="packed"
                 app:searchQueryString="@{query}"
-                app:searchText="@{title}"
-                tools:targetApi="jelly_bean" />
+                app:searchText="@{title}" />
 
         <TextView
                 android:id="@+id/subtitle"
@@ -108,7 +107,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="72dp"
                 android:text="@{category}"
-                android:textColor="@color/orange500"
+                android:textColor="?attr/colorPrimary"
                 android:textSize="11sp"
                 app:layout_constraintBottom_toTopOf="@id/separator"
                 app:layout_constraintEnd_toEndOf="@+id/subtitle"
