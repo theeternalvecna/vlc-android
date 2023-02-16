@@ -30,10 +30,11 @@ import android.text.InputType
 import android.view.*
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.view.ActionMode
-import androidx.appcompat.widget.AppCompatEditText
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.textfield.TextInputEditText
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.launch
 import org.videolan.medialibrary.MLServiceLocator
@@ -197,9 +198,9 @@ class MLStorageBrowserFragment : BaseFragment(), IStorageFragmentDelegate by Sto
     }
 
     private fun showAddDirectoryDialog() {
-        val context = activity
-        val builder = AlertDialog.Builder(context!!)
-        val input = AppCompatEditText(context)
+        val context = requireContext()
+        val builder = MaterialAlertDialogBuilder(context)
+        val input = TextInputEditText(context)
         input.inputType = InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS
         builder.setTitle(R.string.add_custom_path)
         builder.setMessage(R.string.add_custom_path_description)

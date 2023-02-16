@@ -32,6 +32,7 @@ import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.DialogFragment
 import org.videolan.libvlc.Dialog
 import org.videolan.vlc.BR
+import org.videolan.vlc.R
 import org.videolan.vlc.gui.DialogActivity
 
 abstract class VlcDialog<T : Dialog, B : ViewDataBinding> : DialogFragment() {
@@ -40,6 +41,8 @@ abstract class VlcDialog<T : Dialog, B : ViewDataBinding> : DialogFragment() {
     protected lateinit var binding: B
 
     protected abstract val layout: Int
+
+    override fun getTheme() = R.style.ThemeOverlay_MaterialAlertDialog
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = DataBindingUtil.inflate(inflater, layout, container, false)
