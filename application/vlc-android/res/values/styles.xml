@@ -13,6 +13,9 @@
     </style>
 
     <style name="Theme.VLC.Appearance" parent="Theme.Material3.Light.NoActionBar">
+        <item name="elevationOverlayEnabled">false</item>
+        <item name="bottomNavigationStyle">@style/VLC.BottomNavigationView</item>
+        <item name="navigationRailStyle">@style/VLC.NavigationRailView</item>
         <item name="alertDialogTheme">@style/ThemeOverlay.MaterialAlertDialog</item>
         <item name="materialAlertDialogTheme">@style/ThemeOverlay.MaterialAlertDialog</item>
         <item name="marginTopContent">50dp</item>
@@ -181,6 +184,9 @@
     </style>
 
     <style name="Theme.VLC.Appearance.Black" parent="Theme.Material3.Dark.NoActionBar">
+        <item name="elevationOverlayEnabled">false</item>
+        <item name="bottomNavigationStyle">@style/VLC.BottomNavigationView</item>
+        <item name="navigationRailStyle">@style/VLC.NavigationRailView</item>
         <item name="alertDialogTheme">@style/ThemeOverlay.MaterialAlertDialog</item>
         <item name="materialAlertDialogTheme">@style/ThemeOverlay.MaterialAlertDialog</item>
         <item name="marginTopContent">50dp</item>
@@ -743,8 +749,8 @@
     </style>
 
     <style name="ThemeOverlay.MaterialAlertDialog" parent="ThemeOverlay.Material3.MaterialAlertDialog">
-        <item name="android:layout">@layout/m3_alert_dialog</item>
-        <item name="dialogCornerRadius">@dimen/m3_alert_dialog_corner_size</item>
+        <item name="android:layout" tools:ignore="PrivateResource">@layout/m3_alert_dialog</item>
+        <item name="dialogCornerRadius" tools:ignore="PrivateResource">@dimen/m3_alert_dialog_corner_size</item>
     </style>
 
     <style name="WidgetConfiguration" parent="WidgetConfiguration.19"/>
@@ -752,6 +758,14 @@
         <item name="android:windowContentOverlay">@null</item>
         <item name="android:windowShowWallpaper">true</item>
         <item name="android:windowBackground">@color/transparent</item>
+    </style>
+
+    <style name="VLC.BottomNavigationView" parent="Widget.Material3.BottomNavigationView">
+        <item name="itemIconTint" tools:ignore="PrivateResource">@color/m3_navigation_bar_item_with_indicator_label_tint</item>
+    </style>
+
+    <style name="VLC.NavigationRailView" parent="Widget.Material3.NavigationRailView">
+        <item name="itemIconTint" tools:ignore="PrivateResource">@color/m3_navigation_bar_item_with_indicator_label_tint</item>
     </style>
 
 </resources>
