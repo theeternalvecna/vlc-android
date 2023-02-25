@@ -3,4 +3,5 @@
     <bool name="list_mode">true</bool>
     <bool name="time_stretching_default">false</bool>
     <bool name="is_tablet">false</bool>
+    <bool name="is_light_system_bars">true</bool>
 </resources>
