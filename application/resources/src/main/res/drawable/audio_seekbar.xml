@@ -4,7 +4,7 @@
     <item android:id="@android:id/background">
         <clip>
             <shape>
-                <solid android:color="@color/black_transparent_20" />
+                <solid android:color="@color/audio_seekbar_background" />
                 <corners android:radius="1dp" />
                 <size android:height="4dp" />
             </shape>
@@ -14,7 +14,7 @@
     <item android:id="@android:id/secondaryProgress">
         <clip>
             <shape>
-                <solid android:color="@color/black_transparent_20" />
+                <solid android:color="@color/audio_seekbar_background" />
                 <corners android:radius="1dp" />
                 <size android:height="4dp" />
             </shape>
@@ -24,7 +24,7 @@
     <item android:id="@android:id/progress">
         <clip>
             <shape>
-                <solid android:color="@color/orange800" />
+                <solid android:color="?attr/colorPrimary" />
             </shape>
         </clip>
     </item>

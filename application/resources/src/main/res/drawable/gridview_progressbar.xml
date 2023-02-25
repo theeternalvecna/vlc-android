@@ -3,14 +3,14 @@
 
     <item android:id="@android:id/background">
         <shape>
-            <solid android:color="@color/transparent" />
+            <solid android:color="@color/gridview_progressbar_background" />
         </shape>
     </item>
 
     <item android:id="@android:id/secondaryProgress">
         <clip>
             <shape>
-                <solid android:color="@color/grey400transparent" />
+                <solid android:color="@color/gridview_progressbar_secondary" />
             </shape>
         </clip>
     </item>
@@ -18,7 +18,7 @@
     <item android:id="@android:id/progress">
         <clip>
             <shape>
-                <solid android:color="@color/orange500" />
+                <solid android:color="?attr/colorPrimary" />
             </shape>
         </clip>
     </item>

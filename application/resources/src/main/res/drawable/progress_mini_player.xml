@@ -2,13 +2,13 @@
 
     <item android:id="@android:id/background">
         <shape>
-            <solid android:color="@color/grey200" />
+            <solid android:color="?attr/background_default_darker" />
         </shape>
     </item>
     <item android:id="@android:id/progress">
         <scale android:scaleWidth="100%">
             <shape>
-                <solid android:color="@color/orange800" />
+                <solid android:color="?attr/audio_browser_separator" />
             <corners android:bottomRightRadius="2dp" android:topRightRadius="2dp"/>
             </shape>
         </scale>
