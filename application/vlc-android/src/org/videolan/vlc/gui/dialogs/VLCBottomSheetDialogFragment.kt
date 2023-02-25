@@ -21,7 +21,7 @@ abstract class VLCBottomSheetDialogFragment : BottomSheetDialogFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         if (Settings.showTvUi) {
-            requireActivity().setTheme(R.style.Theme_VLC_Black)
+            requireContext().theme.applyStyle(R.style.Theme_VLC_TV_BottomSheet, true)
         }
         super.onCreate(savedInstanceState)
     }
@@ -49,8 +49,10 @@ abstract class VLCBottomSheetDialogFragment : BottomSheetDialogFragment() {
                 val bsb = BottomSheetBehavior.from(it)
                 if (bsb.state == BottomSheetBehavior.STATE_COLLAPSED) bsb.state = getDefaultState()
             }
-            dialog?.findViewById<View>(R.id.touch_outside)?.isFocusable = false
-            dialog?.findViewById<View>(R.id.touch_outside)?.isFocusableInTouchMode = false
+            dialog?.findViewById<View>(R.id.touch_outside)?.apply {
+                isFocusable = false
+                isFocusableInTouchMode = false
+            }
             if (AndroidDevices.isTv) applyOverscanMargin(view)
         }
 
