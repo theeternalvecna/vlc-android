@@ -70,10 +70,10 @@ class SecondaryActivity : ContentActivity(), IDialogManager {
         return intent.getStringExtra(KEY_FRAGMENT) == STORAGE_BROWSER_ONBOARDING
     }
 
-
-    override fun forcedTheme() =
-        if (intent.getStringExtra(KEY_FRAGMENT) == STORAGE_BROWSER_ONBOARDING) R.style.Theme_VLC_Black
-        else null
+    /**
+     * Force dark theme if opened from dark themed onboarding screen
+     */
+    override fun forcedDarkTheme() = intent.getStringExtra(KEY_FRAGMENT) == STORAGE_BROWSER_ONBOARDING
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

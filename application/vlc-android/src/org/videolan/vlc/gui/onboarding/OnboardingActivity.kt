@@ -8,6 +8,7 @@ import android.view.View
 import android.widget.Button
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.content.edit
 import androidx.fragment.app.commit
 import androidx.lifecycle.lifecycleScope
@@ -31,6 +32,12 @@ const val ONBOARDING_DONE_KEY = "app_onboarding_done"
 class OnboardingActivity : AppCompatActivity(), OnboardingFragmentListener {
     private lateinit var nextButton: Button
     private val viewModel: OnboardingViewModel by viewModels()
+
+    override fun onStart() {
+        super.onStart()
+        this.delegate.localNightMode = AppCompatDelegate.MODE_NIGHT_YES
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 //        viewModel.permissionGranted = Permissions.canReadStorage(applicationContext)

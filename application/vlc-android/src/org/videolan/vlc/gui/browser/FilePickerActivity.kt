@@ -42,10 +42,9 @@ class FilePickerActivity : BaseActivity() {
     /**
      * Forces the dark theme if the dialog is opened from the VideoPlayerActivity
      */
-    override fun forcedTheme() =
-        if (resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK == Configuration.UI_MODE_NIGHT_NO && callingActivity?.className == VideoPlayerActivity::class.jvmName)
-            R.style.Theme_VLC_PickerDialog_Dark
-        else null
+    override fun forcedDarkTheme() =
+        resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK == Configuration.UI_MODE_NIGHT_NO
+                && callingActivity?.className == VideoPlayerActivity::class.jvmName
 
     public override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

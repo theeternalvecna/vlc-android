@@ -856,13 +856,12 @@ fun selectedElevation(v: View, isSelected: Boolean?) {
 }
 
 fun BaseActivity.applyTheme() {
-    forcedTheme()?.let {
-        setTheme(it)
+    if (forcedDarkTheme()) {
+        this.delegate.localNightMode = AppCompatDelegate.MODE_NIGHT_YES
         return
     }
     if (Settings.showTvUi) {
-        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
-        setTheme(R.style.Theme_VLC_Black)
+        this.delegate.localNightMode = AppCompatDelegate.MODE_NIGHT_YES
         return
     }
     AppCompatDelegate.setDefaultNightMode(Integer.valueOf(settings.getString(KEY_APP_THEME, "-1")!!))
