@@ -33,7 +33,6 @@
     <attr name="audio_menu_icon" format="color" />
     <attr name="audio_list_background" format="reference|color" />
     <attr name="bottom_sheet_background" format="reference|color" />
-    <attr name="bottom_sheet_radius" format="dimension" />
     <attr name="background_default_darker" format="reference|color" />
     <attr name="background_actionbar" format="reference|color" />
     <attr name="background_audio_tips" format="reference|color" />
