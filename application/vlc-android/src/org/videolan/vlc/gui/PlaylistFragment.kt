@@ -103,7 +103,7 @@ class PlaylistFragment : BaseAudioBrowser<PlaylistsViewModel>(), SwipeRefreshLay
 
         playlists.adapter = playlistAdapter
         fastScroller = view.rootView.findViewById(R.id.songs_fast_scroller_playlist) as FastScroller
-        fastScroller.attachToCoordinator(view.rootView.findViewById(R.id.appbar) as AppBarLayout, view.rootView.findViewById(R.id.coordinator) as CoordinatorLayout, view.rootView.findViewById(R.id.fab) as FloatingActionButton)
+        fastScroller.attachToCoordinator(requireActivity().findViewById(R.id.appbar) as AppBarLayout, requireActivity().findViewById(R.id.coordinator) as CoordinatorLayout, requireActivity().findViewById(R.id.fab) as FloatingActionButton)
         viewModel.provider.pagedList.observe(requireActivity()) {
             @Suppress("UNCHECKED_CAST")
             playlistAdapter.submitList(it as PagedList<MediaLibraryItem>)
@@ -118,7 +118,7 @@ class PlaylistFragment : BaseAudioBrowser<PlaylistsViewModel>(), SwipeRefreshLay
         }
 
         fastScroller.setRecyclerView(getCurrentRV(), viewModel.provider)
-        (parentFragment as? VideoBrowserFragment)?.playlistOnlyFavorites = viewModel.provider.onlyFavs
+        (parentFragment as? VideoBrowserFragment)?.playlistOnlyFavorites = viewModel.provider.onlyFavorites
     }
 
     override fun onDisplaySettingChanged(key: String, value: Any) {
@@ -147,10 +147,11 @@ class PlaylistFragment : BaseAudioBrowser<PlaylistsViewModel>(), SwipeRefreshLay
     private fun updateEmptyView() {
         if (!isAdded) return
         swipeRefreshLayout.visibility = if (Medialibrary.getInstance().isInitiated) View.VISIBLE else View.GONE
-        binding.emptyLoading.emptyText = viewModel.filterQuery?.let {  getString(R.string.empty_search, it) } ?: getString(R.string.nomedia)
+        binding.emptyLoading.emptyText = viewModel.filterQuery?.let {  getString(R.string.empty_search, it) } ?: if (viewModel.provider.onlyFavorites) getString(R.string.nofav) else getString(R.string.nomedia)
         binding.emptyLoading.state =
                 when {
                     viewModel.provider.loading.value == true && empty -> EmptyLoadingState.LOADING
+                    empty && viewModel.provider.onlyFavorites -> EmptyLoadingState.EMPTY_FAVORITES
                     empty && viewModel.filterQuery != null -> EmptyLoadingState.EMPTY_SEARCH
                     empty -> EmptyLoadingState.EMPTY
                     else -> EmptyLoadingState.NONE
@@ -180,7 +181,7 @@ class PlaylistFragment : BaseAudioBrowser<PlaylistsViewModel>(), SwipeRefreshLay
                 //Open the display settings Bottom sheet
                 DisplaySettingsDialog.newInstance(
                         displayInCards = viewModel.providerInCard,
-                        onlyFavs = viewModel.provider.onlyFavs,
+                        onlyFavs = viewModel.provider.onlyFavorites,
                         sorts = sorts,
                         currentSort = viewModel.provider.sort,
                         currentSortDesc = viewModel.provider.desc
