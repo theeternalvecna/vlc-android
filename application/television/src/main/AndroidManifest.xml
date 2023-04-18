@@ -47,7 +47,7 @@
             android:name="org.videolan.television.ui.browser.TVActivity"
             android:exported="true"
             android:screenOrientation="landscape"
-            android:theme="@style/Theme.VLC.Black"
+            android:theme="@style/Theme.VLC"
             tools:ignore="LockedOrientationActivity" />
         <activity
                 android:name="org.videolan.television.ui.MediaScrapingTvActivity"
@@ -77,7 +77,7 @@
         <activity
             android:name="org.videolan.television.ui.AboutActivity"
             android:screenOrientation="landscape"
-            android:theme="@style/Theme.VLC.Black"
+            android:theme="@style/Theme.VLC"
             tools:ignore="LockedOrientationActivity" />
 
         <activity

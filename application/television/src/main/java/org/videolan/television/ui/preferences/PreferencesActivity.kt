@@ -23,10 +23,9 @@
 
 package org.videolan.television.ui.preferences
 
-import android.annotation.TargetApi
-import android.os.Build
 import android.os.Bundle
 import android.view.MenuItem
+import androidx.appcompat.app.AppCompatDelegate
 import org.videolan.television.R
 import org.videolan.television.ui.browser.BaseTvActivity
 import org.videolan.tools.RESULT_RESTART
@@ -34,7 +33,6 @@ import org.videolan.tools.RESULT_RESTART_APP
 import org.videolan.tools.Settings
 import org.videolan.vlc.PlaybackService
 
-@TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
 class PreferencesActivity : BaseTvActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -57,7 +55,9 @@ class PreferencesActivity : BaseTvActivity() {
         val pref = Settings.getInstance(this)
         val enableBlackTheme = pref.getBoolean("enable_black_theme", false)
         if (enableBlackTheme) {
-            setTheme(R.style.Theme_VLC_Black)
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+        } else {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
         }
     }
 

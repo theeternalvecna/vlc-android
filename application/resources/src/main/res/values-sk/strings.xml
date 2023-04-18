@@ -626,9 +626,9 @@
     <string name="browse_folder">Prehľadávať priečinok</string>
     <string name="listen">Vypočuť</string>
     <string name="apply_to_bt">Použiť na zariadenie bluetooth</string>
-    <string name="episodes">epizódy</string>
-    <string name="movies">filmy</string>
-    <string name="videos">videá</string>
+    <string name="episodes">Epizódy</string>
+    <string name="movies">Filmy</string>
+    <string name="videos">Videá</string>
     <string name="videos_all">Všetky videá</string>
     <string name="clear_playback_history">Vyčistiť históriu prehrávania</string>
     <string name="ml_scanning">Skenovanie súborov s médiami</string>

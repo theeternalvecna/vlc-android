@@ -8,7 +8,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
 import androidx.fragment.app.activityViewModels
-import com.google.android.material.switchmaterial.SwitchMaterial
+import com.google.android.material.materialswitch.MaterialSwitch
 import org.videolan.resources.KEY_ANIMATED
 import org.videolan.tools.*
 import org.videolan.vlc.R
@@ -28,7 +28,7 @@ class OnboardingScanningFragment : OnboardingFragment() {
         super.onViewCreated(view, savedInstanceState)
         val customizeButton = view.findViewById<Button>(R.id.customizeButton)
         titleView = view.findViewById(R.id.scanning_title)
-        view.findViewById<SwitchMaterial>(R.id.scanningEnableSwitch).setOnCheckedChangeListener { _, isChecked ->
+        view.findViewById<MaterialSwitch>(R.id.scanningEnableSwitch).setOnCheckedChangeListener { _, isChecked ->
             preferences.putSingle(KEY_MEDIALIBRARY_SCAN, if (isChecked) ML_SCAN_ON else ML_SCAN_OFF)
             viewModel.scanStorages = isChecked
             customizeButton.isEnabled = isChecked

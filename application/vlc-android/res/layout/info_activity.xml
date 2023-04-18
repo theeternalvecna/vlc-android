@@ -228,7 +228,7 @@
 
                 <Button
                         android:id="@+id/directory_not_scanned_button"
-                        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                        style="@style/Widget.Material3.Button.OutlinedButton"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"

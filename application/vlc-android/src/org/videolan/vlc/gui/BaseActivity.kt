@@ -43,7 +43,7 @@ abstract class BaseActivity : AppCompatActivity() {
     var windowLayoutInfo: WindowLayoutInfo? = null
 
     open val displayTitle = false
-    open fun forcedTheme():Int? = null
+    open fun forcedDarkTheme(): Boolean = false
     abstract fun getSnackAnchorView(overAudioPlayer:Boolean = false): View?
     private var baseContextWrappingDelegate: AppCompatDelegate? = null
     private var resultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->

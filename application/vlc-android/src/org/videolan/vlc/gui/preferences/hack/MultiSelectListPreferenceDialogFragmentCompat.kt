@@ -29,12 +29,12 @@ class MultiSelectListPreferenceDialogFragmentCompat : PreferenceDialogFragmentCo
             return result
         }
 
-    override fun onPrepareDialogBuilder(builder: AlertDialog.Builder?) {
+    override fun onPrepareDialogBuilder(builder: AlertDialog.Builder) {
         super.onPrepareDialogBuilder(builder)
         val preference = listPreference
         if (preference.entries != null && preference.entryValues != null) {
             val checkedItems = selectedItems
-            builder!!.setMultiChoiceItems(preference.entries, checkedItems) { _, which, isChecked ->
+            builder.setMultiChoiceItems(preference.entries, checkedItems) { _, which, isChecked ->
                 preferenceChanged = true
                 if (isChecked) {
                     newValues.add(preference.entryValues[which].toString())

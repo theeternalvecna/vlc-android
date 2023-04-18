@@ -30,6 +30,7 @@ import android.util.AttributeSet
 import android.util.TypedValue
 import com.google.android.material.button.MaterialButton
 
+@Deprecated("Use MaterialButton with autoSizeTextType instead")
 class AutofitButton : MaterialButton {
 
     var size = 14

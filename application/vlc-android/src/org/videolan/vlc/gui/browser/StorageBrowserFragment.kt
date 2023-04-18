@@ -32,10 +32,11 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.app.AlertDialog
-import androidx.appcompat.widget.AppCompatEditText
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.textfield.TextInputEditText
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -163,9 +164,9 @@ class StorageBrowserFragment : FileBrowserFragment(), BrowserContainer<MediaLibr
     override fun onMainActionClick(v: View, position: Int, item: MediaLibraryItem) {}
 
     private fun showAddDirectoryDialog() {
-        val context = activity
-        val builder = AlertDialog.Builder(context!!)
-        val input = AppCompatEditText(context)
+        val context = requireContext()
+        val builder = MaterialAlertDialogBuilder(context)
+        val input = TextInputEditText(context)
         input.inputType = InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS
         builder.setTitle(R.string.add_custom_path)
         builder.setMessage(R.string.add_custom_path_description)

@@ -48,7 +48,6 @@ import android.widget.TextView
 import androidx.annotation.IdRes
 import androidx.annotation.RequiresApi
 import androidx.annotation.StringRes
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.appcompat.view.ActionMode
@@ -66,6 +65,7 @@ import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.*
 import nl.dionsegijn.konfetti.KonfettiView
@@ -662,7 +662,7 @@ object UiTools {
     }
 
     fun confirmExit(activity: Activity) {
-        AlertDialog.Builder(activity)
+        MaterialAlertDialogBuilder(activity)
                 .setMessage(R.string.exit_app_msg)
                 .setTitle(R.string.exit_app)
                 .setPositiveButton(R.string.ok) { _, _ -> activity.finish() }
@@ -678,7 +678,7 @@ object UiTools {
         val si = Intent(ACTION_DISCOVER_DEVICE, null, activity, MediaParsingService::class.java)
                 .putExtra(EXTRA_PATH, path)
         if (activity is AppCompatActivity) {
-            val builder = AlertDialog.Builder(activity)
+            val builder = MaterialAlertDialogBuilder(activity)
                     .setTitle(R.string.ml_external_storage_title)
                     .setCancelable(false)
                     .setMessage(message)
@@ -743,7 +743,7 @@ object UiTools {
 
 
     fun restartDialog(context: Context) {
-        AlertDialog.Builder(context)
+        MaterialAlertDialogBuilder(context)
                 .setTitle(context.resources.getString(R.string.restart_vlc))
                 .setMessage(context.resources.getString(R.string.restart_message))
                 .setPositiveButton(R.string.restart_message_OK) { _, _ -> android.os.Process.killProcess(android.os.Process.myPid()) }
@@ -755,7 +755,7 @@ object UiTools {
 
 
     fun deleteSubtitleDialog(context: Context, positiveListener: DialogInterface.OnClickListener, negativeListener: DialogInterface.OnClickListener) {
-        AlertDialog.Builder(context)
+        MaterialAlertDialogBuilder(context)
                 .setTitle(context.resources.getString(R.string.delete_sub_title))
                 .setMessage(context.resources.getString(R.string.delete_sub_message))
                 .setPositiveButton(R.string.delete, positiveListener)
@@ -865,13 +865,12 @@ fun selectedElevation(v: View, isSelected: Boolean?) {
 }
 
 fun BaseActivity.applyTheme() {
-    forcedTheme()?.let {
-        setTheme(it)
+    if (forcedDarkTheme()) {
+        this.delegate.localNightMode = AppCompatDelegate.MODE_NIGHT_YES
         return
     }
     if (Settings.showTvUi) {
-        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
-        setTheme(R.style.Theme_VLC_Black)
+        this.delegate.localNightMode = AppCompatDelegate.MODE_NIGHT_YES
         return
     }
     AppCompatDelegate.setDefaultNightMode(Integer.valueOf(settings.getString(KEY_APP_THEME, "-1")!!))

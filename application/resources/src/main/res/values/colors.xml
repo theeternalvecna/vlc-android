@@ -10,15 +10,15 @@
     The main color is always xxx500
 -->
     <color name="orange50">#fff3e0</color>
-    <color name="orange100">#ffdfae</color>
+    <color name="orange100">#ffdbc8</color>
     <color name="orange200">#ffca7d</color>
     <color name="orange300">#ffb54c</color>
     <color name="orange400">#ffa11a</color>
     <color name="orange500">#FF8800</color>
     <color name="orange600">#ff7d00</color>
-    <color name="orange700">#ff7200</color>
-    <color name="orange800">#ff610a</color>
-    <color name="orange900">#ff5014</color>
+    <color name="orange700">#cc5b00</color>
+    <color name="orange800">#cc4d08</color>
+    <color name="orange900">#b2380d</color>
 
     <color name="red500transparent">#b4ff0000</color>
     <color name="orange500transparent">#b4ff8800</color>
@@ -35,7 +35,7 @@
     <color name="green700">#3ea992</color>
     <color name="green800">#359989</color>
     <color name="green900">#2b8a81</color>
-    
+
     <color name="grey50">#fafafa</color>
     <color name="grey100">#f5f5f5</color>
     <color name="grey200">#eeeeee</color>
@@ -56,6 +56,8 @@
     <color name="playerbackground_invert">#c0ebebeb</color>
     <color name="black_more_transparent">#88000000</color>
     <color name="status_bar_transparency">#cb000000</color>
+
+    <color name="swipe_to_unlock_background">#c0141414</color>
 
     <color name="grey200transparent">#33eeeeee</color>
 
@@ -121,4 +123,75 @@
     <color name="onboarding_grey_transparent_75">#BF011422</color>
     <color name="material_blue">#2196f3</color>
     <color name="material_pink">#e91e63</color>
+
+    <!--theme colors-->
+    <color name="vlc_brandPrimary">@color/orange500</color>
+    <color name="vlc_brandOnPrimary">@color/white</color>
+    <color name="vlc_brandPrimaryContainer">@color/orange100</color>
+    <color name="vlc_brandOnPrimaryContainer">@color/orange900</color>
+    <color name="vlc_brandPrimaryInverse">@color/orange200</color>
+    <color name="vlc_brandSecondary">@color/orange600</color>
+    <color name="vlc_brandOnSecondary">@color/white</color>
+    <color name="vlc_brandSecondaryContainer">@color/orange100</color>
+    <color name="vlc_brandOnSecondaryContainer">@color/orange900</color>
+    <color name="vlc_Tertiary">@color/green600</color>
+    <color name="vlc_OnTertiary">@color/white</color>
+    <color name="vlc_TertiaryContainer">@color/green100</color>
+    <color name="vlc_OnTertiaryContainer">@color/green900</color>
+    <color name="vlc_Outline">@color/grey500</color>
+    <color name="vlc_OutlineVariant">@color/grey200</color>
+    <color name="vlc_Background">@color/grey50</color>
+    <color name="vlc_OnBackground">@color/grey900</color>
+    <color name="vlc_Surface">@color/grey50</color>
+    <color name="vlc_OnSurface">@color/grey900</color>
+    <color name="vlc_SurfaceVariant">@color/grey100</color>
+    <color name="vlc_OnSurfaceVariant">@color/grey700</color>
+    <color name="vlc_SurfaceInverse">@color/grey800</color>
+    <color name="vlc_OnSurfaceInverse">@color/grey50</color>
+
+    <color name="actionModeBackground">@color/grey400</color>
+    <color name="background_default">@color/white</color>
+    <color name="audio_header_background">@color/white</color>
+    <color name="audio_header_divider">@color/grey400</color>
+    <color name="default_divider">@color/black_transparent_20</color>
+    <color name="audio_menu_icon">@color/black_transparent_50</color>
+    <color name="mini_visualizer_color">@color/mini_visualizer</color>
+    <color name="bottom_sheet_background">@color/white</color>
+    <color name="bookmark_background">@color/white_transparent_90</color>
+    <color name="header_background">@color/whitetransparent_ea</color>
+    <color name="background_default_darker">@color/grey200</color>
+    <color name="background_actionbar">@color/white</color>
+    <color name="audio_player_background_tint">@color/white_transparent_75</color>
+    <color name="background_audio_tips">@color/white_transparent_95</color>
+    <color name="audio_browser_separator">@color/orange800</color>
+    <color name="font_default">@color/grey900</color>
+    <color name="font_light">@color/grey700</color>
+    <color name="font_audio_light">@color/grey700</color>
+    <color name="donate_card">@color/orange500</color>
+    <color name="audio_chips_color">@color/black_transparent_75</color>
+    <color name="audio_chips_text_color">@color/white_transparent_60</color>
+    <color name="bottom_navigation_focus">@color/orange_800_transparent_10</color>
+    <color name="primary_focus">@color/orange_800_transparent_20</color>
+    <color name="progress_background">@color/grey400</color>
+    <color name="ariane_text_color">@color/grey700</color>
+    <color name="player_icon_color">@color/black</color>
+    <color name="default_separator">@color/grey300</color>
+    <color name="card_border">@color/grey300</color>
+    <color name="empty_foreground">@color/grey300</color>
+    <color name="empty_background">@color/grey50</color>
+    <color name="disabled_overlay_color">@color/white_transparent_50</color>
+    <color name="audio_chip_text_color">@color/white_transparent_60</color>
+    <color name="empty_title">@color/grey850</color>
+    <color name="tips_item_background">@color/grey300</color>
+    <color name="about_text_primary">@color/black</color>
+
+    <!--TODO replace usages with attrs-->
+    <color name="audio_list_background">@color/white_transparent_20</color>
+    <color name="audio_list_background_outline">@color/grey400</color>
+    <color name="audio_seekbar_background">@color/black_transparent_20</color>
+    <color name="gridview_progressbar_background">@color/transparent</color>
+    <color name="gridview_progressbar_secondary">@color/black_transparent_20</color>
+    <color name="video_grid_card_focused">@color/orange500transparent</color>
+    <color name="video_grid_card_selected">@color/orange200transparent</color>
+    <color name="gradient_audio_player">@color/white_transparent_80</color>
 </resources>

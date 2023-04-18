@@ -30,7 +30,7 @@ import android.view.View
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
-import androidx.preference.CheckBoxPreference
+import androidx.preference.SwitchPreference
 import androidx.preference.ListPreference
 import androidx.preference.SeekBarPreference
 import com.google.android.material.color.DynamicColors
@@ -62,9 +62,9 @@ class PreferencesWidgets : BasePreferenceFragment(), SharedPreferences.OnSharedP
     internal lateinit var model: WidgetViewModel
     private lateinit var backgroundPreference: ColorPreferenceCompat
     private lateinit var foregroundPreference: ColorPreferenceCompat
-    private lateinit var lightThemePreference: CheckBoxPreference
-    private lateinit var showSeek: CheckBoxPreference
-    private lateinit var showCover: CheckBoxPreference
+    private lateinit var lightThemePreference: SwitchPreference
+    private lateinit var showSeek: SwitchPreference
+    private lateinit var showCover: SwitchPreference
     private lateinit var forwardDelay: NumberPickerPreference
     private lateinit var rewindDelay: NumberPickerPreference
 
@@ -74,12 +74,12 @@ class PreferencesWidgets : BasePreferenceFragment(), SharedPreferences.OnSharedP
 
     override fun onStart() {
         super.onStart()
-        preferenceScreen.sharedPreferences.registerOnSharedPreferenceChangeListener(this)
+        preferenceScreen.sharedPreferences?.registerOnSharedPreferenceChangeListener(this)
     }
 
     override fun onStop() {
         super.onStop()
-        preferenceScreen.sharedPreferences.unregisterOnSharedPreferenceChangeListener(this)
+        preferenceScreen.sharedPreferences?.unregisterOnSharedPreferenceChangeListener(this)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -98,7 +98,7 @@ class PreferencesWidgets : BasePreferenceFragment(), SharedPreferences.OnSharedP
         showSeek = findPreference("widget_show_seek")!!
         forwardDelay = findPreference("widget_forward_delay")!!
         rewindDelay = findPreference("widget_rewind_delay")!!
-        val configurationIcon = findPreference<CheckBoxPreference>("widget_show_configure")!!
+        val configurationIcon = findPreference<SwitchPreference>("widget_show_configure")!!
         val themePreference = findPreference<ListPreference>("widget_theme")!!
 
         val id = (arguments?.getInt(WIDGET_ID) ?: -2)

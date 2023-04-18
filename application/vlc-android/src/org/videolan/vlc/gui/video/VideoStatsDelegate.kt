@@ -49,6 +49,7 @@ import org.videolan.vlc.databinding.PlayerHudBinding
 import org.videolan.vlc.gui.helpers.UiTools.isTablet
 import org.videolan.vlc.util.LocaleUtil
 import org.videolan.vlc.getAllTracks
+import org.videolan.vlc.gui.helpers.UiTools.getResourceFromAttribute
 
 class VideoStatsDelegate(private val player: VideoPlayerActivity, val scrolling: () -> Unit, val idle: () -> Unit) {
     lateinit var container: ConstraintLayout
@@ -136,8 +137,8 @@ class VideoStatsDelegate(private val player: VideoPlayerActivity, val scrolling:
                     }
                 }
 
-                val trackTitle = TextView(player, null, R.style.TextAppearance_MaterialComponents_Headline2)
-                trackTitle.setTextColor(ContextCompat.getColor(player, R.color.orange500))
+                val trackTitle = TextView(player, null, R.style.TextAppearance_Material3_HeadlineLarge)
+                trackTitle.setTextColor(getResourceFromAttribute(player, R.attr.colorPrimary))
                 trackTitle.text = when (track.type) {
                     IMedia.Track.Type.Video -> player.getString(R.string.video)
                     IMedia.Track.Type.Audio -> player.getString(R.string.audio)
@@ -161,7 +162,7 @@ class VideoStatsDelegate(private val player: VideoPlayerActivity, val scrolling:
     }
 
     private fun addStreamGridView(grid: GridLayout, titleString: String, valueString: String) {
-        val title = TextView(player, null, R.style.TextAppearance_MaterialComponents_Subtitle1)
+        val title = TextView(player, null, R.style.TextAppearance_Material3_TitleMedium)
         title.text = titleString
         grid.addView(title)
 

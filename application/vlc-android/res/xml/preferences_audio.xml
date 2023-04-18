@@ -5,27 +5,27 @@
                                       android:key="audio_category"
                                       android:title="@string/audio_prefs_category">
 
-    <CheckBoxPreference
+    <SwitchPreference
             app:singleLineTitle="false"
             android:defaultValue="true"
             android:key="resume_playback"
             android:summary="@string/resume_playback_summary"
             android:title="@string/resume_playback_title"/>
-    <CheckBoxPreference
+    <SwitchPreference
             app:singleLineTitle="false"
             android:defaultValue="false"
             android:key="playback_speed"
             android:summary="@string/playback_speed_summary"
             android:title="@string/playback_speed_title"/>
 
-    <CheckBoxPreference
+    <SwitchPreference
             app:singleLineTitle="false"
             android:defaultValue="false"
             android:key="audio_task_removed"
             android:title="@string/audio_task_cleared_title"
             android:summary="@string/audio_task_cleared_summary"/>
 
-    <CheckBoxPreference
+    <SwitchPreference
             app:singleLineTitle="false"
             android:defaultValue="false"
             android:key="audio_digital_output"
@@ -40,20 +40,20 @@
     <PreferenceCategory
             android:title="@string/headset_prefs_category"
             android:key="headset_prefs_category">
-        <CheckBoxPreference
+        <SwitchPreference
                 app:singleLineTitle="false"
                 android:defaultValue="true"
                 android:key="enable_headset_detection"
                 android:summary="@string/enable_headset_detection_summary"
                 android:title="@string/enable_headset_detection"/>
-        <CheckBoxPreference
+        <SwitchPreference
                 app:singleLineTitle="false"
                 android:key="enable_play_on_headset_insertion"
                 android:defaultValue="false"
                 android:dependency="enable_headset_detection"
                 android:summary="@string/enable_play_on_headset_insertion_summary"
                 android:title="@string/enable_play_on_headset_insertion"/>
-        <CheckBoxPreference
+        <SwitchPreference
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:defaultValue="false"
@@ -64,13 +64,13 @@
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/controls_prefs_category">
-        <CheckBoxPreference
+        <SwitchPreference
             app:singleLineTitle="false"
             android:defaultValue="false"
             android:key="enable_android_auto_speed_buttons"
             android:summary="@string/enable_android_auto_speed_buttons_summary"
             android:title="@string/enable_android_auto_speed_buttons"/>
-        <CheckBoxPreference
+        <SwitchPreference
             app:singleLineTitle="false"
             android:defaultValue="false"
             android:key="enable_android_auto_seek_buttons"
@@ -79,7 +79,7 @@
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/replaygain_prefs_category">
-        <CheckBoxPreference
+        <SwitchPreference
             app:singleLineTitle="false"
             android:defaultValue="false"
             app:key="audio-replay-gain-enable"
@@ -105,7 +105,7 @@
             android:summary="@string/replaygain_default_summary"
             android:title="@string/replaygain_default"
             android:dependency="audio-replay-gain-enable"/>
-        <CheckBoxPreference
+        <SwitchPreference
             app:singleLineTitle="false"
             android:defaultValue="true"
             android:key="audio-replay-gain-peak-protection"
@@ -114,7 +114,7 @@
             android:dependency="audio-replay-gain-enable"/>
     </PreferenceCategory>
     <PreferenceCategory android:title="@string/advanced_prefs_category">
-        <CheckBoxPreference
+        <SwitchPreference
                 app:singleLineTitle="false"
                 android:key="audio_ducking"
                 android:defaultValue="true"

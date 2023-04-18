@@ -29,12 +29,11 @@ import android.os.Bundle
 import android.text.InputFilter
 import android.text.InputType
 import android.util.Log
-import androidx.core.content.ContextCompat
 import androidx.core.content.edit
-import androidx.preference.CheckBoxPreference
 import androidx.preference.EditTextPreference
 import androidx.preference.ListPreference
 import androidx.preference.Preference
+import androidx.preference.SwitchPreference
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
@@ -93,7 +92,7 @@ class PreferencesAudio : BasePreferenceFragment(), SharedPreferences.OnSharedPre
         }
 
         updatePassThroughSummary()
-        val opensles = "2" == preferenceManager.sharedPreferences.getString("aout", "0")
+        val opensles = "2" == preferenceManager.sharedPreferences?.getString("aout", "0")
         if (opensles) findPreference<Preference>("audio_digital_output")?.isVisible = false
         preferredAudioTrack = findPreference("audio_preferred_language")!!
         updatePreferredAudioTrack()
@@ -123,13 +122,13 @@ class PreferencesAudio : BasePreferenceFragment(), SharedPreferences.OnSharedPre
     }
 
     private fun updatePassThroughSummary() {
-        val pt = preferenceManager.sharedPreferences.getBoolean("audio_digital_output", false)
-        findPreference<Preference>("audio_digital_output")?.setSummary(if (pt) R.string.audio_digital_output_enabled else R.string.audio_digital_output_disabled)
+        val pt = preferenceManager.sharedPreferences?.getBoolean("audio_digital_output", false)
+        findPreference<Preference>("audio_digital_output")?.setSummary(if (pt == true) R.string.audio_digital_output_enabled else R.string.audio_digital_output_disabled)
     }
 
     override fun onStart() {
         super.onStart()
-        preferenceScreen.sharedPreferences.registerOnSharedPreferenceChangeListener(this)
+        preferenceManager.sharedPreferences?.registerOnSharedPreferenceChangeListener(this)
     }
 
 
@@ -137,8 +136,8 @@ class PreferencesAudio : BasePreferenceFragment(), SharedPreferences.OnSharedPre
         when (key) {
             "aout" -> {
                 launch { restartLibVLC() }
-                val opensles = "2" == preferenceManager.sharedPreferences.getString("aout", "0")
-                if (opensles) findPreference<CheckBoxPreference>("audio_digital_output")?.isChecked = false
+                val opensles = "2" == preferenceManager.sharedPreferences?.getString("aout", "0")
+                if (opensles) findPreference<SwitchPreference>("audio_digital_output")?.isChecked = false
                 findPreference<Preference>("audio_digital_output")?.isVisible = !opensles
             }
             "audio_digital_output" -> updatePassThroughSummary()

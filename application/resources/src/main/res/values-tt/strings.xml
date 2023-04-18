@@ -362,9 +362,9 @@
     <string name="download_subtitles">Субтитрларны йөкләү</string>
     <string name="browse_folder">Папканы карау</string>
     <string name="listen">Тыңлау</string>
-    <string name="episodes">эпизодлар</string>
-    <string name="movies">фильмнар</string>
-    <string name="videos">видеолар</string>
+    <string name="episodes">Эпизодлар</string>
+    <string name="movies">Фильмнар</string>
+    <string name="videos">Видеолар</string>
     <string name="videos_all">Бөтен видеолар</string>
     <string name="clear_playback_history">Уйнату тарихын чистарту</string>
     <string name="ml_scanning">Медиафайлларны сканерлау</string>

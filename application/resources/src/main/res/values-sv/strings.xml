@@ -606,9 +606,9 @@
     <string name="browse_folder">Bläddra mapp</string>
     <string name="listen">Lyssna</string>
     <string name="apply_to_bt">Verställ på Bluetooth-enhet</string>
-    <string name="episodes">episoder</string>
-    <string name="movies">filmer</string>
-    <string name="videos">videor</string>
+    <string name="episodes">Episoder</string>
+    <string name="movies">Filmer</string>
+    <string name="videos">Videor</string>
     <string name="videos_all">Alla videor</string>
     <string name="clear_playback_history">Rensa uppspelningshistorik</string>
     <string name="ml_scanning">Skannar för mediafiler</string>

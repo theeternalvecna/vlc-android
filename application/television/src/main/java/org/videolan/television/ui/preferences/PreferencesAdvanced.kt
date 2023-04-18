@@ -23,7 +23,6 @@
 
 package org.videolan.television.ui.preferences
 
-import android.annotation.TargetApi
 import android.app.ActivityManager
 import android.content.Context
 import android.content.Intent
@@ -58,7 +57,6 @@ import org.videolan.vlc.util.deleteAllWatchNext
 import java.io.File
 import java.io.IOException
 
-@TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
 class PreferencesAdvanced : BasePreferenceFragment(), SharedPreferences.OnSharedPreferenceChangeListener, CoroutineScope by MainScope() {
     override fun getXml(): Int {
         return R.xml.preferences_adv
@@ -90,21 +88,21 @@ class PreferencesAdvanced : BasePreferenceFragment(), SharedPreferences.OnShared
 
     override fun onStart() {
         super.onStart()
-        preferenceScreen.sharedPreferences.registerOnSharedPreferenceChangeListener(this)
+        preferenceScreen.sharedPreferences?.registerOnSharedPreferenceChangeListener(this)
     }
 
     override fun onStop() {
         super.onStop()
         preferenceScreen.sharedPreferences
-                .unregisterOnSharedPreferenceChangeListener(this)
+                ?.unregisterOnSharedPreferenceChangeListener(this)
     }
 
     override fun onPreferenceTreeClick(preference: Preference): Boolean {
-        val ctx = activity
-        if (preference.key == null || ctx == null) return false
+        val activity = activity ?: return false
         when (preference.key) {
+            null -> return false
             "debug_logs" -> {
-                val intent = Intent(ctx, DebugLogActivity::class.java)
+                val intent = Intent(activity, DebugLogActivity::class.java)
                 startActivity(intent)
                 return true
             }
@@ -143,7 +141,7 @@ class PreferencesAdvanced : BasePreferenceFragment(), SharedPreferences.OnShared
             "clear_media_db" -> {
                 val medialibrary = Medialibrary.getInstance()
                 if (medialibrary.isWorking) {
-                    activity?.let {
+                    activity.let {
                         Toast.makeText(
                             it,
                             R.string.settings_ml_block_scan,
@@ -213,7 +211,7 @@ class PreferencesAdvanced : BasePreferenceFragment(), SharedPreferences.OnShared
                 launch {
                     if ((activity as FragmentActivity).getWritePermission(Uri.fromFile(dst))) {
                         val copied = withContext(Dispatchers.IO) {
-                            val db = File((activity as FragmentActivity).getDir("db", Context.MODE_PRIVATE).parent!! + "/databases")
+                            val db = File(activity.getDir("db", Context.MODE_PRIVATE).parent!! + "/databases")
 
                             val files = db.listFiles()?.map { it.path }?.toTypedArray()
 

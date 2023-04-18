@@ -68,7 +68,7 @@ class PreferencesUi : BasePreferenceFragment(), SharedPreferences.OnSharedPrefer
     }
 
     private fun setupTheme() {
-        val prefs = preferenceScreen.sharedPreferences
+        val prefs = preferenceScreen.sharedPreferences ?: return
         if (!prefs.contains(KEY_APP_THEME)) {
             var theme = AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
             if (prefs.getBoolean(KEY_DAYNIGHT, false) && !AndroidDevices.canUseSystemNightMode()) {
@@ -85,13 +85,13 @@ class PreferencesUi : BasePreferenceFragment(), SharedPreferences.OnSharedPrefer
 
     override fun onStart() {
         super.onStart()
-        preferenceScreen.sharedPreferences.registerOnSharedPreferenceChangeListener(this)
+        preferenceScreen.sharedPreferences?.registerOnSharedPreferenceChangeListener(this)
     }
 
     override fun onStop() {
         super.onStop()
         preferenceScreen.sharedPreferences
-                .unregisterOnSharedPreferenceChangeListener(this)
+                ?.unregisterOnSharedPreferenceChangeListener(this)
     }
 
     override fun onPreferenceTreeClick(preference: Preference): Boolean {

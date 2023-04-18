@@ -75,7 +75,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/browser_container"
-            style="@style/VLCCardView.NoShadow"
+            style="@style/VLCCardView.Outlined"
             android:contentDescription="@{TalkbackUtil.INSTANCE.getDir(context, item, favorite)}"
             app:mediaContentDescription="@{item}"
             android:longClickable="@{hasContextMenu || item.getItemType() == MediaLibraryItem.TYPE_STORAGE}"

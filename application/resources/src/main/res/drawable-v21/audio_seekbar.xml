@@ -6,7 +6,7 @@
         <shape android:shape="rectangle">
             <corners android:radius="1dp" />
             <size android:height="4dp" />
-            <solid android:color="@color/black_transparent_20" />
+            <solid android:color="@color/audio_seekbar_background" />
         </shape>
     </item>
     <item
@@ -16,7 +16,7 @@
             <shape android:shape="rectangle">
                 <corners android:radius="1dp" />
                 <size android:height="4dp" />
-                <solid android:color="@color/black_transparent_20" />
+                <solid android:color="@color/audio_seekbar_background" />
             </shape>
         </clip>
     </item>

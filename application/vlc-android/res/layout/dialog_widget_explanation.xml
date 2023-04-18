@@ -184,7 +184,7 @@
 
             <Button
                     android:id="@+id/widget_next_button"
-                    style="@style/Widget.MaterialComponents.Button.TextButton.Dialog"
+                    style="@style/Widget.Material3.Button.TextButton.Dialog"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="16dp"

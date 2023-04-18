@@ -23,13 +23,11 @@
 
 package org.videolan.television.ui.preferences
 
-import android.annotation.TargetApi
 import android.content.Intent
 import android.content.SharedPreferences
-import android.os.Build
 import android.os.Bundle
 import androidx.fragment.app.FragmentActivity
-import androidx.preference.CheckBoxPreference
+import androidx.preference.SwitchPreference
 import androidx.preference.ListPreference
 import androidx.preference.Preference
 import androidx.preference.TwoStatePreference
@@ -41,10 +39,9 @@ import org.videolan.vlc.BuildConfig
 import org.videolan.vlc.R
 import org.videolan.vlc.gui.dialogs.FeatureTouchOnlyWarningDialog
 
-@TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
 class PreferencesUi : BasePreferenceFragment(), SharedPreferences.OnSharedPreferenceChangeListener {
 
-    private lateinit var tvUiPref: CheckBoxPreference
+    private lateinit var tvUiPref: SwitchPreference
     private var currentLocale: String? = null
 
     override fun getXml() = R.xml.preferences_ui
@@ -79,13 +76,13 @@ class PreferencesUi : BasePreferenceFragment(), SharedPreferences.OnSharedPrefer
 
     override fun onStart() {
         super.onStart()
-        preferenceScreen.sharedPreferences.registerOnSharedPreferenceChangeListener(this)
+        preferenceScreen.sharedPreferences?.registerOnSharedPreferenceChangeListener(this)
     }
 
     override fun onStop() {
         super.onStop()
         preferenceScreen.sharedPreferences
-                .unregisterOnSharedPreferenceChangeListener(this)
+                ?.unregisterOnSharedPreferenceChangeListener(this)
     }
 
     override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences, key: String) {
