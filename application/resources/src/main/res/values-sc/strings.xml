@@ -606,9 +606,9 @@
     <string name="browse_folder">Esplora sa cartella</string>
     <string name="listen">Ascurta</string>
     <string name="apply_to_bt">Àplica a su dispositivu bluetooth</string>
-    <string name="episodes">episòdios</string>
-    <string name="movies">films</string>
-    <string name="videos">vìdeos</string>
+    <string name="episodes">Episòdios</string>
+    <string name="movies">Films</string>
+    <string name="videos">Vìdeos</string>
     <string name="videos_all">Totu sos vìdeos</string>
     <string name="clear_playback_history">Iscantzella sa cronologia de riprodutzione</string>
     <string name="ml_scanning">Iscansinde pro agatare documentos multimediales</string>

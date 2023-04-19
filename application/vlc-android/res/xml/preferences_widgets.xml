@@ -36,7 +36,7 @@
                 android:entryValues="@array/widget_themes_values"
                 android:summary="%s"
                 android:title="@string/widget_theme"/>
-        <CheckBoxPreference
+        <SwitchPreference
                 app:singleLineTitle="false"
                 android:key="widget_light_theme"
                 android:defaultValue="true"
@@ -60,12 +60,12 @@
                 app:cpv_showAlphaSlider="false"
                 android:title="@string/widget_foreground"/>
 
-        <CheckBoxPreference
+        <SwitchPreference
                 android:defaultValue="true"
                 android:key="widget_show_cover"
                 android:title="@string/widget_show_cover" />
 
-        <CheckBoxPreference
+        <SwitchPreference
                 android:defaultValue="true"
                 android:key="widget_show_seek"
                 android:title="@string/widget_show_seek" />
@@ -82,7 +82,7 @@
                 android:dependency="widget_show_seek"
                 app:title="@string/widget_rewind_delay" />
 
-        <CheckBoxPreference
+        <SwitchPreference
                 app:singleLineTitle="false"
                 android:key="widget_show_configure"
                 android:defaultValue="false"

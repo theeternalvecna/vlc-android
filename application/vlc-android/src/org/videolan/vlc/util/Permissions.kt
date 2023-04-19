@@ -33,7 +33,6 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Build
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -41,6 +40,7 @@ import androidx.core.content.edit
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import org.videolan.libvlc.util.AndroidUtil
 import org.videolan.medialibrary.interfaces.media.MediaWrapper
 import org.videolan.resources.AndroidDevices
@@ -225,7 +225,7 @@ object Permissions {
     }
 
     private fun createDialogCompat(activity: FragmentActivity, exit: Boolean): Dialog {
-        val dialogBuilder = AlertDialog.Builder(activity)
+        val dialogBuilder = MaterialAlertDialogBuilder(activity)
                 .setTitle(activity.getString(R.string.allow_storage_access_title))
                 .setMessage(activity.getString(R.string.allow_storage_access_description))
                 .setIcon(R.drawable.ic_warning)
@@ -285,7 +285,7 @@ object Permissions {
             }
         }
         val finalAction = action
-        val dialogBuilder = AlertDialog.Builder(activity)
+        val dialogBuilder = MaterialAlertDialogBuilder(activity)
                 .setTitle(activity.getString(titleId))
                 .setMessage(activity.getString(textId))
                 .setIcon(R.drawable.ic_warning)

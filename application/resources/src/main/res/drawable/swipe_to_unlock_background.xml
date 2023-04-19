@@ -27,7 +27,7 @@
     <item>
         <shape android:shape="rectangle">
             <corners android:radius="60dp" />
-            <solid android:color="@color/playerbackground" />
+            <solid android:color="@color/swipe_to_unlock_background" />
         </shape>
     </item>
 

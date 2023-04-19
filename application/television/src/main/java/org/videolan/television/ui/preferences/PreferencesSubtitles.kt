@@ -22,16 +22,14 @@
 
 package org.videolan.television.ui.preferences
 
-import android.annotation.TargetApi
 import android.app.Activity
 import android.content.Intent
 import android.content.SharedPreferences
 import android.graphics.Color
-import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import androidx.core.content.ContextCompat
-import androidx.preference.CheckBoxPreference
+import androidx.preference.SwitchPreference
 import androidx.preference.ListPreference
 import androidx.preference.SeekBarPreference
 import com.jaredrummler.android.colorpicker.ColorPreferenceCompat
@@ -52,26 +50,25 @@ private const val SUBTITLE_COLOR_RESULT = 1
 private const val SUBTITLE_BACKGROUND_COLOR_RESULT = 2
 private const val SUBTITLE_SHADOW_COLOR_RESULT = 3
 private const val SUBTITLE_OUTLINE_COLOR_RESULT = 4
-@TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
 class PreferencesSubtitles : BasePreferenceFragment(), SharedPreferences.OnSharedPreferenceChangeListener, CoroutineScope by MainScope() {
 
     private lateinit var settings: SharedPreferences
     private lateinit var preferredSubtitleTrack: ListPreference
 
     private lateinit var subtitlesSize: ListPreference
-    private lateinit var subtitlesBold: CheckBoxPreference
+    private lateinit var subtitlesBold: SwitchPreference
     private lateinit var subtitlesOpacity: SeekBarPreference
     private lateinit var subtitlesColor: ColorPreferenceCompat
 
-    private lateinit var subtitlesBackgroundEnabled: CheckBoxPreference
+    private lateinit var subtitlesBackgroundEnabled: SwitchPreference
     private lateinit var subtitlesBackgroundColor: ColorPreferenceCompat
     private lateinit var subtitlesBackgroundOpacity: SeekBarPreference
 
-    private lateinit var subtitlesShadowEnabled: CheckBoxPreference
+    private lateinit var subtitlesShadowEnabled: SwitchPreference
     private lateinit var subtitlesShadowColor: ColorPreferenceCompat
     private lateinit var subtitlesShadowOpacity: SeekBarPreference
 
-    private lateinit var subtitlesOutlineEnabled: CheckBoxPreference
+    private lateinit var subtitlesOutlineEnabled: SwitchPreference
     private lateinit var subtitlesOutlineSize: ListPreference
     private lateinit var subtitlesOutlineColor: ColorPreferenceCompat
     private lateinit var subtitlesOutlineOpacity: SeekBarPreference
@@ -217,7 +214,7 @@ class PreferencesSubtitles : BasePreferenceFragment(), SharedPreferences.OnShare
 
     override fun onStart() {
         super.onStart()
-        preferenceScreen.sharedPreferences.registerOnSharedPreferenceChangeListener(this)
+        preferenceScreen.sharedPreferences?.registerOnSharedPreferenceChangeListener(this)
     }
 
     override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences, key: String) {

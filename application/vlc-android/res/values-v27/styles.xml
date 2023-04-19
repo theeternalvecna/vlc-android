@@ -60,5 +60,9 @@
         <item name="android:navigationBarColor">@color/white</item>
         <item name="android:windowLightNavigationBar">true</item>
     </style>
-    <style name="VLCDialogButton" parent="Widget.MaterialComponents.Button.TextButton.Dialog"/>
+
+    <style name="VLCSwitchPreferenceStyle" parent="Preference.SwitchPreference.Material">
+        <item name="android:widgetLayout">@layout/preference_switch</item>
+        <item name="iconSpaceReserved">false</item>
+    </style>
 </resources>

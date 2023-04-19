@@ -36,5 +36,6 @@
         android:layout_gravity="top|end"
         app:layout_behavior="org.videolan.vlc.gui.helpers.FloatingActionButtonBehavior"
         app:rippleColor="@color/orange50"
+        android:visibility="gone"
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto" />

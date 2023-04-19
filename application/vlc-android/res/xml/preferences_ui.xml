@@ -13,7 +13,7 @@
             android:entries="@array/daynight_mode_entries"
             android:entryValues="@array/daynight_mode_values"/>
 
-    <CheckBoxPreference
+    <SwitchPreference
             app:singleLineTitle="false"
             android:key="tv_ui"
             android:summary="@string/tv_ui_summary"
@@ -34,14 +34,14 @@
             android:title="@string/list_title_ellipsize"
             android:summary="%s"/>
 
-    <CheckBoxPreference
+    <SwitchPreference
             app:singleLineTitle="false"
             android:key="show_headers"
             android:defaultValue="true"
             android:summary="@string/show_headers_summary"
             android:title="@string/show_headers"/>
 
-    <CheckBoxPreference
+    <SwitchPreference
             app:singleLineTitle="false"
             android:key="tv_folders_first"
             android:defaultValue="true"
@@ -49,7 +49,7 @@
             android:summary="@string/tv_folders_first_summary"
             android:title="@string/tv_folders_first"/>
 
-    <CheckBoxPreference
+    <SwitchPreference
             app:singleLineTitle="false"
             android:key="include_missing"
             android:defaultValue="true"
@@ -60,19 +60,19 @@
             android:title="@string/video"
             android:key="ui_video_category">
 
-        <CheckBoxPreference
+        <SwitchPreference
                 app:singleLineTitle="false"
                 android:defaultValue="true"
                 android:key="media_seen"
                 android:summary="@string/media_seen_summary"
                 android:title="@string/media_seen"/>
-        <CheckBoxPreference
+        <SwitchPreference
                 app:singleLineTitle="false"
                 android:defaultValue="false"
                 android:key="force_play_all_video"
                 android:summary="@string/force_play_all_summary"
                 android:title="@string/force_play_all_title"/>
-        <CheckBoxPreference
+        <SwitchPreference
                 app:singleLineTitle="false"
                 android:defaultValue="true"
                 android:key="show_video_thumbnails"
@@ -84,25 +84,25 @@
             android:title="@string/audio"
             android:key="ui_audio_category">
 
-        <CheckBoxPreference
+        <SwitchPreference
                 app:singleLineTitle="false"
                 android:defaultValue="true"
                 android:key="audio_resume_card"
                 android:title="@string/audio_resume_card_title"
                 android:summary="@string/audio_resume_card_summary"/>
-        <CheckBoxPreference
+        <SwitchPreference
             app:singleLineTitle="false"
             android:defaultValue="false"
             android:key="force_play_all_audio"
             android:summary="@string/force_play_all_audio_summary"
             android:title="@string/force_play_all_audio_title"/>
-        <CheckBoxPreference
+        <SwitchPreference
                 app:singleLineTitle="false"
                 android:defaultValue="true"
                 android:key="lockscreen_cover"
                 android:summary="@string/lockscreen_cover_summary"
                 android:title="@string/lockscreen_cover_title"/>
-        <CheckBoxPreference
+        <SwitchPreference
             app:singleLineTitle="false"
             android:defaultValue="false"
             android:key="show_seek_in_compact_notification"

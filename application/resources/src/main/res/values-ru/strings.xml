@@ -592,9 +592,9 @@
     <string name="browse_folder">Просмотр папки</string>
     <string name="listen">Прослушать</string>
     <string name="apply_to_bt">Применить к Bluetooth-устройству</string>
-    <string name="episodes">эпизоды</string>
-    <string name="movies">фильмы</string>
-    <string name="videos">видео</string>
+    <string name="episodes">Эпизоды</string>
+    <string name="movies">Фильмы</string>
+    <string name="videos">Видео</string>
     <string name="videos_all">Все видео</string>
     <string name="clear_playback_history">Очистить историю воспроизведения</string>
     <string name="ml_scanning">Поиск медиафайлов</string>

@@ -5,14 +5,14 @@
                                       android:key="audio_category"
                                       android:title="@string/casting_category">
     <PreferenceCategory android:title="@string/casting_category">
-        <CheckBoxPreference
+        <SwitchPreference
                 app:singleLineTitle="false"
                 android:key="enable_casting"
                 android:defaultValue="true"
                 android:switchTextOff="Disabled"
                 android:switchTextOn="Enabled"
                 android:title="@string/casting_switch_title"/>
-        <CheckBoxPreference
+        <SwitchPreference
                 android:key="casting_passthrough"
                 android:defaultValue="false"
                 android:summary="@string/casting_passthrough_summary"

@@ -13,7 +13,7 @@
             android:persistent="false"
             android:title="@string/subtitles_presets_title" />
 
-    <CheckBoxPreference
+    <SwitchPreference
             android:defaultValue="true"
             android:key="subtitles_autoload"
             android:title="@string/subtitles_autoload_title"
@@ -41,7 +41,7 @@
                 android:summary="%s"
                 android:persistent="true"
                 android:title="@string/subtitles_size_title" />
-        <CheckBoxPreference
+        <SwitchPreference
                 android:defaultValue="false"
                 android:key="subtitles_bold"
                 android:title="@string/subtitles_bold_title"
@@ -61,7 +61,7 @@
 
     </PreferenceCategory>
     <PreferenceCategory android:title="@string/subtitles_background_title">
-        <CheckBoxPreference
+        <SwitchPreference
                 android:defaultValue="false"
                 android:key="subtitles_background"
                 android:title="@string/subtitles_background_title"
@@ -82,7 +82,7 @@
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/subtitles_shadow_title">
-        <CheckBoxPreference
+        <SwitchPreference
                 android:defaultValue="true"
                 android:key="subtitles_shadow"
                 android:title="@string/subtitles_shadow_title"
@@ -103,7 +103,7 @@
                 app:min="0" />
     </PreferenceCategory>
     <PreferenceCategory android:title="@string/subtitles_outline_title">
-        <CheckBoxPreference
+        <SwitchPreference
                 android:defaultValue="true"
                 android:key="subtitles_outline"
                 android:title="@string/subtitles_outline_title"

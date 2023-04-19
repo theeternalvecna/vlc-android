@@ -91,6 +91,7 @@
 
             <Button
                     android:id="@+id/cancel"
+                    style="@style/Widget.Material3.Button.TextButton.Dialog"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/warning"
@@ -98,11 +99,11 @@
                     android:focusable="true"
                     android:text="@string/cancel"
                     android:textSize="14sp"
-                    android:onClick="@{handler::onCancel}"
-                    style="@style/VLCDialogButton" />
+                    android:onClick="@{handler::onCancel}" />
 
             <Button
                     android:id="@+id/action"
+                    style="@style/Widget.Material3.Button.TextButton.Dialog"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
@@ -112,8 +113,7 @@
                     android:layout_below="@+id/warning"
                     android:text="@string/ok"
                     android:textSize="14sp"
-                    android:onClick="@{handler::onLogin}"
-                    style="@style/VLCDialogButton" />
+                    android:onClick="@{handler::onLogin}" />
         </RelativeLayout>
     </ScrollView>
 </layout>
