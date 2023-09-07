@@ -153,11 +153,11 @@ object NotificationHelper {
                 .setSmallIcon(R.drawable.ic_notif_scan)
                 .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
                 .setContentTitle(ctx.getString(R.string.ml_scanning))
-                .setProgress(max, progress, max < 1 || progress < 1)
                 .setAutoCancel(false)
                 .setCategory(NotificationCompat.CATEGORY_PROGRESS)
-                .setOngoing(true)
-        scanCompatBuilder.setContentText(progressText)
+                .setOngoing(!paused)
+        if (!paused) scanCompatBuilder.setProgress(max, progress, max < 1 || progress < 1)
+        if (!paused) scanCompatBuilder.setContentText(progressText) else scanCompatBuilder.setContentText(ctx.getString(R.string.paused))
 
         notificationIntent.action = if (paused) ACTION_RESUME_SCAN else ACTION_PAUSE_SCAN
         val pi = PendingIntent.getBroadcast(ctx.applicationContext.getContextWithLocale(AppContextProvider.locale), 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE)
@@ -166,6 +166,8 @@ object NotificationHelper {
         else
             NotificationCompat.Action(R.drawable.ic_pause_notif, ctx.getString(R.string.pause), pi)
         scanCompatBuilder.addAction(playpause)
+        val piCancel = PendingIntent.getBroadcast(ctx.applicationContext.getContextWithLocale(AppContextProvider.locale), 0, Intent(ACTION_CANCEL_SCAN), PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE)
+        scanCompatBuilder.addAction(NotificationCompat.Action(R.drawable.ic_stop_notif, ctx.getString(R.string.cancel), piCancel))
         return scanCompatBuilder.build()
     }
 

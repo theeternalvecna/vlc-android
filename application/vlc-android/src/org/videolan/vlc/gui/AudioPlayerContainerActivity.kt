@@ -34,6 +34,7 @@ import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.widget.Toolbar
 import androidx.appcompat.widget.ViewStubCompat
 import androidx.coordinatorlayout.widget.CoordinatorLayout
+import androidx.core.content.ContextCompat
 import androidx.core.graphics.Insets
 import androidx.core.net.toUri
 import androidx.core.os.bundleOf
@@ -592,7 +593,7 @@ open class AudioPlayerContainerActivity : BaseActivity(), KeycodeListener, Sched
                 return@observe
             }
             updateProgressVisibility(true, scanProgress.progressText)
-            scanProgressText?.text = scanProgress.progressText
+            scanProgressText?.text = if (!scanProgress.paused) scanProgress.progressText else if (scanProgress.inDiscovery) getString(R.string.scan_discovering_paused) else getString(R.string.scan_parsing_paused)
             scanProgressBar?.progress = scanProgress.parsing.toInt()
             if (scanProgress.inDiscovery && scanProgressBar?.isIndeterminate == false) {
                 scanProgressBar?.isVisible = false
@@ -604,6 +605,14 @@ open class AudioPlayerContainerActivity : BaseActivity(), KeycodeListener, Sched
                 scanProgressBar?.isVisible = false
                 scanProgressBar?.isIndeterminate = false
                 scanProgressBar?.isVisible = true
+            }
+
+            if (scanProgress.paused) {
+                scanProgressText?.setCompoundDrawables(ContextCompat.getDrawable(this, R.drawable.ic_pause_notif), null, null, null)
+                if (scanProgress.inDiscovery) {
+                    scanProgressBar?.isVisible = false
+                    scanProgressBar?.isIndeterminate = false
+                }
             }
         }
         MediaParsingService.discoveryError.observe(this) {
