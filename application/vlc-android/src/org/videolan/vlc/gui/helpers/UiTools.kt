@@ -31,6 +31,7 @@ import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
 import android.graphics.Bitmap
+import android.graphics.Color
 import android.graphics.RenderEffect
 import android.graphics.Shader
 import android.graphics.drawable.BitmapDrawable
@@ -40,7 +41,11 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.renderscript.*
+import android.text.SpannableString
 import android.text.TextUtils
+import android.text.method.LinkMovementMethod
+import android.text.style.URLSpan
+import android.text.util.Linkify
 import android.view.*
 import android.view.animation.*
 import android.view.inputmethod.InputMethodManager
@@ -61,6 +66,7 @@ import androidx.core.content.pm.ShortcutManagerCompat
 import androidx.core.graphics.drawable.IconCompat
 import androidx.core.net.toUri
 import androidx.core.os.bundleOf
+import androidx.core.text.HtmlCompat
 import androidx.core.view.MenuItemCompat
 import androidx.databinding.BindingAdapter
 import androidx.fragment.app.FragmentActivity
@@ -102,6 +108,7 @@ import org.videolan.vlc.util.LifecycleAwareScheduler
 import org.videolan.vlc.util.SchedulerCallback
 import org.videolan.vlc.util.ThumbnailsProvider
 import org.videolan.vlc.util.openLinkIfPossible
+import java.util.regex.Pattern
 import kotlin.math.min
 
 object UiTools {
@@ -115,6 +122,7 @@ object UiTools {
     private var DEFAULT_COVER_MOVIE_DRAWABLE: BitmapDrawable? = null
     private var DEFAULT_COVER_TVSHOW_DRAWABLE: BitmapDrawable? = null
     private var DEFAULT_COVER_FOLDER_DRAWABLE: BitmapDrawable? = null
+    private var DEFAULT_COVER_PODCAST_DRAWABLE: BitmapDrawable? = null
 
     private var DEFAULT_COVER_VIDEO_DRAWABLE_BIG: BitmapDrawable? = null
     private var DEFAULT_COVER_AUDIO_DRAWABLE_BIG: BitmapDrawable? = null
@@ -123,6 +131,7 @@ object UiTools {
     private var DEFAULT_COVER_MOVIE_DRAWABLE_BIG: BitmapDrawable? = null
     private var DEFAULT_COVER_TVSHOW_DRAWABLE_BIG: BitmapDrawable? = null
     private var DEFAULT_COVER_FOLDER_DRAWABLE_BIG: BitmapDrawable? = null
+    private var DEFAULT_COVER_PODCAST_DRAWABLE_BIG: BitmapDrawable? = null
 
     private val sHandler = Handler(Looper.getMainLooper())
     private const val DELETE_DURATION = 3000
@@ -153,6 +162,20 @@ object UiTools {
             DEFAULT_COVER_FOLDER_DRAWABLE = BitmapDrawable(context.resources, getBitmapFromDrawable(context, R.drawable.ic_menu_folder))
         }
         return DEFAULT_COVER_FOLDER_DRAWABLE!!
+    }
+
+    fun getDefaultPodcastDrawable(context: Context): BitmapDrawable {
+        if (DEFAULT_COVER_PODCAST_DRAWABLE == null) {
+            DEFAULT_COVER_PODCAST_DRAWABLE = BitmapDrawable(context.resources, getBitmapFromDrawable(context, R.drawable.ic_no_podcast))
+        }
+        return DEFAULT_COVER_PODCAST_DRAWABLE!!
+    }
+
+    fun getDefaultPodcastDrawableBig(context: Context): BitmapDrawable {
+        if (DEFAULT_COVER_PODCAST_DRAWABLE_BIG == null) {
+            DEFAULT_COVER_PODCAST_DRAWABLE_BIG = BitmapDrawable(context.resources, getBitmapFromDrawable(context, R.drawable.ic_podcast_big))
+        }
+        return DEFAULT_COVER_PODCAST_DRAWABLE_BIG!!
     }
 
     fun getDefaultAlbumDrawable(context: Context): BitmapDrawable {
@@ -983,4 +1006,40 @@ suspend fun fillActionMode(context: Context, mode: ActionMode, multiSelectHelper
         mode.title = context.getString(R.string.selection_count, realCount)
         mode.subtitle = Tools.millisToString(length)
     }
+}
+
+/**
+ * Change the alpha component of a color Int
+ *
+ * @param alpha the wanted alpha in percent
+ * @return a color Int with the new alpha
+ */
+fun Int.setAlpha(alpha:Float) = Color.argb((255 * alpha).toInt(), Color.red(this), Color.green(this), Color.blue(this))
+
+/**
+ * Set text to the [TextView], use the html code if any and transforms links into clickable ones
+ *
+ * @param textToLinkify the text to set to the [TextView]
+ */
+fun TextView.linkify(textToLinkify: String) {
+    val htmlSpannable = HtmlCompat.fromHtml(textToLinkify.replace("\n", "<br/>"), HtmlCompat.FROM_HTML_MODE_LEGACY)
+
+    val htmlUrlSpans = htmlSpannable.getSpans(0, htmlSpannable.length, URLSpan::class.java)
+
+    val linkifySpannable = SpannableString(htmlSpannable)
+    Linkify.addLinks(linkifySpannable, Linkify.WEB_URLS or Linkify.EMAIL_ADDRESSES)
+    Linkify.addLinks(linkifySpannable, Pattern.compile("[@]+[A-Za-z0-9-_]+"), "https://twitter.com/", null) { _, url ->
+        url.substring(1) //remove the @ sign
+    }
+
+    htmlUrlSpans.forEach { span ->
+        linkifySpannable.setSpan(span, htmlSpannable.getSpanStart(span), htmlSpannable.getSpanEnd(span), 0)
+    }
+
+    text = linkifySpannable.trimEnd()
+    movementMethod = LinkMovementMethod.getInstance()
+    autoLinkMask = 0
+
+
+
 }

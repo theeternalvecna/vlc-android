@@ -13,10 +13,10 @@ import org.videolan.medialibrary.Tools;
 import org.videolan.medialibrary.interfaces.Medialibrary;
 import org.videolan.medialibrary.interfaces.media.Album;
 import org.videolan.medialibrary.interfaces.media.Artist;
+import org.videolan.medialibrary.interfaces.media.DiscoverService;
 import org.videolan.medialibrary.interfaces.media.Folder;
 import org.videolan.medialibrary.interfaces.media.Genre;
 import org.videolan.medialibrary.interfaces.media.MediaWrapper;
-import org.videolan.medialibrary.interfaces.media.MlService;
 import org.videolan.medialibrary.interfaces.media.Playlist;
 import org.videolan.medialibrary.interfaces.media.VideoGroup;
 import org.videolan.medialibrary.media.SearchAggregate;
@@ -175,6 +175,16 @@ public class StubMedialibrary extends Medialibrary {
 
     @Override
     public void setVideoGroupsPrefixLength(int lenght) {}
+
+    @Override
+    public MediaWrapper[] getSubscriptionMedia(int sort, boolean desc, boolean includeMissing, boolean onlyFavorites, int nbItems, int offset) {
+        return new MediaWrapper[0];
+    }
+
+    @Override
+    public int getSubscriptionMediaCount(boolean includeMissing) {
+        return 0;
+    }
 
     @Override
     public VideoGroup createVideoGroup(String name) {
@@ -612,6 +622,17 @@ public class StubMedialibrary extends Medialibrary {
         return count;
     }
 
+
+    @Override
+    public MediaWrapper[] searchSubscriptionMedia(String query, int sort, boolean desc, boolean includeMissing, boolean onlyFavorites, int nbItems, int offset) {
+        return new MediaWrapper[0];
+    }
+
+    @Override
+    public int getSearchSubscriptionMediaCount(String query) {
+        return 0;
+    }
+
     public Artist[] searchArtist(String query) {
         ArrayList<Artist> results = new ArrayList<>();
         for (Artist artist : dt.mArtists) {
@@ -687,7 +708,7 @@ public class StubMedialibrary extends Medialibrary {
     }
 
     @Override
-    public MlService getService(MlService.Type type) {
+    public DiscoverService getService(DiscoverService.Type type) {
         return null;
     }
 
@@ -702,7 +723,7 @@ public class StubMedialibrary extends Medialibrary {
     }
 
     @Override
-    public boolean setSubscriptionMaxCachedMedia(int nbMedia) {
+    public boolean setSubscriptionMaxCacheMedia(int nbMedia) {
         return false;
     }
 
@@ -712,12 +733,12 @@ public class StubMedialibrary extends Medialibrary {
     }
 
     @Override
-    public boolean setGlobalSubscriptionMaxCacheSize(long size) {
+    public boolean setGlobalMaxCacheSize(long size) {
         return false;
     }
 
     @Override
-    public int getSubscriptionMaxCachedMedia() {
+    public int getSubscriptionMaxCacheMedia() {
         return -1;
     }
 
@@ -727,7 +748,7 @@ public class StubMedialibrary extends Medialibrary {
     }
 
     @Override
-    public long getGlobalSubscriptionMaxCacheSize() {
+    public long getGlobalMaxCacheSize() {
         return -1L;
     }
 

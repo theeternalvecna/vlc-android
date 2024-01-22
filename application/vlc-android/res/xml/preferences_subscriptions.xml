@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+  ~ *************************************************************************
+  ~  preferences_subscriptions.xml
+  ~ **************************************************************************
+  ~ Copyright © 2023 VLC authors and VideoLAN
+  ~ Author: Nicolas POMEPUY
+  ~ This program is free software; you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation; either version 2 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with this program; if not, write to the Free Software
+  ~ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston MA 02110-1301, USA.
+  ~ ***************************************************************************
+  ~
+  ~
+  -->
+
+<androidx.preference.PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:key="subscription_preferences">
+
+    <ListPreference
+            android:defaultValue="true"
+            android:entries="@array/subscription_notification"
+            android:entryValues="@array/subscription_notification_values"
+            android:key="subscription_enable_notification"
+            android:summary="%s"
+            android:title="@string/subscription_notification"
+            app:iconSpaceReserved="false"
+            app:singleLineTitle="false" />
+    <PreferenceCategory android:title="@string/download">
+
+        <org.videolan.vlc.gui.view.SubscriptionNumberPreference
+                android:defaultValue="0"
+                android:summary="%ss"
+                app:key="subscription_nb_cache_media"
+                app:title="@string/subscription_nb_download" />
+        <org.videolan.vlc.gui.view.SubscriptionFileSizePreference
+                android:defaultValue="500000000"
+                android:summary="%ss"
+                app:key="subscription_max_cache_size"
+                app:title="@string/subscription_max_cache_size" />
+
+    </PreferenceCategory>
+</androidx.preference.PreferenceScreen>

@@ -126,6 +126,10 @@ const val KEY_SHOW_TRACK_INFO = "show_track_info"
 const val ML_SCAN_ON = 0
 const val ML_SCAN_OFF = 1
 
+//Discover
+
+const val KEY_DISCOVER_CURRENT_TAB = "key_discover_current_tab"
+
 //Remote access
 const val KEY_ENABLE_REMOTE_ACCESS = "enable_remote_access"
 const val KEY_REMOTE_ACCESS_ML_CONTENT = "remote_access_medialibrary_content"
@@ -232,6 +236,10 @@ const val WIDGETS_PREVIEW_PLAYING = "widgets_preview_playing"
 const val KEY_SAFE_MODE_PIN = "safe_mode_pin"
 const val KEY_RESTRICT_SETTINGS = "restrict_settings"
 const val KEY_SAFE_MODE = "safe_mode"
+
+//subs
+const val SUBSCRIPTION_CARD_MODE = "subscription_card_mode"
+
 
 const val ENABLE_ANDROID_AUTO_SPEED_BUTTONS = "enable_android_auto_speed_buttons"
 const val ENABLE_ANDROID_AUTO_SEEK_BUTTONS = "enable_android_auto_seek_buttons"

@@ -9,6 +9,7 @@ import org.videolan.medialibrary.interfaces.Medialibrary;
 import org.videolan.medialibrary.interfaces.media.Album;
 import org.videolan.medialibrary.interfaces.media.Artist;
 import org.videolan.medialibrary.interfaces.media.Bookmark;
+import org.videolan.medialibrary.interfaces.media.DiscoverService;
 import org.videolan.medialibrary.interfaces.media.Folder;
 import org.videolan.medialibrary.interfaces.media.Genre;
 import org.videolan.medialibrary.interfaces.media.MediaWrapper;
@@ -17,14 +18,17 @@ import org.videolan.medialibrary.interfaces.media.VideoGroup;
 import org.videolan.medialibrary.media.AlbumImpl;
 import org.videolan.medialibrary.media.ArtistImpl;
 import org.videolan.medialibrary.media.BookmarkImpl;
+import org.videolan.medialibrary.media.DiscoverServiceImpl;
 import org.videolan.medialibrary.media.FolderImpl;
 import org.videolan.medialibrary.media.GenreImpl;
 import org.videolan.medialibrary.media.MediaWrapperImpl;
 import org.videolan.medialibrary.media.PlaylistImpl;
+import org.videolan.medialibrary.media.SubscriptionImpl;
 import org.videolan.medialibrary.media.VideoGroupImpl;
 import org.videolan.medialibrary.stubs.StubAlbum;
 import org.videolan.medialibrary.stubs.StubArtist;
 import org.videolan.medialibrary.stubs.StubBookmark;
+import org.videolan.medialibrary.stubs.StubDiscoverService;
 import org.videolan.medialibrary.stubs.StubFolder;
 import org.videolan.medialibrary.stubs.StubGenre;
 import org.videolan.medialibrary.stubs.StubMediaWrapper;
@@ -70,16 +74,16 @@ public class MLServiceLocator {
                                                        String artworkURL, int audio, int spu,
                                                        int trackNumber, int discNumber, long lastModified,
                                                        long seen, boolean isThumbnailGenerated, boolean isFavorite,
-                                                       int releaseDate, boolean isPresent, long insertionDate) {
+                                                       int releaseDate, boolean isPresent, long insertionDate, int nbSubscriptions) {
         if (sMode == LocatorMode.VLC_ANDROID) {
             return new MediaWrapperImpl(id, mrl, time, position, length, type, title,
                     filename, artist, genre, album, albumArtist, width, height, artworkURL,
                     audio, spu, trackNumber, discNumber, lastModified, seen, isThumbnailGenerated,
-                    isFavorite, releaseDate, isPresent, insertionDate);
+                    isFavorite, releaseDate, isPresent, insertionDate, nbSubscriptions);
         } else {
             return new StubMediaWrapper(id, mrl, time, position, length, type, title,
                     filename, artist, genre, album, albumArtist, width, height, artworkURL,
-                    audio, spu, trackNumber, discNumber, lastModified, seen, isThumbnailGenerated, isFavorite, releaseDate, isPresent, insertionDate);
+                    audio, spu, trackNumber, discNumber, lastModified, seen, isThumbnailGenerated, isFavorite, releaseDate, isPresent, insertionDate, nbSubscriptions);
         }
     }
 
@@ -89,15 +93,31 @@ public class MLServiceLocator {
                                                        int width, int height, String artworkURL,
                                                        int audio, int spu, int trackNumber,
                                                        int discNumber, long lastModified, long seen,
-                                                       long insertionDate) {
+                                                       long insertionDate, int nbSubscriptions, int releaseYear) {
         if (sMode == LocatorMode.VLC_ANDROID) {
             return new MediaWrapperImpl(uri, time, position, length, type, picture, title, artist, genre,
                     album, albumArtist, width, height, artworkURL, audio, spu, trackNumber,
-                    discNumber, lastModified, seen, false, insertionDate);
+                    discNumber, lastModified, seen, false, insertionDate, nbSubscriptions, releaseYear);
         } else {
             return new StubMediaWrapper(uri, time, position, length, type, picture, title, artist, genre,
                     album, albumArtist, width, height, artworkURL, audio, spu, trackNumber,
-                    discNumber, lastModified, seen, false, insertionDate);
+                    discNumber, lastModified, seen, false, insertionDate, nbSubscriptions, releaseYear);
+        }
+    }
+
+    public static DiscoverService getAbstractService(Parcel source) {
+        if (sMode == LocatorMode.VLC_ANDROID) {
+            return new DiscoverServiceImpl(source);
+        } else {
+            return new StubDiscoverService(source);
+        }
+    }
+
+    public static SubscriptionImpl getAbstractSubscription(Parcel source) {
+        if (sMode == LocatorMode.VLC_ANDROID) {
+            return new SubscriptionImpl(source);
+        } else {
+            return new SubscriptionImpl(source);
         }
     }
 

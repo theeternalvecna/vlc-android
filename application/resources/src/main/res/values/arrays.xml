@@ -437,6 +437,17 @@
         <item>3</item>
     </string-array>
 
+    <string-array name="subscription_notification">
+        <item>@string/follow_parent</item>
+        <item>@string/disabled</item>
+        <item>@string/enabled</item>
+    </string-array>
+    <string-array name="subscription_notification_values" translatable="false">
+        <item>-1</item>
+        <item>0</item>
+        <item>1</item>
+    </string-array>
+
     <string-array name="opengl_list">
         <item>@string/opengl_automatic</item>
         <item>@string/opengl_on</item>

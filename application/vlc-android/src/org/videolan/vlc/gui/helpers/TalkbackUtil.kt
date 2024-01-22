@@ -65,6 +65,9 @@ object TalkbackUtil {
     fun getPlaylist(context: Context, playlist: Playlist) = context.getString(R.string.talkback_playlist, playlist.title)
             .talkbackAppend(context.resources.getQuantityString(R.plurals.track_quantity, playlist.tracksCount, playlist.tracksCount))
 
+    fun getSubscription(context: Context, subscription: Subscription) = context.getString(R.string.talkback_playlist, subscription.title)
+            .talkbackAppend(context.resources.getQuantityString(R.plurals.track_quantity, subscription.tracksCount, subscription.tracksCount))
+
     fun getArtist(context: Context, artist: String?) = if (artist == null) "" else context.getString(R.string.talkback_artist, artist)
     fun getTrackNumber(context: Context, item: MediaWrapper) = context.getString(R.string.talkback_track_number, item.trackNumber.toString())
     fun getTimeAndArtist(context: Context, item: MediaWrapper) = millisToString(context, item.length)

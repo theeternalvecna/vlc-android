@@ -34,10 +34,10 @@ import org.videolan.libvlc.util.VLCUtil;
 import org.videolan.medialibrary.interfaces.Medialibrary;
 import org.videolan.medialibrary.interfaces.media.Album;
 import org.videolan.medialibrary.interfaces.media.Artist;
+import org.videolan.medialibrary.interfaces.media.DiscoverService;
 import org.videolan.medialibrary.interfaces.media.Folder;
 import org.videolan.medialibrary.interfaces.media.Genre;
 import org.videolan.medialibrary.interfaces.media.MediaWrapper;
-import org.videolan.medialibrary.interfaces.media.MlService;
 import org.videolan.medialibrary.interfaces.media.Playlist;
 import org.videolan.medialibrary.interfaces.media.VideoGroup;
 import org.videolan.medialibrary.media.SearchAggregate;
@@ -253,6 +253,16 @@ public class MedialibraryImpl extends Medialibrary {
     @WorkerThread
     public void setVideoGroupsPrefixLength(int lenght) {
         if (mIsInitiated) nativeSetVideoGroupsPrefixLength(lenght);
+    }
+
+    @Override
+    public MediaWrapper[] getSubscriptionMedia(int sort, boolean desc, boolean includeMissing, boolean onlyFavorites, int nbItems, int offset) {
+        return mIsInitiated ? nativeGetSubscriptionMedia(sort, desc, includeMissing, onlyFavorites, nbItems, offset) : new MediaWrapper[0];
+    }
+
+    @Override
+    public int getSubscriptionMediaCount(boolean includeMissing) {
+        return mIsInitiated ? nativeGetSubscriptionMediaCount(includeMissing) : 0;
     }
 
     @Override
@@ -555,6 +565,15 @@ public class MedialibraryImpl extends Medialibrary {
         return mIsInitiated ? nativeGetSearchVideoCount(query) : 0;
     }
 
+    public MediaWrapper[] searchSubscriptionMedia(String query, int sort, boolean desc, boolean includeMissing, boolean onlyFavorites, int nbItems, int offset) {
+        return mIsInitiated && !TextUtils.isEmpty(query) ? nativeSearchSubscriptionMedia(query, sort, desc, includeMissing, onlyFavorites, nbItems, offset) : null;
+    }
+
+    @Override
+    public int getSearchSubscriptionMediaCount(String query) {
+        return mIsInitiated ? nativeGetSubscriptionMediaCount(query) : 0;
+    }
+
     public Artist[] searchArtist(String query) {
         return mIsInitiated && !TextUtils.isEmpty(query) ? nativeSearchArtist(query) : null;
     }
@@ -602,7 +621,7 @@ public class MedialibraryImpl extends Medialibrary {
         return mIsInitiated && !TextUtils.isEmpty(query) ? nativeSearchPagedGroups(query, sort, desc, includeMissing, onlyFavorites, nbItems, offset) : new VideoGroup[0];
     }
 
-    public MlService getService(MlService.Type type) {
+    public DiscoverService getService(DiscoverService.Type type) {
         return mIsInitiated ? nativeGetService(type.value) : null;
     }
 
@@ -617,7 +636,7 @@ public class MedialibraryImpl extends Medialibrary {
     }
 
     @Override
-    public boolean setSubscriptionMaxCachedMedia(int nbMedia) {
+    public boolean setSubscriptionMaxCacheMedia(int nbMedia) {
         return mIsInitiated && nativeSetSubscriptionMaxCacheMedia(this, nbMedia);
     }
 
@@ -627,12 +646,12 @@ public class MedialibraryImpl extends Medialibrary {
     }
 
     @Override
-    public boolean setGlobalSubscriptionMaxCacheSize(long size) {
-        return mIsInitiated && nativeSetGlobalSubscriptionMaxCacheSize(this, size);
+    public boolean setGlobalMaxCacheSize(long size) {
+        return mIsInitiated && nativeSetGlobalMaxCacheSize(this, size);
     }
 
     @Override
-    public int getSubscriptionMaxCachedMedia() {
+    public int getSubscriptionMaxCacheMedia() {
         return mIsInitiated ? nativeGetSubscriptionMaxCacheMedia(this) : -1;
     }
 
@@ -642,8 +661,8 @@ public class MedialibraryImpl extends Medialibrary {
     }
 
     @Override
-    public long getGlobalSubscriptionMaxCacheSize() {
-        return mIsInitiated ? nativeGetGlobalSubscriptionMaxCacheSize(this) : -1L;
+    public long getGlobalMaxCacheSize() {
+        return mIsInitiated ? nativeGetGlobalMaxCacheSize(this) : -1L;
     }
 
     @Override
@@ -693,6 +712,8 @@ public class MedialibraryImpl extends Medialibrary {
     private native VideoGroup[] nativeGetVideoGroups(int sort, boolean desc, boolean includeMissing, boolean onlyFavorites, int nbItems, int offset);
     private native int nativeGetVideoGroupsCount(String query);
     private native void nativeSetVideoGroupsPrefixLength(int length);
+    private native MediaWrapper[] nativeGetSubscriptionMedia(int sort, boolean desc, boolean includeMissing, boolean onlyFavorites, int nbItems, int offset);
+    private native int nativeGetSubscriptionMediaCount( boolean includeMissing);
 
     private native VideoGroup nativeCreateGroupByName(String name);
 
@@ -737,6 +758,8 @@ public class MedialibraryImpl extends Medialibrary {
     private native MediaWrapper[] nativeSearchPagedAudio(String query, int sort, boolean desc, boolean includeMissing, boolean onlyFavorites, int nbItems, int offset);
     private native int nativeGetSearchAudioCount(String query);
     private native MediaWrapper[] nativeSearchPagedVideo(String query, int sort, boolean desc, boolean includeMissing, boolean onlyFavorites, int nbItems, int offset);
+    private native MediaWrapper[] nativeSearchSubscriptionMedia(String query, int sort, boolean desc, boolean includeMissing, boolean onlyFavorites, int nbItems, int offset);
+    private native int nativeGetSubscriptionMediaCount(String query);
     private native int nativeGetSearchVideoCount(String query);
     private native Artist[] nativeSearchArtist(String query);
     private native Artist[] nativeSearchPagedArtist(String query, int sort, boolean desc, boolean includeMissing, boolean onlyFavorites, int nbItems, int offset);
@@ -755,14 +778,14 @@ public class MedialibraryImpl extends Medialibrary {
     private native VideoGroup[] nativeSearchPagedGroups(String query, int sort, boolean desc, boolean includeMissing, boolean onlyFavorites, int nbItems, int offset);
     private native void nativeRequestThumbnail(long mediaId);
     private native boolean nativeIsServiceSupported(int type);
-    private native MlService nativeGetService(int type);
+    private native DiscoverService nativeGetService(int type);
     private native boolean nativeFitsInSubscriptionCache(Medialibrary ml, long mediaId);
     private native void nativeCacheNewSubscriptionMedia(Medialibrary ml);
     private native boolean nativeSetSubscriptionMaxCacheMedia(Medialibrary ml, int nbMedia);
     private native boolean nativeSetSubscriptionMaxCacheSize(Medialibrary ml, long size);
-    private native boolean nativeSetGlobalSubscriptionMaxCacheSize(Medialibrary ml, long size);
+    private native boolean nativeSetGlobalMaxCacheSize(Medialibrary ml, long size);
     private native int nativeGetSubscriptionMaxCacheMedia(Medialibrary ml);
     private native long nativeGetSubscriptionMaxCacheSize(Medialibrary ml);
-    private native long nativeGetGlobalSubscriptionMaxCacheSize(Medialibrary ml);
+    private native long nativeGetGlobalMaxCacheSize(Medialibrary ml);
     private native boolean nativeRefreshAllSubscriptions(Medialibrary ml);
 }

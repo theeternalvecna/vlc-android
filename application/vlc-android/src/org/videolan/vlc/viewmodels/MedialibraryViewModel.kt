@@ -10,7 +10,6 @@ import org.videolan.medialibrary.media.MediaLibraryItem
 import org.videolan.vlc.R
 import org.videolan.vlc.gui.helpers.UiTools
 import org.videolan.vlc.providers.medialibrary.MedialibraryProvider
-import java.util.ArrayList
 
 
 abstract class MedialibraryViewModel(context: Context) : SortableModel(context),
@@ -45,6 +44,14 @@ abstract class MedialibraryViewModel(context: Context) : SortableModel(context),
     override fun onCleared() {
         releaseCallbacks()
         super.onCleared()
+    }
+
+    suspend fun markAsPlayed(media: MediaWrapper) = withContext(Dispatchers.IO){
+        if (media.seen == 0L) media.setPlayCount(1L)
+    }
+
+    suspend fun markAsUnplayed(media: MediaWrapper) = withContext(Dispatchers.IO) {
+        media.setPlayCount(0L)
     }
 
     override fun canSortByName() = providers.any { it.canSortByName() }

@@ -77,7 +77,7 @@ open class ContentActivity : AudioPlayerContainerActivity(), SearchView.OnQueryT
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        val current = currentFragment
+        val current = currentFilterable()
         super.onCreateOptionsMenu(menu)
         if (current is AboutFragment) return true
         menuInflater.inflate(R.menu.activity_option, menu)
@@ -104,6 +104,8 @@ open class ContentActivity : AudioPlayerContainerActivity(), SearchView.OnQueryT
         return true
     }
 
+    private fun currentFilterable() = if (this is Filterable) this else currentFragment
+
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.ml_menu_search -> {
@@ -128,12 +130,12 @@ open class ContentActivity : AudioPlayerContainerActivity(), SearchView.OnQueryT
     }
 
     override fun onQueryTextChange(filterQueryString: String): Boolean {
-        val current = currentFragment
+        val current = currentFilterable()
         if (current is Filterable) {
             if (filterQueryString.isEmpty())
-                (current as Filterable).restoreList()
+                current.restoreList()
             else
-                (current as Filterable).filter(filterQueryString)
+                current.filter(filterQueryString)
             return true
         }
         return false
@@ -159,9 +161,9 @@ open class ContentActivity : AudioPlayerContainerActivity(), SearchView.OnQueryT
     }
 
     private fun setSearchVisibility(visible: Boolean) {
-        val current = currentFragment
+        val current = currentFilterable()
         if (current is Filterable) {
-            (current as Filterable).setSearchVisibility(visible)
+            current.setSearchVisibility(visible)
             makeRoomForSearch(visible)
         }
     }
@@ -209,7 +211,7 @@ open class ContentActivity : AudioPlayerContainerActivity(), SearchView.OnQueryT
 
 
     private fun restoreCurrentList() {
-        (currentFragment as? Filterable)?.restoreList()
+        (currentFilterable() as? Filterable)?.restoreList()
     }
 
     companion object {

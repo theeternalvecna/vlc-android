@@ -47,6 +47,7 @@ interface ICallBackHandler {
     fun watchHistory()
     fun watchMediaGroups()
     fun watchFolders()
+    fun watchSubscriptions()
     fun pause()
     fun resume()
 }
@@ -61,7 +62,8 @@ class CallBackDelegate : ICallBackHandler,
         Medialibrary.PlaylistsCb,
         Medialibrary.HistoryCb,
         Medialibrary.MediaGroupCb,
-        Medialibrary.FoldersCb
+        Medialibrary.FoldersCb,
+        Medialibrary.SubscriptionCb
 {
 
     override val medialibrary = Medialibrary.getInstance()
@@ -76,6 +78,7 @@ class CallBackDelegate : ICallBackHandler,
     private var historyCb = false
     private var mediaGroupsCb = false
     private var foldersCb = false
+    private var subscriptionsCb = false
     var paused = false
         set(value) {
             field = value
@@ -175,6 +178,11 @@ class CallBackDelegate : ICallBackHandler,
         foldersCb = true
     }
 
+    override fun watchSubscriptions() {
+        medialibrary.addSubscriptionCb(this)
+        subscriptionsCb = true
+    }
+
     override fun releaseCallbacks() {
         medialibrary.removeOnMedialibraryReadyListener(this)
         medialibrary.removeOnDeviceChangeListener(this)
@@ -186,6 +194,7 @@ class CallBackDelegate : ICallBackHandler,
         if (historyCb) medialibrary.removeHistoryCb(this)
         if (mediaGroupsCb) medialibrary.removeMediaGroupCb(this)
         if (foldersCb) medialibrary.removeFoldersCb(this)
+        if (subscriptionsCb) medialibrary.removeSubscriptionCb(this)
         refreshActor.close()
     }
 
@@ -252,6 +261,12 @@ class CallBackDelegate : ICallBackHandler,
     override fun onMediaGroupsModified() { refreshActor.trySend(Unit) }
 
     override fun onMediaGroupsDeleted() { refreshActor.trySend(Unit) }
+
+    override fun onSubscriptionsAdded() { refreshActor.trySend(Unit) }
+
+    override fun onSubscriptionsModified() { refreshActor.trySend(Unit) }
+
+    override fun onSubscriptionsDeleted() { refreshActor.trySend(Unit) }
 }
 
 sealed class MediaAction

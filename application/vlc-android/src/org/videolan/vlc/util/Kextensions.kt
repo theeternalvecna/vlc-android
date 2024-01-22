@@ -5,6 +5,7 @@ import android.app.Activity
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
+import android.content.res.ColorStateList
 import android.content.res.Resources
 import android.icu.text.Transliterator
 import android.net.Uri
@@ -14,6 +15,7 @@ import android.text.SpannableString
 import android.text.style.DynamicDrawableSpan
 import android.text.style.ImageSpan
 import android.util.DisplayMetrics
+import android.util.TypedValue
 import android.view.View
 import android.view.ViewGroup.MarginLayoutParams
 import android.widget.TextView
@@ -66,6 +68,7 @@ import java.util.*
 import kotlin.math.max
 import kotlin.math.min
 import kotlin.math.roundToInt
+
 
 fun String.validateLocation(): Boolean {
     var location = this
@@ -223,11 +226,29 @@ fun asyncTextItem(view: TextView, item: MediaLibraryItem?) {
     setTextAsync(view, text, params)
 }
 
+@BindingAdapter("layoutMarginStart")
+fun setLayoutMarginStart(view: View, dimen: Float) {
+    val layoutParams = view.layoutParams as MarginLayoutParams
+    layoutParams.marginStart = dimen.toInt()
+    view.layoutParams = layoutParams
+}
+
 @BindingAdapter("layoutMarginTop")
 fun setLayoutMarginTop(view: View, dimen: Int) {
     val layoutParams = view.layoutParams as MarginLayoutParams
     layoutParams.topMargin = dimen
     view.layoutParams = layoutParams
+}
+
+@BindingAdapter("textColorRead")
+fun textColorRead(view: TextView, read: Boolean) {
+    val typedValue = TypedValue()
+    view.context.theme.resolveAttribute(if (read) R.attr.font_light else R.attr.font_default, typedValue, true)
+    val color = typedValue.data
+    view.setTextColor(color)
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+        view.compoundDrawableTintList = ColorStateList.valueOf(color)
+    }
 }
 
 private fun setTextAsync(view: TextView, text: CharSequence, params: PrecomputedTextCompat.Params) {

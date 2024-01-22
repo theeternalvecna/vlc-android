@@ -31,6 +31,7 @@ import org.videolan.medialibrary.Tools;
 import org.videolan.medialibrary.interfaces.Medialibrary;
 import org.videolan.medialibrary.interfaces.media.Bookmark;
 import org.videolan.medialibrary.interfaces.media.MediaWrapper;
+import org.videolan.medialibrary.interfaces.media.Subscription;
 
 import java.util.Locale;
 
@@ -42,20 +43,20 @@ public class MediaWrapperImpl extends MediaWrapper {
                             String filename, String artist, String genre, String album, String albumArtist,
                             int width, int height, String artworkURL, int audio, int spu, int trackNumber,
                             int discNumber, long lastModified, long seen, boolean isThumbnailGenerated,
-                            boolean isFavorite, int releaseDate, boolean isPresent, long insertionDate) {
+                            boolean isFavorite, int releaseDate, boolean isPresent, long insertionDate, int nbSubscriptions) {
         super(id, mrl, time, position, length, type, title, filename, artist,
                 genre, album, albumArtist, width, height, artworkURL,
                 audio, spu, trackNumber, discNumber, lastModified,
-                seen, isThumbnailGenerated, isFavorite, releaseDate, isPresent, insertionDate);
+                seen, isThumbnailGenerated, isFavorite, releaseDate, isPresent, insertionDate, nbSubscriptions);
     }
 
     public MediaWrapperImpl(Uri uri, long time, float position, long length, int type,
                             Bitmap picture, String title, String artist, String genre, String album, String albumArtist,
                             int width, int height, String artworkURL, int audio, int spu, int trackNumber,
-                            int discNumber, long lastModified, long seen, boolean isFavorite, long insertionDate) {
+                            int discNumber, long lastModified, long seen, boolean isFavorite, long insertionDate, int nbSubscriptions, int releaseYear) {
         super(uri, time, position, length, type, picture, title, artist,
                 genre, album, albumArtist, width, height, artworkURL,
-                audio, spu, trackNumber, discNumber, lastModified, seen, isFavorite, insertionDate);
+                audio, spu, trackNumber, discNumber, lastModified, seen, isFavorite, insertionDate, nbSubscriptions, releaseYear);
     }
 
     public MediaWrapperImpl(Uri uri) { super(uri); }
@@ -299,6 +300,12 @@ public class MediaWrapperImpl extends MediaWrapper {
     }
 
     @Override
+    public Subscription[] getSubscriptions() {
+        Medialibrary ml = Medialibrary.getInstance();
+        return mId == 0 || !ml.isInitiated() ? null : nativeGetSubscriptions(ml, mId);
+    }
+
+    @Override
     public boolean setFavorite(boolean favorite) {
         if (mId == 0L) return false;
         final Medialibrary ml = Medialibrary.getInstance();
@@ -325,4 +332,5 @@ public class MediaWrapperImpl extends MediaWrapper {
     private native boolean nativeRemoveAllBookmarks(Medialibrary ml, long id);
     private native boolean nativeMarkAsPlayed(Medialibrary ml, long id);
     private native boolean nativeSetFavorite(Medialibrary ml, long id, boolean favorite);
+    private native Subscription[] nativeGetSubscriptions(Medialibrary ml, long id);
 }

@@ -11,17 +11,18 @@ import org.videolan.medialibrary.interfaces.media.Album;
 import org.videolan.medialibrary.interfaces.media.Artist;
 import org.videolan.medialibrary.interfaces.media.Bookmark;
 import org.videolan.medialibrary.interfaces.media.MediaWrapper;
+import org.videolan.medialibrary.interfaces.media.Subscription;
 
 public class StubMediaWrapper extends MediaWrapper {
     public StubMediaWrapper(long id, String mrl, long time, float position, long length, int type, String title,
                         String filename, String artist, String genre, String album, String albumArtist,
                         int width, int height, String artworkURL, int audio, int spu, int trackNumber,
                         int discNumber, long lastModified, long seen, boolean isThumbnailGenerated,
-                        boolean isFavorite, int releaseDate, boolean isPresent, long insertionDate) {
+                        boolean isFavorite, int releaseDate, boolean isPresent, long insertionDate, int nbSubscriptions) {
         super(id, mrl, time, position, length, type, title, filename, artist,
                 genre, album, albumArtist, width, height, artworkURL,
                 audio, spu, trackNumber, discNumber, lastModified,
-                seen, isThumbnailGenerated, isFavorite, releaseDate, isPresent, insertionDate);
+                seen, isThumbnailGenerated, isFavorite, releaseDate, isPresent, insertionDate, nbSubscriptions);
         final StringBuilder sb = new StringBuilder();
         if (type == TYPE_AUDIO) {
             boolean hasArtistMeta = !artist.equals(Artist.SpecialRes.VARIOUS_ARTISTS) &&
@@ -48,10 +49,10 @@ public class StubMediaWrapper extends MediaWrapper {
     public StubMediaWrapper(Uri uri, long time, float position, long length, int type,
                         Bitmap picture, String title, String artist, String genre, String album, String albumArtist,
                         int width, int height, String artworkURL, int audio, int spu, int trackNumber,
-                        int discNumber, long lastModified, long seen, boolean isFavorite, long insertionDate) {
+                        int discNumber, long lastModified, long seen, boolean isFavorite, long insertionDate, int nbSubscriptions, int releaseYear) {
         super(uri, time, position, length, type, picture, title, artist,
                 genre, album, albumArtist, width, height, artworkURL,
-                audio, spu, trackNumber, discNumber, lastModified, seen, isFavorite, insertionDate);
+                audio, spu, trackNumber, discNumber, lastModified, seen, isFavorite, insertionDate, nbSubscriptions, releaseYear);
     }
 
     public StubMediaWrapper(Uri uri) { super(uri); }
@@ -132,6 +133,11 @@ public class StubMediaWrapper extends MediaWrapper {
 
     @Override
     public boolean markAsPlayed() { return true; }
+
+    @Override
+    public Subscription[] getSubscriptions() {
+        return new Subscription[0];
+    }
 
     @Override
     public boolean setFavorite(boolean favorite) { return true; }

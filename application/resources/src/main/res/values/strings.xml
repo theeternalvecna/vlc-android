@@ -927,6 +927,7 @@
     <string name="new_title">New title</string>
     <string name="browse">Browse</string>
     <string name="more">More</string>
+    <string name="less">Less</string>
     <string name="favorites">Favorites</string>
     <string name="new_stream">New stream</string>
     <string name="add_to_group">Add to video group</string>
@@ -1128,8 +1129,22 @@
     <string name="enable_screenshot_gesture">Tap with 3 fingers</string>
     <string name="enable_screenshot_button">Show the screenshot button</string>
     <string name="enable_screenshot_button_and_gesture">Button and gesture</string>
+    <string name="discover">Discover</string>
+    <string name="discover_feed">Feed</string>
+    <string name="discover_podcast">Podcast</string>
+    <string name="subscription_settings">Subscription settings</string>
+    <string name="subscription_unsubscribe">Unsubscribe</string>
+    <string name="filter">Filter</string>
+    <string name="subscription_nb_download">Max cache media</string>
+    <string name="subscription_max_cache_size">Max cache size</string>
+    <string name="enabled">Enabled</string>
+    <string name="subscription_notification">Notification on new media</string>
+    <string name="open_podcast">Open podcast</string>
 
+    <string name="played">Played</string>
 
+    <string name="follow_parent">Follow parent</string>
+    <string name="none">None</string>
 
     <!--    accessibility-->
     <string name="talkback_media_content_description">%s - title: %s - duration: %s</string>
@@ -1142,6 +1157,7 @@
     <string name="talkback_track_number">Track number %s</string>
     <string name="talkback_duration">Duration: %s</string>
     <string name="talkback_album">Album: %s</string>
+    <string name="talkback_subscription">Media: %s</string>
     <string name="talkback_artist">Artist: %s</string>
     <string name="talkback_release_date">Released in %s</string>
     <string name="talkback_video">Video: %s</string>
@@ -1185,6 +1201,22 @@
     <string name="ignore_headset_media_button_presses">Ignore headset media button presses</string>
     <string name="ignore_headset_media_button_presses_summary">Useful, for instance, if you are using a headset with broken physical buttons</string>
     <string name="replace_playlist">Replace playlist</string>
+    <string name="add_to">Add to %s</string>
+    <string name="podcasts">Podcasts</string>
+    <string name="podcast_url">Podcast URL</string>
+    <string name="invalid_url">Invalid URL</string>
+    <string name="opml">Import OPML</string>
+    <string name="podcast_added">Podcast added</string>
+    <string name="podcast_added_error">Error adding the podcast</string>
+    <string name="today">Today</string>
+    <string name="yesterday">Yesterday</string>
+    <string name="in_year">In %s</string>
+    <string name="in_month">In %s</string>
+    <plurals name="nb_weeks_ago">
+        <item quantity="one">Last week</item>
+        <item quantity="two">2 weeks ago</item>
+        <item quantity="other">%d weeks ago</item>
+    </plurals>
 
     <!-- Remote access -->
     <string name="ra_server_running">Remote access active</string>

@@ -1,12 +1,18 @@
 package org.videolan.medialibrary.stubs;
 
+import android.os.Parcel;
+
+import org.videolan.medialibrary.interfaces.media.DiscoverService;
 import org.videolan.medialibrary.interfaces.media.MediaWrapper;
-import org.videolan.medialibrary.interfaces.media.MlService;
 import org.videolan.medialibrary.interfaces.media.Subscription;
 
-public class StubMlService extends MlService {
-    StubMlService(Type type) {super(type);}
-    StubMlService(int type) {super(type);}
+public class StubDiscoverService extends DiscoverService {
+    public StubDiscoverService(Type type, int nbUnplayedMedia, int nbMedia, int nbSubscriptions) {super(type, nbUnplayedMedia, nbMedia, nbSubscriptions);}
+    StubDiscoverService(int type, int nbUnplayedMedia, int nbMedia, int nbSubscriptions) {super(type, nbUnplayedMedia, nbMedia, nbSubscriptions);}
+
+    public StubDiscoverService(Parcel source) {
+        super(source);
+    }
 
     @Override
     public boolean addSubscription(String mrl) {
@@ -61,6 +67,16 @@ public class StubMlService extends MlService {
     @Override
     public MediaWrapper[] getMedia(int sortingCriteria, boolean desc, boolean includeMissing, boolean onlyFavorites) {
         return new MediaWrapper[0];
+    }
+
+    @Override
+    public Subscription[] searchSubscriptions(String query, int sort, boolean desc, boolean includeMissing, boolean onlyFavorites, int nbItems, int offset) {
+        return new Subscription[0];
+    }
+
+    @Override
+    public int searchSubscriptionsCount(String query, int sort, boolean desc, boolean includeMissing) {
+        return 0;
     }
 
     @Override

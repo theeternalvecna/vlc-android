@@ -38,6 +38,7 @@ import org.videolan.resources.util.HeaderProvider
 import org.videolan.tools.Settings
 import org.videolan.vlc.PlaybackService
 import org.videolan.vlc.media.MediaUtils
+import org.videolan.vlc.media.SubscriptionEpisode
 import org.videolan.vlc.util.ModelsHelper
 import org.videolan.vlc.util.Permissions
 import org.videolan.vlc.util.SortModule
@@ -170,6 +171,10 @@ abstract class MedialibraryProvider<T : MediaLibraryItem>(val context: Context, 
             }
         }
         (liveHeaders as MutableLiveData).postValue(privateHeaders.clone())
+    }
+
+    fun appendMedia(position: Int) {
+        (pagedList.value?.get(position) as? SubscriptionEpisode)?.inPlayQueue = true
     }
 
     inner class MLDataSource : PositionalDataSource<T>() {

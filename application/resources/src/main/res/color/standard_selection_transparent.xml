@@ -23,7 +23,7 @@
   -->
 
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:state_selected="true" android:color="@color/orange200transparent" />
+    <item android:state_enabled="false" android:color="?attr/default_divider" />
     <item android:state_pressed="true" android:color="@color/orange200transparent" />
     <item android:state_focused="true" android:color="@color/orange200transparent" />
     <item android:color="@color/transparent" />

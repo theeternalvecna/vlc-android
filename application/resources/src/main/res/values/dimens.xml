@@ -19,6 +19,7 @@
     <dimen name="audioplayer_controls_margin">0dp</dimen>
 
     <!--Keylines-->
+    <dimen name="kl_none">0dp</dimen>
     <dimen name="kl_half">4dp</dimen>
     <dimen name="kl_small">8dp</dimen>
     <dimen name="kl_normal">16dp</dimen>
