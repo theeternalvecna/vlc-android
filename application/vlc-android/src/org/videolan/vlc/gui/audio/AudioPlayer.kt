@@ -31,6 +31,7 @@ import android.support.v4.media.session.PlaybackStateCompat
 import android.text.Editable
 import android.text.TextWatcher
 import android.text.format.DateFormat
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
@@ -57,6 +58,7 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.conflate
 import kotlinx.coroutines.flow.onEach
+import org.videolan.libvlc.MediaPlayer
 import org.videolan.medialibrary.Tools
 import org.videolan.medialibrary.interfaces.media.MediaWrapper
 import org.videolan.resources.*
@@ -123,6 +125,7 @@ class AudioPlayer : Fragment(), PlaylistAdapter.IPlayer, TextWatcher, IAudioPlay
     private var audioPlayProgressMode:Boolean = false
     private var lastEndsAt = -1L
     private var isDragging = false
+    private var currentChapters: Pair<MediaWrapper,  List<MediaPlayer.Chapter>?>? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -183,6 +186,12 @@ class AudioPlayer : Fragment(), PlaylistAdapter.IPlayer, TextWatcher, IAudioPlay
         binding.header.setOnClickListener {
             val activity = activity as AudioPlayerContainerActivity
             activity.slideUpOrDownAudioPlayer()
+        }
+        binding.nextChapter?.setOnClickListener {
+            coverMediaSwitcherListener.onChapterSwitching(true)
+        }
+        binding.previousChapter?.setOnClickListener {
+            coverMediaSwitcherListener.onChapterSwitching(false)
         }
 
         val callback = SwipeDragItemTouchHelperCallback(playlistAdapter, true)
@@ -269,6 +278,7 @@ class AudioPlayer : Fragment(), PlaylistAdapter.IPlayer, TextWatcher, IAudioPlay
     override fun onDestroy() {
         Settings.removeAudioControlsChangeListener()
         binding.songsList.adapter = null
+        currentChapters = null
         super.onDestroy()
     }
 
@@ -383,6 +393,13 @@ class AudioPlayer : Fragment(), PlaylistAdapter.IPlayer, TextWatcher, IAudioPlay
         }
 
         val chapter = playlistModel.service?.getCurrentChapter()
+        if (chapter.isNullOrEmpty()) {
+            binding.nextChapter?.visibility = View.GONE
+            binding.previousChapter?.visibility = View.GONE
+        } else {
+            binding.nextChapter?.visibility = View.VISIBLE
+            binding.previousChapter?.visibility = View.VISIBLE
+        }
         binding.songTitle?.text = if (!chapter.isNullOrEmpty()) chapter else  playlistModel.title
         binding.songSubtitle?.text = if (!chapter.isNullOrEmpty()) TextUtils.separatedString(playlistModel.title, playlistModel.artist) else TextUtils.separatedString(playlistModel.artist, playlistModel.album)
         binding.songTitle?.isSelected = true
@@ -877,9 +894,12 @@ class AudioPlayer : Fragment(), PlaylistAdapter.IPlayer, TextWatcher, IAudioPlay
         override fun onTouchUp() {}
 
         override fun onTextClicked() { }
+
+        override fun onChapterSwitching(next: Boolean) { }
     }
 
     private val coverMediaSwitcherListener = object : AudioMediaSwitcherListener by AudioMediaSwitcher.EmptySwitcherListener {
+
 
         override fun onMediaSwitching() {
             (activity as? AudioPlayerContainerActivity)?.playerBehavior?.lock(true)
@@ -897,6 +917,32 @@ class AudioPlayer : Fragment(), PlaylistAdapter.IPlayer, TextWatcher, IAudioPlay
             Settings.getInstance(requireActivity()).putSingle(KEY_SHOW_TRACK_INFO, !Settings.showAudioTrackInfo)
             Settings.showAudioTrackInfo = !Settings.showAudioTrackInfo
             lifecycleScope.launch { doUpdate() }
+        }
+
+        override fun onChapterSwitching(next: Boolean) {
+            playlistModel.service?.let { service ->
+                service.currentMediaWrapper?.let { media ->
+                    if (currentChapters?.first?.uri != media.uri) {
+                        playlistModel.service?.getChapters(-1)?.let {
+                            currentChapters = Pair(media, it.toList())
+                        }
+                    }
+                }
+            }
+
+            currentChapters?.second?.let { chapters ->
+                playlistModel.service?.let { service ->
+                    val chapterIdx = playlistModel.service!!.chapterIdx
+                    if (!next) {
+                        val chapter = chapters[service.chapterIdx]
+                        if (chapter.timeOffset + 5000 > service.getTime())
+                            playlistModel.service!!.chapterIdx = chapterIdx.plus(-1).coerceAtLeast(0)
+                        else
+                            playlistModel.service!!.chapterIdx = chapterIdx
+                    } else if (chapterIdx != chapters.size - 1)
+                        playlistModel.service!!.chapterIdx = chapterIdx.plus(1).coerceAtMost(chapters.size - 1)
+                }
+            }
         }
     }
 
