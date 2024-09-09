@@ -36,14 +36,19 @@ import io.ktor.server.websocket.webSocket
 import io.ktor.websocket.Frame
 import io.ktor.websocket.close
 import io.ktor.websocket.readText
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import org.videolan.medialibrary.Tools
 import org.videolan.tools.AppScope
 import org.videolan.tools.REMOTE_ACCESS_PLAYBACK_CONTROL
 import org.videolan.vlc.PlaybackService
+import org.videolan.vlc.R
 import org.videolan.vlc.webserver.BuildConfig
 import org.videolan.vlc.webserver.RemoteAccessServer
 import org.videolan.vlc.webserver.ssl.SecretGenerator
+import java.util.Calendar
 
 object RemoteAccessWebSockets {
     val messageQueue: ArrayList<RemoteAccessServer.WSMessage> = arrayListOf()
@@ -66,8 +71,7 @@ object RemoteAccessWebSockets {
                     val incomingMessage = gson.fromJson(message, WSIncomingMessage::class.java)
                     if (BuildConfig.DEBUG) Log.i(TAG, "Received: $message")
                     if (!BuildConfig.VLC_REMOTE_ACCESS_DEBUG && !verifyWebsocketAuth(incomingMessage)) {
-                        val gson = Gson()
-                        send(Frame.Text(gson.toJson(RemoteAccessServer.WebSocketAuthorization("forbidden", initialMessage = message))))
+                        send(Frame.Text(Gson().toJson(RemoteAccessServer.WebSocketAuthorization("forbidden", initialMessage = message))))
                         return@webSocket
                     }
                     val service = RemoteAccessServer.getInstance(context).service
@@ -170,6 +174,88 @@ object RemoteAccessWebSockets {
                 } else return false
             }
 
+                        "play-chapter" -> {
+                            incomingMessage.id?.let { id ->
+                                if (playbackControlAllowedOrSend(settings)) service?.chapterIdx = id
+                            }
+                        }
+                        "speed" -> {
+                            incomingMessage.floatValue?.let { speed ->
+                                if (playbackControlAllowedOrSend(settings)) service?.setRate(speed, true)
+                            }
+                        }
+                        "sleep-timer" -> {
+                            incomingMessage.longValue?.let { sleepTimerEnd ->
+                                val sleepTime = Calendar.getInstance()
+                                sleepTime.timeInMillis += sleepTimerEnd
+                                sleepTime.set(Calendar.SECOND, 0)
+                                AppScope.launch(Dispatchers.Main) {
+                                    service?.setSleepTimer(sleepTime)
+                                }
+                                if (playbackControlAllowedOrSend(settings)) service?.sleepTimerInterval = sleepTimerEnd
+                                AppScope.launch {
+                                    RemoteAccessServer.getInstance(context).generateNowPlaying()?.let { nowPlaying ->
+                                        AppScope.launch { sendToAll(nowPlaying) }
+                                    }
+                                }
+                            }
+                        }
+                        "sleep-timer-wait" -> {
+                            incomingMessage.stringValue?.let { waitForMediaEnd ->
+                                service?.waitForMediaEnd = waitForMediaEnd == "true"
+                                AppScope.launch {
+                                    RemoteAccessServer.getInstance(context).generateNowPlaying()?.let { nowPlaying ->
+                                        AppScope.launch { sendToAll(nowPlaying) }
+                                    }
+                                }
+                            }
+                        }
+                        "sleep-timer-reset" -> {
+                            incomingMessage.stringValue?.let { resetOnInteraction ->
+                                service?.resetOnInteraction = resetOnInteraction == "true"
+                                AppScope.launch {
+                                    RemoteAccessServer.getInstance(context).generateNowPlaying()?.let { nowPlaying ->
+                                        AppScope.launch { sendToAll(nowPlaying) }
+                                    }
+                                }
+                            }
+                        }
+                        "add-bookmark" -> {
+                            incomingMessage.longValue?.let { time ->
+                                service?.currentMediaWrapper?.let {
+                                    AppScope.launch {
+                                        withContext(Dispatchers.IO) {
+                                            val bookmark = it.addBookmark(time)
+                                            bookmark?.setName(context.getString(R.string.bookmark_default_name, Tools.millisToString(service!!.getTime())))
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        "delete-bookmark" -> {
+                            incomingMessage.longValue?.let { bookmarkTime ->
+                                service?.currentMediaWrapper?.let { media ->
+                                    AppScope.launch {
+                                        withContext(Dispatchers.IO) {
+                                            media.removeBookmark(bookmarkTime)
+                                        }
+                                    }
+                                }
+                            }
+                        }
+            "rename-bookmark" -> {
+                incomingMessage.longValue?.let { bookmarkTime ->
+                    incomingMessage.stringValue?.let { bookmarkName ->
+                        service?.currentMediaWrapper?.let { media ->
+                            AppScope.launch {
+                                withContext(Dispatchers.IO) {
+                                    media.bookmarks.firstOrNull { it.time == bookmarkTime }?.setName(bookmarkName)
+                                }
+                            }
+                        }
+                    }
+                }
+            }
             "play-media" -> {
                 if (playbackControlAllowedOrSend(settings)) service?.playIndex(incomingMessage.id!!) else return false
 

@@ -125,5 +125,18 @@ object TranslationMapping {
         REMOTE_ACCESS_VERSION(R.string.remote_access_version),
         REMOTE_ACCESS_HASH(R.string.build_remote_access_revision),
         LIBRARIES(R.string.libraries),
+        SLEEP_TIMER(R.string.sleep_title),
+        PLAYBACK_SPEED(R.string.playback_speed),
+        CHAPTERS(R.string.chapters),
+        BOOKMARKS(R.string.bookmarks),
+        NO_BOOKMARK(R.string.no_bookmark),
+        OK(R.string.ok),
+        CANCEL(R.string.cancel),
+        NOT_SET(R.string.notset),
+        SLEEP_IN(R.string.sleep_in),
+        WAIT_CURRENT_MEDIA(R.string.wait_before_sleep),
+        RESET_ON_INTERACTION(R.string.reset_on_interaction),
+        HOURS(R.string.talkback_hours),
+        MINUTES(R.string.talkback_minutes),
     }
 }
