@@ -60,8 +60,7 @@ if [ ! -d "${MEDIALIBRARY_MODULE_DIR}/${SQLITE_RELEASE}" ]; then
   tar -xozf ${SQLITE_RELEASE}.tar.gz
   rm -f ${SQLITE_RELEASE}.tar.gz
   cd ${SQLITE_RELEASE}
-  patch -p1 < ${SRC_DIR}/buildsystem/patches/sqlite/sqlite-no-shell.patch
-  autoreconf -vif
+  patch -p1 < ${SRC_DIR}/buildsystem/patches/sqlite/e0a9935be1c506646566f6b7845eb381bb219e16.patch
 fi
 cd ${MEDIALIBRARY_MODULE_DIR}/${SQLITE_RELEASE}
 if [ ! -d "build-$ANDROID_ABI" ]; then
@@ -81,10 +80,10 @@ if [ ! -e ./config.status -o "$RELEASE" = "1" ]; then
     CXX="${CROSS_CLANG}++"
 fi
 
-make $MAKEFLAGS
+make $MAKEFLAGS bin_PROGRAMS=
 avlc_checkfail "sqlite build failed"
 
-make install
+make bin_PROGRAMS= install
 avlc_checkfail "sqlite installation failed"
 
 cd ${SRC_DIR}
