@@ -361,7 +361,7 @@ if [ "$BUILD_LIBVLC" = 1 ];then
     GRADLE_VLC_SRC_DIRS="$GRADLE_VLC_SRC_DIRS" GRADLE_ABI=$GRADLE_ABI ./gradlew -Dmaven.repo.local=$M2_REPO ${gradle_prop} -p ${VLC_LIBJNI_PATH}/libvlc assemble${BUILDTYPE}
     RUN=0
 elif [ "$BUILD_MEDIALIB" = 1 ]; then
-    GRADLE_ABI=$GRADLE_ABI ./gradlew  ${gradle_prop} -Dmaven.repo.local=$M2_REPO -p medialibrary assemble${BUILDTYPE}
+    GRADLE_ABI=$GRADLE_ABI ./gradlew  ${gradle_prop} -Dmaven.repo.local=$M2_REPO -p medialibrary assemble
     RUN=0
 else
     if [ "$TEST" = 1 -o "$RUN" = 1 ]; then
