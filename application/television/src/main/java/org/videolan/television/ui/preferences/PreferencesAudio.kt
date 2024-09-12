@@ -40,7 +40,6 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
 import org.videolan.libvlc.util.AndroidUtil
-import org.videolan.libvlc.util.HWDecoderUtil
 import org.videolan.resources.VLCInstance
 import org.videolan.tools.AUDIO_DUCKING
 import org.videolan.tools.KEY_PLAYBACK_RATE
@@ -91,12 +90,6 @@ class PreferencesAudio : BasePreferenceFragment(), SharedPreferences.OnSharedPre
         val aoutPref = findPreference<ListPreference>("aout")
         findPreference<Preference>(RESUME_PLAYBACK)?.isVisible = false
         findPreference<Preference>(AUDIO_DUCKING)?.isVisible = !AndroidUtil.isOOrLater
-
-        val aout = HWDecoderUtil.getAudioOutputFromDevice()
-        if (aout != HWDecoderUtil.AudioOutput.ALL) {
-            /* no AudioOutput choice */
-            aoutPref?.isVisible = false
-        }
 
         if (isVLC4() && Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
             aoutPref?.entryValues = activity.resources.getStringArray(R.array.aouts_complete_values)

@@ -32,7 +32,6 @@ import androidx.core.content.getSystemService
 import org.videolan.libvlc.MediaPlayer
 import org.videolan.libvlc.interfaces.IMedia
 import org.videolan.libvlc.util.AndroidUtil
-import org.videolan.libvlc.util.HWDecoderUtil
 import org.videolan.libvlc.util.VLCUtil
 import org.videolan.medialibrary.interfaces.media.MediaWrapper
 import org.videolan.tools.Preferences
@@ -203,10 +202,6 @@ object VLCOptions {
             aout = Integer.parseInt(pref.getString("aout", "-1")!!)
         } catch (ignored: NumberFormatException) {
         }
-
-        val hwaout = HWDecoderUtil.getAudioOutputFromDevice()
-        if (hwaout == HWDecoderUtil.AudioOutput.OPENSLES)
-            aout = AOUT_OPENSLES
 
         return if (aout == AOUT_OPENSLES) "opensles" else if (aout == AOUT_AUDIOTRACK) "audiotrack" else null /* aaudio is the default */
     }
